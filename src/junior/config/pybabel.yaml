@@ -1,0 +1,27 @@
+jinja2:
+
+  'components/**.haml':
+    encoding: utf-8
+    variable_start_string: '{|'
+    variable_end_string: '|}'
+    extensions:
+      - webassets.ext.jinja2.AssetsExtension
+      - hamlish_jinja.HamlishExtension
+      - junior.extensions.HamlBabel
+
+  'templates/**.haml':
+    encoding: utf-8
+    variable_start_string: '{|'
+    variable_end_string: '|}'
+    extensions:
+      - webassets.ext.jinja2.AssetsExtension
+      - hamlish_jinja.HamlishExtension
+      - junior.extensions.HamlBabel
+
+javascript:
+
+  'components/**.js':
+    extract_messages: X
+
+  'scripts/**.js':
+    extract_messages: X

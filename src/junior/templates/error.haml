@@ -1,0 +1,34 @@
+-extends 'layout.haml'
+
+
+-block title -> Failed
+
+
+-block head
+
+    %style
+        |       body { padding: 2% 20% 2% 4%; }
+        |       a { color: #00D1B1; }
+        |       pre { margin: 0; white-space: pre-wrap; }
+        |       pre:first-child { opacity: 0.5; }
+        |       ul { background: rgba(16,16,20,0.75); color: #efeff6; padding: 1em 2em; }
+        |       li { padding: 0.5em 0; list-style: none; }
+        |       .dark { background: #232330; color: #ebdcce; }
+
+    %link rel="icon" href="data:image/x-icon;base64,AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wAAAA=="
+
+
+-block body
+
+    %h1 -> Failed
+
+    -if name -> %h3 -> =name
+
+    -if message -> =message
+
+    -if traceback
+        %ul
+            -for group in traceback
+                %li
+                    -for line in group
+                        %pre -> =line|trim

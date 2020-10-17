@@ -1,0 +1,18 @@
+parser: sugarss
+
+plugins:
+  autoprefixer: {}
+  postcss-preset-env: {}
+  postcss-short: {}
+  postcss-mixins: {}
+  postcss-functions: {}
+  postcss-utilities: {}
+  postcss-extend-rule: {}
+  postcss-property-lookup: {}
+  postcss-nested-ancestors: {}
+  postcss-nested-props: {}
+  postcss-nested: {}
+  postcss-current-selector: {}
+  postcss-font-magician: {hosted: [../fonts, fonts]}
+  postcss-discard-comments: {removeAll: true}
+  postcss-sorting: {}

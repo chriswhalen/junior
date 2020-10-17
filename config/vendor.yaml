@@ -1,0 +1,5 @@
+scripts:
+
+  promise-polyfill: dist/polyfill.js
+  whatwg-fetch: dist/fetch.umd.js
+

@@ -1,0 +1,12 @@
+__pycache__
+build
+dist
+node_modules
+.*cache
+.env
+.tags
+.tox
+env.yaml
+*.egg-info
+migrations
+doctrees
