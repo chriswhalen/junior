@@ -101,6 +101,15 @@ except (OSError, TypeError):
 
 
 try:
+    with open(join('config', 'vendor.yaml')) as file:
+
+        vendor.update(load(file.read()))
+
+except (OSError, TypeError):
+    pass
+
+
+try:
     with open(join('config', 'app.yaml')) as file:
 
         config.update(collapse(load(file.read())))
@@ -114,15 +123,6 @@ try:
 
         env.update(collapse(load(file.read())))
 
-
-except (OSError, TypeError):
-    pass
-
-
-try:
-    with open(join('config', 'vendor.yaml')) as file:
-
-        vendor.update(collapse(load(file.read())))
 
 except (OSError, TypeError):
     pass
