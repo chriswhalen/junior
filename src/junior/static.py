@@ -26,7 +26,7 @@ def start(app):
 
             Bundle(join('scripts', 'app.js'),
                    depends=(join('scripts', '*.js'),),
-                   filters=('require', 'babel', 'rjsmin')),
+                   filters=('require', 'babel')),
 
             output=join(app._static_folder, 'app.js')
         ))

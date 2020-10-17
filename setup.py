@@ -10,7 +10,7 @@ with open('README.md', 'r') as file:
 
 setup(
     name='junior',
-    version='0.1.0',
+    version='0.1.2',
     url='https://gitlab.com/chriswhalen/junior',
     license='MIT',
     author='Chris Whalen',

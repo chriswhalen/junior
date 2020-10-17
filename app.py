@@ -5,6 +5,6 @@ app = Application()
 app.assets.register('junior_js', Bundle(
 
     join('src', 'junior', 'scripts', '_core.js'),
-    filters=('require', 'babel', 'rjsmin'),
+    filters=('require', 'babel'),
     output=join('src', 'junior', 'scripts', 'junior.js')
 ))
