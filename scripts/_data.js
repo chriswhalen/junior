@@ -9,34 +9,17 @@ const Data ={
                 let Collection = Backbone.Collection.extend({
 
                     all: function(){ return this.toJSON() },
-
-                    model: (attributes, params)=>{
-
-                        let model = new Backbone.Model(attributes, params)
-                        return new Proxy(model, GetSet)
-                    },
-
                     url: path
                 })
 
-                let collection = new Collection
-                collection.fetch()
-
-                Data[name] = new Proxy(collection, GetSet)
+                Data[name] = new Collection
+                Data[name].fetch()
             })
         }))
     }
 }
 
-const GetSet ={
-
-    get: (target, name)=>{ if (target.get(name)){ return target.get(name) } return target[name] },
-    set: (target, name, value)=>{ if (target.get(name)){ target.set(name, value) } target[name] = value }
-}
-
 Backbone.sync =(action, resource, params)=>{
-
-    console.log(action, resource, params)
 
     const actions ={
 

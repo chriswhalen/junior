@@ -3,7 +3,7 @@ const Auth ={
     token: localStorage.getItem('Auth.token'),
 
     start: (credentials)=>{
-        
+
         let token = Data.Token.add(credentials)
 
         token.save().then(()=>{

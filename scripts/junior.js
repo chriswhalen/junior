@@ -1,6 +1,4 @@
 
-require('promise-polyfill')
-require('whatwg-fetch')
 require('lodash')
 require('backbone')
 require('sizzle')

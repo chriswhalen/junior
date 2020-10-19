@@ -61,7 +61,9 @@ schemas = _api.schemas
 send = _sockets.send
 socket = _sockets.socket
 store = _cache.store
+synonym = _db.synonym
 web = _web.web
+validates = _db.validates
 
 Resource = _api.Resource
 
@@ -106,7 +108,7 @@ class Application(Flask):
     def start(self):
 
         if (self.is_started):
-            raise ValueError('%s has already been started' %
+            raise ValueError('%s is already started' %
                              (self.import_name,))
 
         self.errorhandler(_errors.error)

@@ -33,11 +33,14 @@ class TokenResource(Resource):
         data = _(request.get_json(force=True))
 
         try:
-            user = User.where(User.email == data.email)
+            user = User.query.filter(name=data.name).first()
 
         except AttributeError:
-            e = error(BadRequest, 'Missing field: email')
+            e = error(BadRequest, 'Missing field: name')
             return {'error': e}, e.code
+
+        if user is None:
+            raise Unauthorized
 
         try:
             if user.verify_and_update_password(data.password):
