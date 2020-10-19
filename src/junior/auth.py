@@ -33,7 +33,7 @@ class TokenResource(Resource):
         data = _(request.get_json(force=True))
 
         try:
-            user = User.query.filter(name=data.name).first()
+            user = User.query.filter(User.name == data.name).first()
 
         except AttributeError:
             e = error(BadRequest, 'Missing field: name')
