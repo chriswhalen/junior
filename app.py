@@ -1,10 +1,10 @@
 from junior import Application, Bundle, join
 
-app = Application()
+application = Application()
 
-app.assets.register('junior_js', Bundle(
+application.assets.register('junior_js', Bundle(
 
-    join('src', 'junior', 'scripts', '_core.js'),
-    filters=('require', 'babel'),
+    join('scripts', 'junior.js'),
+    filters=('require', 'rjsmin'),
     output=join('src', 'junior', 'scripts', 'junior.js')
 ))

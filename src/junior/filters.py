@@ -8,6 +8,7 @@ from webassets.filter import Filter, register_filter as register
 from . import join
 from .config import jinja_options, vendor
 from .context import context
+from .util import dump
 
 
 @register
@@ -195,6 +196,24 @@ class ImportCSS(Filter):
 
             _out.write(sub(r'^\s*@import\s+["\'](.*?)["\']\s*[;\n]',
                            self._import,
+                           line))
+
+
+@register
+class FixBabelHelpers(Filter):
+
+    name = 'fix_babel_helpers'
+
+    def fix_babel_helpers(self, match):
+
+        return ''
+
+    def input(self, _in, _out, **params):
+
+        for line in _in.readlines():
+
+            _out.write(sub(r'babelHelpers\["(.*?)"\]',
+                           self.fix_babel_helpers,
                            line))
 
 

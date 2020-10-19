@@ -58,20 +58,6 @@ jinja_options = _(
 )
 
 
-with open(join(__root_path, 'config', 'babeljs.yaml')) as file:
-
-    settings.babeljs = _(load(file.read()))
-    babeljs = settings.babeljs
-
-try:
-    with open(join('config', 'babeljs.yaml')) as file:
-
-        babeljs.update(load(file.read()))
-
-except (OSError, TypeError):
-    pass
-
-
 with open(join(__root_path, 'config', 'postcss.yaml')) as file:
 
     settings.postcss = _(load(file.read()))
@@ -86,15 +72,15 @@ except (OSError, TypeError):
     pass
 
 
-with open(join(__root_path, 'config', 'pybabel.yaml')) as file:
+with open(join(__root_path, 'config', 'babel.yaml')) as file:
 
-    settings.pybabel = _(load(file.read()))
-    pybabel = settings.pybabel
+    settings.babel = _(load(file.read()))
+    babel = settings.babel
 
 try:
-    with open(join('config', 'pybabel.yaml')) as file:
+    with open(join('config', 'babel.yaml')) as file:
 
-        pybabel.update(load(file.read()))
+        babel.update(load(file.read()))
 
 except (OSError, TypeError):
     pass
