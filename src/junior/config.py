@@ -1,4 +1,5 @@
-from os import environ, mkdir
+from os import environ
+from pathlib import Path
 
 from flask import Config as FlaskConfig
 
@@ -20,10 +21,8 @@ env = _()
 config = _()
 vendor = _()
 
-babeljs = _()
+babel = _()
 postcss = _()
-pybabel = _()
-settings = _()
 
 defaults = _(
     cache_default_timeout=60,
@@ -42,12 +41,12 @@ defaults = _(
 
 celery_options = _(
     broker_url='filesystem://',
-    broker_transport_options={
-        'data_folder_in': '.cache/queue',
-        'data_folder_out': '.cache/queue',
-        'data_folder_processed': '.cache'
-    },
-    result_backend='file://.cache'
+    broker_transport_options=_(
+        data_folder_in=join(defaults.cache_dir, 'queue'),
+        data_folder_out=join(defaults.cache_dir, 'queue'),
+        data_folder_processed=defaults.cache_dir
+    ),
+    result_backend='file://%s' % (defaults.cache_dir,)
 )
 
 jinja_options = _(
@@ -58,24 +57,9 @@ jinja_options = _(
 )
 
 
-with open(join(__root_path, 'config', 'postcss.yaml')) as file:
-
-    settings.postcss = _(load(file.read()))
-    postcss = settings.postcss
-
-try:
-    with open(join('config', 'postcss.yaml')) as file:
-
-        postcss.update(load(file.read()))
-
-except (OSError, TypeError):
-    pass
-
-
 with open(join(__root_path, 'config', 'babel.yaml')) as file:
 
-    settings.babel = _(load(file.read()))
-    babel = settings.babel
+    babel = _(load(file.read()))
 
 try:
     with open(join('config', 'babel.yaml')) as file:
@@ -86,10 +70,14 @@ except (OSError, TypeError):
     pass
 
 
-try:
-    with open(join('config', 'vendor.yaml')) as file:
+with open(join(__root_path, 'config', 'postcss.yaml')) as file:
 
-        vendor.update(load(file.read()))
+    postcss = _(load(file.read()))
+
+try:
+    with open(join('config', 'postcss.yaml')) as file:
+
+        postcss.update(load(file.read()))
 
 except (OSError, TypeError):
     pass
@@ -109,6 +97,14 @@ try:
 
         env.update(collapse(load(file.read())))
 
+except (OSError, TypeError):
+    pass
+
+
+try:
+    with open(join('config', 'vendor.yaml')) as file:
+
+        vendor.update(load(file.read()))
 
 except (OSError, TypeError):
     pass
@@ -162,33 +158,27 @@ def start(app):
 
     app.config = Config(app.config)
 
-    try:
-        mkdir(env.cache_dir)
-
-    except FileExistsError:
-        pass
-
-    file = open(join(env.cache_dir, 'babel.config.js'), 'w')
-    file.write('module.exports = %s' % (babeljs.toJSON(),))
+    Path(env.cache_dir).mkdir(exist_ok=True)
+    Path(join(env.cache_dir, '.empty')).touch()
 
     file = open(join(env.cache_dir, 'postcss.config.js'), 'w')
     file.write('module.exports = %s' % (postcss.toJSON(),))
 
     file = open(join(env.cache_dir, 'babel.cfg'), 'w')
 
-    for format in pybabel:
-        for source in pybabel[format]:
+    for format in babel:
+        for source in babel[format]:
 
             file.write('[%s: %s]\n' % (format, source))
 
-            for option in pybabel[format][source]:
+            for option in babel[format][source]:
 
-                if isinstance(pybabel[format][source][option], list):
-                    pybabel[format][source][option] = (
-                        ','.join(pybabel[format][source][option]))
+                if isinstance(babel[format][source][option], list):
+                    babel[format][source][option] = (
+                        ','.join(babel[format][source][option]))
 
                 file.write('%s = %s\n' % (option,
-                                          pybabel[format][source][option]))
+                                          babel[format][source][option]))
 
             file.write('\n')
 
