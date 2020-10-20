@@ -31,7 +31,6 @@ from . import (
     db as _db,
     errors as _errors,
     filters as _filters,
-    models as _models,
     queues as _queues,
     sockets as _sockets,
     static as _static,
@@ -91,7 +90,7 @@ class Application(Flask):
         self.locale = Babel(self)
         self.migrations = Alembic(self)
 
-        self.users = _auth.Users(db, _models.User, None)
+        self.users = _auth.Users(db, _auth.User, None)
         self.security = Security(self, self.users, register_blueprint=False)
 
         self.assets.auto_build = False

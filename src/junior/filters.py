@@ -8,7 +8,6 @@ from webassets.filter import Filter, register_filter as register
 from . import join
 from .config import jinja_options, vendor
 from .context import context
-from .util import dump
 
 
 @register
