@@ -1,5 +1,6 @@
 from os import environ
 from pathlib import Path
+from shutil import copytree
 
 from flask import Config as FlaskConfig
 
@@ -32,8 +33,10 @@ defaults = _(
     flask_debug=False,
     proxies=0,
     secret_key=None,
+    security_cli_users_name=False,
     security_flash_messages=False,
     security_token_authentication_header='Authorization',
+    security_user_identity_attributes=('name',),
     sqlalchemy_track_modifications=False,
     static_folder='static',
     task_serializer='json'
@@ -159,10 +162,17 @@ def start(app):
     app.config = Config(app.config)
 
     Path(env.cache_dir).mkdir(exist_ok=True)
+    Path(celery_options.broker_transport_options.data_folder_in
+         ).mkdir(exist_ok=True)
+
     Path(join(env.cache_dir, '.empty')).touch()
+
+    if not Path('migrations').exists():
+        copytree(join(__root_path, 'migrations'), 'migrations')
 
     file = open(join(env.cache_dir, 'postcss.config.js'), 'w')
     file.write('module.exports = %s' % (postcss.toJSON(),))
+    (join(__root_path, 'config', 'babel.yaml'))
 
     file = open(join(env.cache_dir, 'babel.cfg'), 'w')
 

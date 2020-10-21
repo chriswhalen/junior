@@ -88,7 +88,7 @@ class Application(Flask):
 
         self.assets = Assets(self)
         self.locale = Babel(self)
-        self.migrations = Alembic(self)
+        self.migrations = Alembic(self, run_mkdir=False)
 
         self.users = _auth.Users(db, _auth.User, None)
         self.security = Security(self, self.users, register_blueprint=False)
