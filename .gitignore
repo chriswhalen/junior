@@ -1,12 +1,12 @@
 __pycache__
 build
 dist
+doctrees
 node_modules
+env.yaml
+*.egg-info
 .*cache
 .env
 .tags
 .tox
-env.yaml
-*.egg-info
-migrations
-doctrees
+/migrations
