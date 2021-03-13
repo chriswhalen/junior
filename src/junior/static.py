@@ -24,10 +24,22 @@ def start(app):
 
         else:
 
-            app.assets.register('app_css', Bundle(
-                join(env.cache_dir, '.empty'),
-                output=join(app._static_folder, 'app.css')
-            ))
+            if Path(join('styles', 'app.css')).is_file():
+
+                app.assets.register('app_css', Bundle(
+
+                    join('styles', 'app.css'),
+                    depends=(join('styles', '*.css')),
+                    filters=('import_css', 'cleancss'),
+                    output=join(app._static_folder, 'app.css')
+                ))
+
+            else:
+
+                app.assets.register('app_css', Bundle(
+                    join(env.cache_dir, 'empty'),
+                    output=join(app._static_folder, 'app.css')
+                ))
 
     except BundleError:
         pass

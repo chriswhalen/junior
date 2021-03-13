@@ -1,7 +1,7 @@
-from . import Blueprint, redirect, render
+from . import Blueprint, redirect, render, request
 from .api import properties
 from .context import context
-from .errors import error, handle
+from .errors import MethodNotAllowed, error, handle
 from .templates import templates
 
 
@@ -11,19 +11,21 @@ web = Blueprint('web', __name__)
 def redirect_to_api(path, api_path='api'):
 
     if path == api_path:
+
         return redirect(properties.root)
 
     if path.split('/')[0] == api_path:
-        return redirect(''.join([properties.root,
-                        path.replace(api_path+'/', '')]))
+
+        path = ''.join([path.replace('%s/' % (api_path,), properties.root)])
+        return redirect(path)
 
 
 def defaults():
 
-    @web.route('/favicon<name>')
-    def __favicon(name):
+    @web.route('/favicon<path>')
+    def __favicon(path):
 
-        return redirect(context.asset('images/favicon%s' % (name,)))
+        return redirect(context.asset('images/favicon%s' % (path,)))
 
     @web.route('/')
     def __index():
@@ -34,7 +36,8 @@ def defaults():
         except Exception:
             return templates.get_template('index.haml').render()
 
-    @web.route('/<path:path>')
+    @web.route('/<path:path>',
+               methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
     def __default(**params):
 
         if ('path' in params and
@@ -42,6 +45,9 @@ def defaults():
                 params['path'].startswith('api/')):
 
             return redirect_to_api(params['path'])
+
+        if request.method != 'GET':
+            raise MethodNotAllowed
 
         try:
             return render('index.haml')

@@ -43,7 +43,7 @@ class Require(Filter):
 
     def require(self, match):
 
-        missing = False
+        name = match.groups()[0]
 
         path = list(split(match.groups()[-1]))
         path[-1] = '%s.js' % (path[-1],)
@@ -51,61 +51,54 @@ class Require(Filter):
         prefix_path = [p for p in path]
         prefix_path[-1] = '_%s' % (prefix_path[-1],)
 
-        try:
-            return open(join(self.path, *prefix_path), 'r').read()
+        node_path = join(self.ctx.app.root_path, 'node_modules', name)
+        vendor_path = '%s.js' % (name,)
 
-        except FileNotFoundError:
+        try:
+            vendor_path = vendor.scripts[name]
+
+        except (FileNotFoundError, KeyError, TypeError):
+            pass
+
+        order = (
+            (self.path, *prefix_path),
+            (self.path, *path),
+            (node_path, vendor_path),
+            (node_path, '%s.js' % (name,)),
+            (node_path, '%s.min.js' % (name,)),
+            (node_path, 'dist', '%s.js' % (name,)),
+            (node_path, 'dist', '%s.min.js' % (name,)),
+        )
+
+        for path in order:
 
             try:
-                return open(join(self.path, *path), 'r').read()
+                return open(join(*path), 'r').read()
 
             except FileNotFoundError:
+                pass
 
-                name = match.groups()[0]
-                path = join(self.ctx.app.root_path, 'node_modules', name)
-
-                try:
-                    return open(join(path, vendor.scripts[name]), 'r').read()
-
-                except (FileNotFoundError, KeyError, TypeError):
-
-                    try:
-                        return open(join(path, '%s.js' % (name,)), 'r').read()
-
-                    except FileNotFoundError:
-
-                        try:
-                            return open(join(path, 'dist', '%s.js' % (name,)),
-                                        'r').read()
-
-                        except FileNotFoundError:
-
-                            try:
-                                return open(join(path, '%s.min.js' % (name,)),
-                                            'r').read()
-
-                            except FileNotFoundError:
-
-                                try:
-                                    return open(join(path, 'dist',
-                                                     '%s.min.js' % (name,)),
-                                                'r').read()
-
-                                except FileNotFoundError:
-
-                                    missing = True
-
-        if missing:
-            raise FileNotFoundError("require('%s')" % (name,))
+            raise FileNotFoundError('require("%s")' % (name,))
 
     def input(self, _in, _out, **params):
 
         self.path = split(params['source_path'])[0]
-        for line in _in.readlines():
 
-            _out.write(sub(r'^\s*require\(\s*["\'](.*?)["\']\s*\)\s*;?',
-                           self.require,
-                           line))
+        source = _in.readlines()
+        output = []
+
+        while output == []:
+
+            for line in source:
+                output.append(
+                    sub(r'^\s*require\(\s*["\'](.*?)["\']\s*\)\s*;?',
+                        self.require, line))
+
+            if output != source:
+                source = output
+                output = []
+
+        _out.writelines(output)
 
 
 @register
@@ -120,26 +113,39 @@ class ImportSSS(Filter):
         path = '%s.sss' % (name,)
         prefix_path = '_%s' % (path,)
 
-        try:
-            return open(join(self.path, prefix_path), 'r').read()
+        order = (
+            (self.path, prefix_path),
+            (self.path, path),
+        )
 
-        except FileNotFoundError:
+        for path in order:
 
             try:
-                return open(join(self.path, path), 'r').read()
+                return open(join(*path), 'r').read()
 
             except FileNotFoundError:
+                pass
 
-                return "@import '%s'" % (name,)
+        return "@import '%s'" % (name,)
 
     def input(self, _in, _out, **params):
 
         self.path = split(params['source_path'])[0]
-        for line in _in.readlines():
 
-            _out.write(sub(r'^\s*@import\s+["\'](.*?)["\']\s*[;\n]',
-                           self._import,
-                           line))
+        source = _in.readlines()
+        output = []
+
+        while output == []:
+
+            for line in source:
+                output.append(sub(r'^\s*@import\s+["\'](.+?)["\']\s*[;\n]',
+                                  self._import, line))
+
+            if output != source:
+                source = output
+                output = []
+
+        _out.writelines(output)
 
 
 @register
@@ -149,53 +155,61 @@ class ImportCSS(Filter):
 
     def _import(self, match):
 
-        missing = False
-
         name = match.groups()[0]
-        path = join(self.ctx.app.root_path, 'node_modules', name)
+
+        path = list(split(match.groups()[-1]))
+        path[-1] = '%s.css' % (path[-1],)
+
+        prefix_path = [p for p in path]
+        prefix_path[-1] = '_%s' % (prefix_path[-1],)
+
+        node_path = join(self.ctx.app.root_path, 'node_modules', name)
+        vendor_path = '%s.css' % (name,)
 
         try:
-            return open(join(path, vendor.styles[name]), 'r').read()
+            vendor_path = vendor.styles[name]
 
-        except (FileNotFoundError, KeyError):
+        except (FileNotFoundError, KeyError, TypeError):
+            pass
+
+        order = (
+            (self.path, *prefix_path),
+            (self.path, *path),
+            (node_path, vendor_path),
+            (node_path, '%s.css' % (name,)),
+            (node_path, '%s.min.css' % (name,)),
+            (node_path, 'dist', '%s.css' % (name,)),
+            (node_path, 'dist', '%s.min.css' % (name,)),
+        )
+
+        for path in order:
 
             try:
-                return open(join(path, '%s.css' % (name,)), 'r').read()
+                return open(join(*path), 'r').read()
 
             except FileNotFoundError:
+                pass
 
-                try:
-                    return open(join(path, 'dist', '%s.css' % (name,)),
-                                'r').read()
-
-                except FileNotFoundError:
-
-                    try:
-                        return open(join(path, '%s.min.css' % (name,)),
-                                    'r').read()
-
-                    except FileNotFoundError:
-
-                        try:
-                            return open(join(path, 'dist',
-                                             '%s.min.css' % (name,)),
-                                        'r').read()
-
-                        except FileNotFoundError:
-
-                            missing = True
-
-        if missing:
-            raise FileNotFoundError("@import '%s'" % (name,))
+            raise FileNotFoundError('require("%s")' % (name,))
 
     def input(self, _in, _out, **params):
 
         self.path = split(params['source_path'])[0]
-        for line in _in.readlines():
 
-            _out.write(sub(r'^\s*@import\s+["\'](.*?)["\']\s*[;\n]',
-                           self._import,
-                           line))
+        source = _in.readlines()
+        output = []
+
+        while output == []:
+
+            for line in source:
+                output.append(sub(r'^\s*@import\s+["\'](.+?)["\']\s*[;\n]',
+                                  self._import, line))
+
+            if output != source:
+                source = output
+                output = []
+
+        _out.writelines(output)
 
 
 @register

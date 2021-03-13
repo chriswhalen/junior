@@ -2,12 +2,12 @@ from re import sub
 from sys import exc_info
 from traceback import format_tb
 
-from jinja2.exceptions import (
+from jinja2.exceptions import (                                         # noqa
     FilterArgumentError, SecurityError, TemplateAssertionError, TemplateError,
     TemplateNotFound, TemplateRuntimeError, TemplateSyntaxError,
     TemplatesNotFound, UndefinedError)
 
-from sqlalchemy.exc import (
+from sqlalchemy.exc import (                                            # noqa
     AmbiguousForeignKeysError, ArgumentError, CircularDependencyError,
     CompileError, DBAPIError, DataError, DatabaseError, DisconnectionError,
     IdentifierError, IntegrityError, InterfaceError, InternalError,
@@ -18,17 +18,17 @@ from sqlalchemy.exc import (
     ResourceClosedError, StatementError, TimeoutError, UnboundExecutionError,
     UnreflectableTableError, UnsupportedCompilationError)
 
-from sqlalchemy.orm.exc import (
+from sqlalchemy.orm.exc import (                                        # noqa
     ConcurrentModificationError, DetachedInstanceError, FlushError,
     LoaderStrategyException, MultipleResultsFound, NoResultFound,
     ObjectDeletedError, ObjectDereferencedError, StaleDataError,
     UnmappedClassError, UnmappedColumnError, UnmappedError,
     UnmappedInstanceError)
 
-from webassets.exceptions import (
+from webassets.exceptions import (                                      # noqa
     BuildError, BundleError, EnvironmentError, FilterError)
 
-from werkzeug.exceptions import (
+from werkzeug.exceptions import (                                       # noqa
     BadGateway, BadRequest, Conflict, ExpectationFailed, FailedDependency,
     Forbidden, GatewayTimeout, Gone, HTTPException, HTTPVersionNotSupported,
     ImATeapot, InternalServerError, LengthRequired, Locked, MethodNotAllowed,
@@ -39,10 +39,10 @@ from werkzeug.exceptions import (
     UnprocessableEntity, UnsupportedMediaType)
 
 from . import request
-from .util import _
+from .util import X, echo
 
 
-handlers = _()
+handlers = X()
 debugging = False
 
 
@@ -58,12 +58,12 @@ class handle:
 
 def debug():
 
-    debug = _()
+    debug = X()
     ex = exc_info()
 
     if any(ex):
 
-        debug.update(_(
+        debug.update(X(
             name=sub(r'([A-Z])', r' \1', ex[1].__class__.__name__).strip(),
             message=' '.join(str(ex[1]).split()).replace('"', "'"),
             traceback=[tb.strip().replace('"', "'").split(
@@ -76,9 +76,9 @@ def debug():
     return debug
 
 
-def error(exception, message=None):
+def error(exception):
 
-    error = _()
+    error = X()
 
     if isinstance(exception, type):
         try:
@@ -89,15 +89,25 @@ def error(exception, message=None):
     if not isinstance(exception, HTTPException):
         exception = InternalServerError()
 
-    error.code = exception.code
+    error.status = exception.code
     error.name = sub(r'([A-Z])', r' \1', exception.__class__.__name__).strip()
+    error.message = '. '.join(exception.args)
 
     _debug = debug()
     if debugging and any(_debug):
         error.update(_debug)
 
-    if message:
-        error.message = message
+    if 'message' in error:
+        error.message = error.message.replace(
+            str(error.status), '').replace(
+            error.name, '').replace(':', '').strip()
+
+    if not error.message:
+        error.pop('message')
+        _debug.pop('message')
+
+    if error.status == 500:
+        echo('', '', _debug, '')
 
     return error
 

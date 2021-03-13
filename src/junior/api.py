@@ -1,14 +1,25 @@
 from re import sub
 
+from flask.json import JSONEncoder
+
 from flask_marshmallow import Marshmallow
 
 from flask_restful import Api as RestfulApi, Resource
 
-from . import Blueprint, _
+from . import Blueprint, X, dt
 from .config import config
-from .controls import permit
-from .errors import (
-    DataError, MultipleResultsFound, NoResultFound, NotFound, error, handle)
+from .errors import (BadRequest, DataError, MultipleResultsFound,
+                     NoResultFound, NotFound, error, handle)
+
+
+class Encoder(JSONEncoder):
+
+    def default(self, o):
+
+        if isinstance(o, dt):
+            return o.isoformat()
+
+        return super().default(o)
 
 
 class Api(RestfulApi):
@@ -25,7 +36,7 @@ rest = Api(api)
 schemas = Marshmallow()
 resources = []
 
-properties = _(
+properties = X(
     endpoints={},
     root='/api/v%i/' % (config.api.version,),
     version=config.api.version,
@@ -62,7 +73,6 @@ def resource(this):
         class Meta:
 
             model = this
-            allow = _(query=all, add=None, update=None, delete=None)
 
             try:
                 endpoint = this.Meta.endpoint
@@ -70,15 +80,60 @@ def resource(this):
             except AttributeError:
                 pass
 
-        def query(self):
+        def query(self, action='view'):
 
-            if self.Meta.allow.query is all:
-                return self.Meta.model.query
+            query = self.Meta.model.query
+            controls = self.Meta.model.Meta.control[action]
 
-            if self.Meta.allow.query is None:
-                return self.Meta.model.query.limit(0).from_self()
+            try:
+                controls[0]
 
-            return self.Meta.allow.query.from_self()
+            except TypeError:
+                controls = (controls,)
+
+            for control in controls:
+
+                controlled_query = None
+
+                try:
+                    controlled_query = control(self.Meta.model)
+
+                except Exception:
+                    pass
+
+                permission = control.__name__.split('_')[0]
+
+                if permission == 'allow':
+
+                    if (query is all) or (controlled_query is all):
+                        query = all
+
+                    elif query is None:
+                        query = controlled_query
+
+                    elif controlled_query is not None:
+                        query = query.union(controlled_query)
+
+                if permission == 'deny':
+
+                    if (query is None) or (controlled_query is None):
+                        query = None
+
+                    elif query is all:
+                        query = controlled_query
+
+                    elif controlled_query is not all:
+                        query = query.intersect(controlled_query)
+
+            if action != 'add':
+
+                if query is all:
+                    return self.Meta.model.query
+
+                if query is None:
+                    return self.Meta.model.query.limit(0).from_self()
+
+            return query
 
         def get(self, **params):
 
@@ -92,14 +147,14 @@ def resource(this):
                 return self.Meta.model.many.jsonify(query.all())
 
             except NoResultFound:
-                return error(404)
+                raise NotFound
 
             except (DataError, MultipleResultsFound):
-                return error(400)
+                raise BadRequest
 
         def post(self, **params):
 
-            if self.Meta.allow.add is all:
+            if self.query('add'):
 
                 try:
                     record = self.Meta.model()
@@ -108,81 +163,69 @@ def resource(this):
                     return self.Meta.model.one.jsonify(record)
 
                 except DataError:
-                    return error(400)
+                    raise BadRequest
 
             return {}
 
         def put(self, **params):
 
-            if self.Meta.allow.update is None:
-                return {}
-
             try:
                 if 'id' in params:
 
-                    record = self.Meta.model.get(params['id'])
+                    record = self.Meta.model.query.get(params['id'])
 
-                    if (self.Meta.allow.update is all or
-                            record in self.Meta.allow.update):
+                    if (record in self.query('update')):
 
                         record.fill(**params)
                         record.save()
                         return self.Meta.model.one.jsonify(record)
 
                 else:
-                    return error(400)
+                    raise BadRequest
 
             except DataError:
-                return error(400)
+                raise BadRequest
 
             return {}
 
         def patch(self, **params):
 
-            if self.Meta.allow.update is None:
-                return {}
-
             try:
                 if 'id' in params:
 
-                    record = self.Meta.model.get(params['id'])
+                    record = self.Meta.model.query.get(params['id'])
 
-                    if (self.Meta.allow.update is all or
-                            record in self.Meta.allow.update):
+                    if (record in self.query('update')):
 
                         record.fill(**params)
                         record.save()
                         return self.Meta.model.one.jsonify(record)
 
                 else:
-                    return error(400)
+                    raise BadRequest
 
             except DataError:
-                return error(400)
+                raise BadRequest
 
             return {}
 
         def delete(self, **params):
-
-            if self.Meta.allow.delete is None:
-                return {}
 
             try:
                 if 'id' in params:
 
                     record = self.Meta.model.get(params['id'])
 
-                    if (self.Meta.allow.delete is all or
-                            record in self.Meta.allow.delete):
+                    if (record in self.query('delete')):
 
                         record.delete()
                         return self.Meta.model.one.jsonify(record)
 
                 else:
-                    return error(400)
+                    raise BadRequest
 
             except DataError:
-                return error(400)
+                raise BadRequest
 
             return {}
 
@@ -264,7 +307,7 @@ def defaults():
     def __error(exception):
 
         message = error(exception)
-        return {'error': message}, message.code
+        return {'error': message}, message.status
 
 
 def start(app):
@@ -273,17 +316,6 @@ def start(app):
 
     _api.defaults()
 
-    with app.app_context():
-
-        for resource in _api.resources:
-
-            try:
-                permit(resource.Meta.model, **resource.Meta.model.Meta.control)
-
-            except AttributeError:
-                pass
-
-    app.register_blueprint(_api.api,
-                           url_prefix=_api.api.url_prefix)
+    app.register_blueprint(_api.api, url_prefix=_api.api.url_prefix)
 
     return app

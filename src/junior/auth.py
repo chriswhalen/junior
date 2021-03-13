@@ -1,48 +1,138 @@
-from flask_security import (SQLAlchemyUserDatastore as UserDatastore,
-                            UserMixin as WithUser, current_user, hash_password)
+from base64 import b64decode as b_decode, b64encode as b_encode
+from hashlib import blake2b
 
-from . import request, response
+from bcrypt import (checkpw as check_hash, gensalt as make_salt,
+                    hashpw as make_hash)
+
+from . import dt, request
 from .api import Resource, register, resource
-from .controls import allow_self_for_current_user, deny_all
-from .db import WithTimestamps, db, filter, model, synonym
-from .errors import BadRequest, Unauthorized, error
-from .util import _
+from .config import env
+from .controls import allow_self_for_me, deny_all
+from .db import db, filter, model, timestamps
+from .errors import BadRequest, Unauthorized
+from .util import X, b
 
 
-class Users(UserDatastore):
+me = None
 
-    def put(self, model):
-        model.save()
-        return model
 
-    def delete(self, model):
-        model.delete()
+def encode_key(key):
+
+    # see github.com/pyca/bcrypt#maximum-password-length
+    return b_encode(blake2b(b(key), digest_size=48).digest())
+
+
+def hash_key(key, preserve=True):
+
+    if preserve and len(key) == 60 and key[:4] == '$2b$':
+        return key
+
+    return make_hash(encode_key(key), make_salt(env.auth_factor)).decode()
+
+
+def authorize():
+
+    from junior import auth
+
+    auth.me = User.authenticate(request.headers.get('Authorization'))
 
 
 @register
 @resource
 @model
-@filter('set', 'password', hash_password)
-class User(db.Model, WithUser, WithTimestamps):
+@timestamps
+@filter('set', 'key', hash_key)
+class User(db.Model):
 
     class Meta:
 
-        control = _(
-            query=(deny_all, allow_self_for_current_user),
-            update=allow_self_for_current_user,
+        control = X(
+            view=(deny_all, allow_self_for_me),
+            update=allow_self_for_me,
         )
 
-        exclude = ('token', 'password')
+        exclude = ('key', 'token')
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.BigInteger, primary_key=True)
 
     name = db.Column(db.Text, unique=True, nullable=False)
-    password = db.Column(db.Text, nullable=False)
 
-    active = db.Column(db.Boolean, default=True, nullable=False)
+    key = db.Column(db.Text)
+    token = db.Column(db.Text)
 
-    token = db.Column(db.Text, unique=True)
-    fs_uniquifier = synonym('token')
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
+
+    def authenticate(self, key=None):
+
+        try:
+            self = b_decode(self)
+            user = User.query.get(int(self[:8].hex(), base=16))
+
+            if user.is_active and check_hash(b(user.token), self[8:]):
+
+                return user
+
+        except Exception:
+
+            User.query.session.rollback()
+
+            try:
+                user = User.query.filter_by(name=self).first()
+
+                if user.is_active and check_hash(encode_key(key), b(user.key)):
+
+                    user.key = key
+                    user.save()
+                    return user
+
+                User.query.session.rollback()
+                user = User.query.filter_by(id=self).first()
+
+                if user.is_active and check_hash(encode_key(key), b(user.key)):
+
+                    user.key = key
+                    user.save()
+                    return user
+
+            except Exception:
+
+                User.query.session.rollback()
+
+                try:
+                    if self.is_active:
+
+                        if check_hash(b(self.token), b_decode(key)[8:]):
+
+                            return True
+
+                        if check_hash(encode_key(key), b(self.key)):
+
+                            user.key = key
+                            user.save()
+                            return True
+
+                    return False
+
+                except Exception:
+                    pass
+
+    def get_token(self):
+
+        id = b(0)
+
+        if self.id is not None:
+            id = b(self.id)
+
+        token = make_hash(b(self.token), make_salt(env.auth_factor))
+
+        return b_encode(id + token).decode()
+
+    def reset_token(self):
+
+        self.token = b_encode(blake2b(b(dt.now()),
+                                      digest_size=48).digest()).decode()
+
+        return self.token
 
 
 @register
@@ -58,29 +148,29 @@ class TokenResource(Resource):
 
     def post(self, **params):
 
-        data = _(request.get_json(force=True))
+        data = X(request.get_json(force=True))
 
-        try:
-            user = User.query.filter(User.name == data.name).first()
+        for field in ('name', 'key'):
+            if field not in data:
 
-        except AttributeError:
-            e = error(BadRequest, 'Missing field: name')
-            return {'error': e}, e.code
+                raise BadRequest("Missing '%s'" % (field,))
 
-        if user is None:
-            raise Unauthorized
+        user = User.authenticate(data.name, data.key)
 
-        try:
-            if user.verify_and_update_password(data.password):
-                return {'id': user.get_auth_token()}
+        if user:
 
-            raise Unauthorized
+            return X(id=user.id, name=user.name, token=user.get_token())
 
-        except AttributeError:
-            e = error(BadRequest, 'Missing field: password')
-            return {'error': e}, e.code
+        raise Unauthorized
 
     def delete(self, **params):
 
-        current_user.set_uniquifier()
-        return response('')
+        from junior.auth import me
+
+        try:
+            me.reset_token()
+            return {}
+
+        except Exception:
+
+            raise Unauthorized

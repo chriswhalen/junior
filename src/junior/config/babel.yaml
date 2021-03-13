@@ -1,27 +1,29 @@
 jinja2:
 
-  'components/**.haml':
+  '{components_path}/**.haml':
     encoding: utf-8
-    variable_start_string: '{|'
-    variable_end_string: '|}'
+    variable_start_string: '{templates_expressions_open}'
+    variable_end_string: '{templates_expressions_close}'
     extensions:
       - webassets.ext.jinja2.AssetsExtension
       - hamlish_jinja.HamlishExtension
-      - junior.extensions.HamlBabel
 
-  'templates/**.haml':
+  '{templates_path}/**.haml':
     encoding: utf-8
-    variable_start_string: '{|'
-    variable_end_string: '|}'
+    variable_start_string: '{templates_expressions_open}'
+    variable_end_string: '{templates_expressions_close}'
     extensions:
       - webassets.ext.jinja2.AssetsExtension
       - hamlish_jinja.HamlishExtension
-      - junior.extensions.HamlBabel
 
 javascript:
 
-  'components/**.js':
-    extract_messages: X
+  '{components_path}/**.js':
+    extract_messages:
+      - _
+      - __
 
-  'scripts/**.js':
-    extract_messages: X
+  '{scripts_path}/**.js':
+    extract_messages:
+      - _
+      - __
