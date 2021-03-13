@@ -1,26 +1,25 @@
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta as td                    # noqa
 from os.path import realpath, split
+from pathlib import Path                                                # noqa
 
-from flask import (
+from flask import (                                                     # noqa
     Flask, Blueprint, Request, Response, flash, g, jsonify,
     make_response as response, redirect, render_template as render, request,
     safe_join as join, session, url_for as to)
 
 from flask_alembic import Alembic
 
-from flask_assets import Bundle, Environment as Assets
+from flask_assets import Bundle, Environment as Assets                  # noqa
 
 from flask_babel import Babel
 
-from flask_security import Security, cli as SecurityCLI
-
-from .util import X, _, collapse, dump
+from .util import X, _, b, collapse, echo                               # noqa
 
 
 __root_path = join('/', *split(realpath(__file__))[0].split('/'))
 
 
-from . import (
+from . import (                                                         # noqa
     api as _api,
     auth as _auth,
     cache as _cache,
@@ -61,58 +60,69 @@ send = _sockets.send
 socket = _sockets.socket
 store = _cache.store
 synonym = _db.synonym
+timestamps = _db.timestamps
 web = _web.web
 validates = _db.validates
 
+Model = _db.db.Model
 Resource = _api.Resource
-
-SecurityCLI.roles = None
+User = _auth.User
 
 
 class Application(Flask):
 
     def __init__(self, name='app', **params):
 
+        if 'static_url_path' not in params:
+            params['static_url_path'] = '/-'
+
         super().__init__(name, **params)
 
-        self.is_started = False
-
         _config.start(self)
-
-        self.jinja_options = _config.jinja_options
-        self.templates = self.jinja_env
 
         db.init_app(self)
         store.init_app(self)
         schemas.init_app(self)
 
         self.assets = Assets(self)
-        self.locale = Babel(self)
-        self.migrations = Alembic(self, run_mkdir=False)
-
-        self.users = _auth.Users(db, _auth.User, None)
-        self.security = Security(self, self.users, register_blueprint=False)
-
         self.assets.auto_build = False
-        self.assets.cache = self.config.cache_dir
+        self.assets.cache = env.cache_path
         self.assets.directory = self.root_path
         self.assets.load_path = [self.root_path]
         self.assets.manifest = False
         self.assets.url = '/'
 
+        self.db = db
+
+        self.jinja_options = _config.jinja_options
+
+        self.json_encoder = _api.Encoder
+
+        self.locale = Babel(self)
+
+        self.migrations = Alembic(self, run_mkdir=False)
+        self.migrations.rev_id = lambda: '%04d' % (env.database_revision + 1,)
+
+        self.schemas = schemas
+
+        self.store = store
+
+        self.templates = self.jinja_env
         self.templates.hamlish_enable_div_shortcut = True
         self.templates.hamlish_mode = 'indented'
         self.templates.filters.update(_context.filters)
 
+        self.is_started = False
+
     def start(self):
 
         if (self.is_started):
-            raise ValueError('%s is already started' %
-                             (self.import_name,))
+            raise ValueError('%s is already started' % (self.import_name,))
 
         self.errorhandler(_errors.error)
         self.context_processor(_context.process)
         self.shell_context_processor(_context.process)
+        self.before_request(_auth.authorize)
 
         _cli.start(self)
         _errors.start(self)
@@ -126,5 +136,3 @@ class Application(Flask):
         self.is_started = True
 
         return self
-
-# flake8: noqa

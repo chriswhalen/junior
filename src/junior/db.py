@@ -1,13 +1,18 @@
 from flask_sqlalchemy import SQLAlchemy
 
 from sqlalchemy import event
-from sqlalchemy.orm import synonym, validates
+from sqlalchemy.orm import synonym, validates                           # noqa
 
 from . import dt
 from .errors import InvalidRequestError
+from .util import X
 
 
 def model(this):
+
+    class Meta:
+
+        control = X(view=all, add=None, update=None, delete=None)
 
     @event.listens_for(this, 'init')
     @event.listens_for(this, 'load')
@@ -27,7 +32,15 @@ def model(this):
 
         self.session.delete(self)
         self.session.commit()
+
         return self
+
+    def fetch(self):
+
+        if not self.id:
+            return self
+
+        return self.query.get(self.id)
 
     def fill(self, **params):
 
@@ -42,11 +55,30 @@ def model(this):
             self.session.add(self)
 
         self.session.commit()
+
         return self
 
     this.delete = delete
+    this.fetch = fetch
     this.fill = fill
     this.save = save
+
+    try:
+        this.Meta
+
+    except AttributeError:
+        this.Meta = Meta
+
+    try:
+        this.Meta.control
+
+    except AttributeError:
+        this.Meta.control = Meta.control
+
+    for action in ('view', 'add', 'update', 'delete'):
+
+        if action not in this.Meta.control:
+            this.Meta.control[action] = Meta.control[action]
 
     return this
 
@@ -113,10 +145,19 @@ def filter(_event, attribute, function):
     return wrapper
 
 
+def timestamps(model):
+
+    model.created_at = db.Column(db.DateTime, default=dt.now)
+    model.updated_at = db.Column(db.DateTime, default=dt.now, onupdate=dt.now)
+
+    return model
+
+
 db = SQLAlchemy()
 
 
-class WithTimestamps:
-
-    created_at = db.Column(db.DateTime, default=dt.now)
-    updated_at = db.Column(db.DateTime, default=dt.now, onupdate=dt.now)
+AlembicVersion = db.Table('alembic_version',
+                          db.metadata,
+                          db.Column('version_num',
+                                    db.String(32),
+                                    nullable=False))

@@ -8,8 +8,8 @@ def asset(name):
     try:
         return to('static', filename=name)
 
-    except AttributeError:
-        return '%s/%s' % ('/static', name)
+    except (AttributeError, RuntimeError):
+        return '/static/%s' % (name,)
 
 
 def title(text=None):
@@ -24,9 +24,9 @@ def process(key=None):
 
 filters = (_, X, asset, title)
 
-filters = _(zip([f.__name__ for f in filters], filters))
+filters = X(zip([f.__name__ for f in filters], filters))
 
-context = _(
+context = X(
     dt=dt,
     now=dt.now(),
     config=config

@@ -1,17 +1,29 @@
-const Auth ={
+/* eslint-disable no-unused-vars */
+/* global Model, Record, Token, auth, data */
 
-    token: localStorage.getItem('Auth.token'),
 
-    start: (credentials)=>{
+class Auth {
 
-        let token = Data.Token.add(credentials)
+    constructor(){ this.me = new Record(new Model('token'), data.cache.get('token')) }
 
-        token.save().then(()=>{
+    start(credentials){
 
-            Auth.token = Data.Token.models.pop().id
-            localStorage.setItem('Auth.token', Auth.token)
+        data.cache.clear()
+
+        return Token.new(credentials).save().then((token)=>{
+
+            if ('key' in token) delete token.key
+            auth.me = Token.new(token)
         })
+    }
+
+    stop() {
+
+        data.cache.clear()
+
+        if (this.me) return this.me.delete().then(()=> delete auth.me)
+        return new Promise((promise)=> promise(auth))
     }
 }
 
-/* global Data */
+

@@ -1,6 +1,9 @@
+import distutils                                                        # noqa
+from distutils.dir_util import copy_tree
 from os import environ
 from pathlib import Path
-from shutil import copytree
+from pprint import pformat
+from shutil import rmtree as rm_tree
 
 from flask import Config as FlaskConfig
 
@@ -11,61 +14,56 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from yaml import safe_load as load
 
 from . import __root_path, dt, join
-from .util import _, collapse
+from .util import X, collapse
 
 
 class Config(Munch, FlaskConfig):
-    pass
+
+    def __repr__(self):
+
+        return 'Config(\n%s\n)' % (pformat(self.__dict__, 2),)
 
 
-env = _()
-config = _()
-vendor = _()
+env = X()
+config = X()
+vendor = X()
 
-babel = _()
-postcss = _()
+babel = X()
+postcss = X()
 
-defaults = _(
-    cache_default_timeout=60,
-    cache_dir='.cache',
+defaults = X(
+    alembic={},
+    auth_factor=10,
+    cache_timeout=60,
+    cache_path='.cache',
     cache_type='filesystem',
+    components_path='components',
+    config_path='config',
     database_url=None,
     flask_debug=False,
-    proxies=0,
+    migrations_path='migrations',
+    proxy_count=0,
     secret_key=None,
-    security_cli_users_name=False,
-    security_flash_messages=False,
-    security_token_authentication_header='Authorization',
-    security_user_identity_attributes=('name',),
     sqlalchemy_track_modifications=False,
-    static_folder='static',
-    task_serializer='json'
+    static_path='static',
+    static_timeout=2592000,
+    scripts_path='scripts',
+    styles_path='styles',
+    templates_expressions_close='|}',
+    templates_expressions_open='{|',
+    templates_path='templates',
+    tasks_serializer='json'
 )
 
-celery_options = _(
-    broker_url='filesystem://',
-    broker_transport_options=_(
-        data_folder_in=join(defaults.cache_dir, 'queue'),
-        data_folder_out=join(defaults.cache_dir, 'queue'),
-        data_folder_processed=defaults.cache_dir
-    ),
-    result_backend='file://%s' % (defaults.cache_dir,)
-)
-
-jinja_options = _(
-    extensions=['hamlish_jinja.HamlishExtension',
-                'junior.extensions.HamlBabel'],
-    variable_start_string='{|',
-    variable_end_string='|}'
-)
+env.config_path = environ.get('config_path', defaults.config_path)
 
 
 with open(join(__root_path, 'config', 'babel.yaml')) as file:
 
-    babel = _(load(file.read()))
+    babel = X(load(file.read()))
 
 try:
-    with open(join('config', 'babel.yaml')) as file:
+    with open(join(env.config_path, 'babel.yaml')) as file:
 
         babel.update(load(file.read()))
 
@@ -75,10 +73,10 @@ except (OSError, TypeError):
 
 with open(join(__root_path, 'config', 'postcss.yaml')) as file:
 
-    postcss = _(load(file.read()))
+    postcss = X(load(file.read()))
 
 try:
-    with open(join('config', 'postcss.yaml')) as file:
+    with open(join(env.config_path, 'postcss.yaml')) as file:
 
         postcss.update(load(file.read()))
 
@@ -87,7 +85,7 @@ except (OSError, TypeError):
 
 
 try:
-    with open(join('config', 'app.yaml')) as file:
+    with open(join(env.config_path, 'app.yaml')) as file:
 
         config.update(collapse(load(file.read())))
 
@@ -96,7 +94,7 @@ except (OSError, TypeError):
 
 
 try:
-    with open(join('config', 'env.yaml')) as file:
+    with open(join(env.config_path, 'env.yaml')) as file:
 
         env.update(collapse(load(file.read())))
 
@@ -105,7 +103,7 @@ except (OSError, TypeError):
 
 
 try:
-    with open(join('config', 'vendor.yaml')) as file:
+    with open(join(env.config_path, 'vendor.yaml')) as file:
 
         vendor.update(load(file.read()))
 
@@ -113,8 +111,99 @@ except (OSError, TypeError):
     pass
 
 
+try:
+    with open(join(env.config_path, 'vendor.yaml')) as file:
+
+        vendor.update(load(file.read()))
+
+except (OSError, TypeError):
+    pass
+
+
+if 'cache_dir' not in env:
+    env.cache_dir = environ.get('cache_dir', env.cache_path)
+    if env.cache_dir is None:
+        env.cache_dir = defaults['cache_path']
+
+if 'cache_path' not in env:
+    env.cache_path = env.cache_dir
+
+
+if 'cache_default_timeout' not in env:
+    env.cache_default_timeout = environ.get('cache_default_timeout',
+                                            env.cache_timeout)
+    if env.cache_default_timeout is None:
+        env.cache_default_timeout = defaults['cache_timeout']
+
+if 'cache_timeout' not in env:
+    env.cache_timeout = env.cache_default_timeout
+
+
+if 'sqlalchemy_database_uri' not in env:
+    env.sqlalchemy_database_uri = environ.get('sqlalchemy_database_uri',
+                                              env.database_url)
+if 'database_url' not in env:
+    env.database_url = env.sqlalchemy_database_uri
+
+
+if 'static_folder' not in env:
+    env.static_folder = environ.get('static_folder',
+                                    env.static_path)
+    if env.static_folder is None:
+        env.static_folder = defaults['static_path']
+
+if 'static_path' not in env:
+    env.static_path = env.static_folder
+
+
+if 'send_file_max_age_default' not in env:
+    env.send_file_max_age_default = environ.get('send_file_max_age_default',
+                                                env.static_timeout)
+    if env.send_file_max_age_default is None:
+        env.send_file_max_age_default = defaults['static_timeout']
+
+if 'static_timeout' not in env:
+    env.static_timeout = env.send_file_max_age_default
+
+
+if 'task_serializer' not in env:
+    env.task_serializer = environ.get('task_serializer',
+                                      env.tasks_serializer)
+    if env.task_serializer is None:
+        env.task_serializer = defaults['tasks_serializer']
+
+if 'tasks_serializer' not in env:
+    env.tasks_serializer = env.task_serializer
+
+
+if 'template_folder' not in env:
+    env.template_folder = environ.get('template_folder',
+                                      env.templates_path)
+    if env.template_folder is None:
+        env.template_folder = defaults['templates_path']
+
+if 'templates_path' not in env:
+    env.templates_path = env.template_folder
+
+
+for key in defaults:
+    if key not in env:
+        env[key] = environ.get(key.upper(), defaults[key])
+
+try:
+    env.database_revision = -1
+
+    for migration in Path(env.migrations_path).glob('*_*.py'):
+
+        env.database_revision = max(env.database_revision,
+                                    int(migration.name.split('_')[0], 10))
+
+except (OSError, TypeError):
+    pass
+
+
 if 'api' not in config:
-    config.api = _()
+    config.api = X()
 
 if 'version' not in config.api:
     config.api.version = 1
@@ -122,74 +211,86 @@ if 'version' not in config.api:
 if 'updated_at' not in config.api:
     config.api.updated_at = dt.now()
 
-for key in defaults:
-    if key not in env:
-        env[key] = environ.get(key.upper(), defaults[key])
 
-env.babel_extra_args = ['--config-file',
-                        join('.', env.cache_dir, 'babel.config.js')]
+celery_options = X(
+    broker_url='filesystem://',
+    broker_transport_options=X(
+        data_folder_in=join(env.cache_path, 'queue'),
+        data_folder_out=join(env.cache_path, 'queue'),
+        data_folder_processed=env.cache_path
+    ),
+    result_backend='file://%s' % (env.cache_path,)
+)
 
-if 'security_password_salt' not in env:
-    env.security_password_salt = environ.get('security_password_salt',
-                                             env.secret_key)
 
-if 'sqlalchemy_database_uri' not in env:
-    env.sqlalchemy_database_uri = environ.get('sqlalchemy_database_uri',
-                                              env.database_url)
-
-env_upper = {key.upper(): env[key] for key in env}
-env.update(env_upper)
-
-for key in env_upper:
-    environ[key] = str(env_upper[key])
+jinja_options = X(
+    extensions=['hamlish_jinja.HamlishExtension'],
+    variable_start_string=env.templates_expressions_open,
+    variable_end_string=env.templates_expressions_close
+)
 
 
 def start(app):
 
+    app.config = Config(app.config)
+
     if 'name' not in config:
         config.name = app.import_name
 
-    env.postcss_extra_args = ['--config', join(app.root_path, env.cache_dir)]
-    env.POSTCSS_EXTRA_ARGS = env.postcss_extra_args
+    if env.proxy_count:
+        app.wsgi_app = ProxyFix(app.wsgi_app,
+                                x_for=env.proxy_count,
+                                x_proto=env.proxy_count)
+
+    env.alembic.script_location = join(env.cache_path, 'migrations')
+
+    env.env = app.config['ENV']
+
+    env.postcss_extra_args = ['--config', join(app.root_path,
+                                               env.cache_path)]
+
+    env_upper = {key.upper(): env[key] for key in env}
 
     app.config.update(env)
+    app.config.update(env_upper)
+    app.config.update({'APP': config, 'app': config})
 
-    if app.config['PROXIES']:
-        app.wsgi_app = ProxyFix(app.wsgi_app,
-                                x_for=app.config['PROXIES'],
-                                x_proto=app.config['PROXIES'])
+    rm_tree(env.cache_path, True)
 
-    app.config = Config(app.config)
-
-    Path(env.cache_dir).mkdir(exist_ok=True)
+    Path(env.cache_path).mkdir(exist_ok=True)
     Path(celery_options.broker_transport_options.data_folder_in
          ).mkdir(exist_ok=True)
 
-    Path(join(env.cache_dir, '.empty')).touch()
+    Path(join(env.cache_path, 'empty')).touch()
+    Path(join(env.cache_path, 'history')).touch()
 
-    if not Path('migrations').exists():
-        copytree(join(__root_path, 'migrations'), 'migrations')
+    copy_tree(join(__root_path, 'migrations'),
+              join(env.cache_path, 'migrations'))
 
-    file = open(join(env.cache_dir, 'postcss.config.js'), 'w')
-    file.write('module.exports = %s' % (postcss.toJSON(),))
-    (join(__root_path, 'config', 'babel.yaml'))
+    if Path(env.migrations_path).exists():
+        copy_tree(env.migrations_path, join(env.cache_path, 'migrations'))
 
-    file = open(join(env.cache_dir, 'babel.cfg'), 'w')
+    with open(join(env.cache_path, 'postcss.config.js'), 'w') as file:
 
-    for format in babel:
-        for source in babel[format]:
+        file.write('module.exports = %s' % (postcss.toJSON(),))
 
-            file.write('[%s: %s]\n' % (format, source))
+    with open(join(env.cache_path, 'babel.cfg'), 'w') as file:
 
-            for option in babel[format][source]:
+        for format in babel:
+            for source in babel[format]:
 
-                if isinstance(babel[format][source][option], list):
-                    babel[format][source][option] = (
-                        ','.join(babel[format][source][option]))
+                file.write('[%s: %s]\n' % (format, source.format(**env)))
 
-                file.write('%s = %s\n' % (option,
-                                          babel[format][source][option]))
+                for option in babel[format][source]:
 
-            file.write('\n')
+                    if isinstance(babel[format][source][option], list):
+                        babel[format][source][option] = (
+                            ', '.join(babel[format][source][option]))
+
+                    file.write('%s = %s\n' %
+                               (option,
+                                babel[format][source][option].format(**env)))
+
+                file.write('\n')
 
     return app

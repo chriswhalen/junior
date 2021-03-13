@@ -1,13 +1,25 @@
-from os import listdir
-from os.path import exists, isdir
+from pathlib import Path
 
-from . import Blueprint, Bundle, join, render
+from . import Blueprint, Bundle, dt, join, render, td
+from .config import env
 from .errors import BundleError, TemplateNotFound, error, handle
 
 
-components = Blueprint('components', __name__, template_folder='../components')
+components = Blueprint('components', __name__)
 
 components.url_prefix = '/_/'
+
+
+@components.after_request
+def cache(response):
+
+    response.add_etag()
+
+    response.cache_control.public = True
+    response.cache_control.max_age = env.static_timeout
+    response.expires = dt.now() + td(seconds=env.static_timeout)
+
+    return response
 
 
 def defaults():
@@ -18,7 +30,7 @@ def defaults():
     def __default(path):
 
         try:
-            return render('%s.html' % (path,))
+            return render('%s.html' % (path.replace('/', '_'),))
 
         except TemplateNotFound:
             return '<!-- not found: %s -->' % (path,), 404
@@ -35,50 +47,65 @@ def start(app):
 
     from . import _components
 
-    names = []
+    Path(env.components_path).mkdir(exist_ok=True)
+
+    _components.components.template_folder = join(app.root_path,
+                                                  env.components_path,
+                                                  '_')
+
+    paths = []
 
     try:
-        names = [c if isdir(join('components', c)) else None
-                 for c in listdir('components')]
+        paths = [path if path.is_dir() else None
+                 for path in Path(env.components_path).glob('**/*')]
 
     except FileNotFoundError:
         pass
 
-    for name in names:
+    for path in paths:
 
-        if not name:
+        if path is None or path.name == '_':
             continue
 
         bundles = []
-        path = join('components', name, '')
 
-        if exists('%s%s' % (path, 'template.haml')):
+        template = join(path, 'template.haml')
+        style = join(path, 'style.sss')
+        script = join(path, 'script.js')
 
-            bundles.append(Bundle('%s%s' % (path, 'template.haml'),
+        if Path(template).is_file():
+
+            bundles.append(Bundle(template,
                                   filters=('hamlish')))
 
-        if exists('%s%s' % (path, 'style.sss')):
+        if Path(style).is_file():
 
-            bundles.append(Bundle('%s%s' % (path, 'style.sss'),
+            bundles.append(Bundle(style,
                                   filters=('handle_empty',
                                            'postcss',
                                            'wrap_style')))
+        else:
 
-        if exists('%s%s' % (path, 'script.js')):
+            style = join(path, 'style.css')
 
-            bundles.append(Bundle('%s%s' % (path, 'script.js'),
-                                  filters=('require',
-                                           'babel',
-                                           'wrap_script')))
+            if Path(style).is_file():
 
+                bundles.append(Bundle(style,
+                                      filters=('handle_empty', 'wrap_style')))
+
+        if Path(script).is_file():
+
+            bundles.append(Bundle(script,
+                                  filters=('require', 'babel', 'wrap_script')))
         try:
-            app.assets.register(name,
+            app.assets.register(path.name,
                                 *bundles,
                                 filters='strip',
-                                output=join('components',
-                                            '%s.html' % (name,)))
+                                output=join(env.components_path, '_',
+                                            '%s.html' % (
+                                                '_'.join(path.parts[1:],))))
 
-        except BundleError:
+        except (BundleError, TypeError):
             pass
 
     _components.defaults()

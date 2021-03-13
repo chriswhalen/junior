@@ -1,7 +1,7 @@
 {
     "name": "@dubb/junior",
-    "version": "0.2.0",
-    "description": "An opinionated Flask project structure.",
+    "version": "0.3.0",
+    "description": "A full stack web framework, powered by Flask.",
     "repository": "gitlab:chriswhalen/junior",
     "license": "MIT",
     "dependencies": {
@@ -24,11 +24,5 @@
         "postcss-sorting": "^5.0.1",
         "postcss-utilities": "^0.8.4",
         "sugarss": "^2.0.0"
-    },
-    "devDependencies": {
-        "backbone": "^1.4.0",
-        "jed": "^1.1.1",
-        "lodash": "^4.17.20",
-        "sizzle": "^2.3.5"
     }
 }

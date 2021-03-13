@@ -1,13 +1,13 @@
 from jinja2 import Environment, FileSystemLoader
 
 from . import join, root_path
-from .config import jinja_options
+from .config import env, jinja_options
 from .context import context, filters
-from .util import _
+from .util import X
 
 
-options = _(jinja_options)
-options.loader = FileSystemLoader(join(root_path, 'templates'))
+options = X(jinja_options)
+options.loader = FileSystemLoader(join(root_path, env.templates_path))
 
 templates = Environment(**options)
 
