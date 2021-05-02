@@ -13,7 +13,7 @@ a {
     border: none!important;
     color: #3cf;
     display: inline-block;
-    text-decoration: underline;
+    text-decoration: none;
     transition: all 0.24s ease;
 }
 
@@ -114,3 +114,7 @@ dt:hover > a.headerlink, caption:hover > a.headerlink {
     opacity: 1;
 }
 
+div.ethical-sidebar, div.ethical-footer {
+    background: none;
+    border: none;
+}
