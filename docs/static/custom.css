@@ -59,7 +59,7 @@ div.sphinxsidebar input, div.genindex-jumpbox {
 }
 
 form input[type=text] {
-    margin-right: -8px;
+    margin-right: -6px;
 }
 
 input[type=button], div.sphinxsidebar input[type=button],
@@ -120,4 +120,10 @@ div.ethical-sidebar, div.ethical-footer {
 
 .ethical-sidebar a {
     color: #eee!important;
+}
+
+.rst-versions.rst-badge *,
+div.ethical-sidebar *,
+div.ethical-footer * {
+    user-select: none;
 }
