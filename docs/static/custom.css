@@ -6,7 +6,6 @@ body, h1, h2, h3, h4, h5, h6 {
 body, div.body {
     color: #eee;
     background-color: #202026;
-    overflow-x: hidden;
 }
 
 a {
@@ -32,7 +31,7 @@ h1, h2, div.body h1, div.body h2 {
     user-select: none;
 }
 
-div.sphinxsidebar {
+div.sphinxsidebar, div.documentwrapper {
     background: none!important;
 }
 
