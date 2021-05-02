@@ -6,12 +6,14 @@ body, h1, h2, h3, h4, h5, h6 {
 body, div.body {
     color: #eee;
     background-color: #202026;
+    overflow-x: hidden;
 }
 
 a {
     border: none!important;
     color: #3cf;
     display: inline-block;
+    text-decoration: underline;
     transition: all 0.24s ease;
 }
 
@@ -28,6 +30,10 @@ ul, ol {
 h1, h2, div.body h1, div.body h2 {
     font-weight: 800;
     user-select: none;
+}
+
+div.sphinxsidebar {
+    background: none!important;
 }
 
 div.sphinxsidebar a {
@@ -47,6 +53,10 @@ input, div.sphinxsidebar input {
     font-family: sans-serif;
     font-size: 1.2em;
     padding: 0.5em!important;
+}
+
+div.sphinxsidebar input, div.genindex-jumpbox {
+    border: none;
 }
 
 form input[type=text] {
@@ -86,10 +96,6 @@ div.admonition {
 
 div.admonition > :last-child {
     margin-bottom: 1em;
-}
-
-div.sphinxsidebar input, div.genindex-jumpbox {
-    border: none;
 }
 
 a.headerlink {
