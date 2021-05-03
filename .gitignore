@@ -3,10 +3,11 @@ build
 dist
 doctrees
 node_modules
+/migrations
 env.yaml
-*.egg-info
-.*cache
 .env
 .tags
 .tox
-/migrations
+.*cache
+*.egg-info
+package-lock.json
