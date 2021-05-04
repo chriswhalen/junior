@@ -23,5 +23,7 @@ reporting
 ---------
 
 If you've discovered an active or potential security issue,
-[please report it to the project authors](
-    https://github.com/chriswhalen/junior/issues/new ).
+please report it to the project author by email.
+
+<chris@chriswhalen.ca>
+
