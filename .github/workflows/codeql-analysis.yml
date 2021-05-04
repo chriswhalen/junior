@@ -24,10 +24,10 @@ jobs:
         language: [ 'javascript', 'python' ]
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
 
-    - name: Setup CodeQL
+    - uses: actions/checkout@v2
+
+    - name: Set up CodeQL
       uses: github/codeql-action/init@v1
       with:
         languages: ${{ matrix.language }}
