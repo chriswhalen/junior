@@ -1,10 +1,10 @@
-name: Analyze
+name: analyze
 
 on:
 
   push:
     branches: [ primary ]
-    
+
   pull_request:
     branches: [ primary ]
 
