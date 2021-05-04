@@ -10,4 +10,4 @@ A full stack web framework, powered by [Flask]( https://flask.palletsprojects.co
 Copyright © 2020, 2021
 Chris Whalen <chris@chriswhalen.ca>
 
-This software is offered under the [MIT License]( ./LICENSE ).
+This software is offered under the [MIT License]( ./LICENSE.md ).
