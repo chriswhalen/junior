@@ -1,4 +1,4 @@
-from junior.cache import clear, delete, get, set, store
+from junior.cache import clear, delete, get, set
 
 
 class TestCache:
@@ -45,13 +45,13 @@ class TestCache:
     # Does the cache clear?
     def test_clear(self, application):
 
-        application.store.set('once upon', 'a time')
-        application.store.set('i visited', 'the moon')
+        set('once upon', 'a time')
+        set('i visited', 'the moon')
 
-        assert application.store.get('once upon') == 'a time'
-        assert application.store.get('i visited') == 'the moon'
+        assert get('once upon') == 'a time'
+        assert get('i visited') == 'the moon'
 
-        if application.store.clear():
+        if clear():
 
-            assert application.store.get('once upon') is None
-            assert application.store.get('i visited') is None
+            assert get('once upon') is None
+            assert get('i visited') is None
