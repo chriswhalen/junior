@@ -1,6 +1,6 @@
 
 junior
-------
+======
 
 [![test](https://github.com/chriswhalen/junior/actions/workflows/test.yml/badge.svg)](https://github.com/chriswhalen/junior/actions/workflows/test.yml)
 [![analyze](https://github.com/chriswhalen/junior/actions/workflows/analyze.yml/badge.svg)](https://github.com/chriswhalen/junior/actions/workflows/analyze.yml)
