@@ -121,15 +121,13 @@ except (OSError, TypeError):
     pass
 
 
-for key in defaults:
-    if key not in env:
-        env[key] = environ.get(key.upper(), defaults[key])
-
-
 if 'cache_dir' not in env:
-    env.cache_dir = environ.get('cache_dir', env.cache_dir)
+    env.cache_dir = environ.get('cache_dir', env.cache_path)
     if env.cache_dir is None:
-        env.cache_dir = join(env.cache_path, 'tmp')
+        env.cache_dir = defaults['cache_path']
+
+if 'cache_path' not in env:
+    env.cache_path = env.cache_dir
 
 
 if 'cache_default_timeout' not in env:
@@ -188,6 +186,10 @@ if 'template_folder' not in env:
 if 'templates_path' not in env:
     env.templates_path = env.template_folder
 
+
+for key in defaults:
+    if key not in env:
+        env[key] = environ.get(key.upper(), defaults[key])
 
 try:
     env.database_revision = -1
