@@ -1,4 +1,4 @@
-from junior.cache import cache, clear, delete, forget, get, memo, set, store
+from junior.cache import clear, delete, get, set
 
 
 class TestCache:
@@ -51,7 +51,7 @@ class TestCache:
         assert get('once upon') == 'a time'
         assert get('i visited') == 'the moon'
 
-        clear()
+        print(clear())
 
         assert get('once upon') is None
         assert get('i visited') is None

@@ -36,7 +36,7 @@ defaults = X(
     auth_factor=10,
     cache_timeout=60,
     cache_path='.cache',
-    cache_type='filesystem',
+    cache_type='FileSystemCache',
     components_path='components',
     config_path='config',
     database_url=None,
@@ -54,6 +54,7 @@ defaults = X(
     templates_path='templates',
     tasks_serializer='json'
 )
+
 
 env.config_path = environ.get('config_path', defaults.config_path)
 
@@ -120,13 +121,15 @@ except (OSError, TypeError):
     pass
 
 
-if 'cache_dir' not in env:
-    env.cache_dir = environ.get('cache_dir', env.cache_path)
-    if env.cache_dir is None:
-        env.cache_dir = defaults['cache_path']
+for key in defaults:
+    if key not in env:
+        env[key] = environ.get(key.upper(), defaults[key])
 
-if 'cache_path' not in env:
-    env.cache_path = env.cache_dir
+
+if 'cache_dir' not in env:
+    env.cache_dir = environ.get('cache_dir', env.cache_dir)
+    if env.cache_dir is None:
+        env.cache_dir = join(env.cache_path, 'tmp')
 
 
 if 'cache_default_timeout' not in env:
@@ -185,10 +188,6 @@ if 'template_folder' not in env:
 if 'templates_path' not in env:
     env.templates_path = env.template_folder
 
-
-for key in defaults:
-    if key not in env:
-        env[key] = environ.get(key.upper(), defaults[key])
 
 try:
     env.database_revision = -1
