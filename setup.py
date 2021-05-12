@@ -41,7 +41,7 @@ setup(
         'celery~=5.0',
         'cffi~=1.14',
         'click~=7.1',
-        'flask~=1.1',
+        'flask>=1.1,<3.0',
         'flask-alembic~=2.0',
         'flask-assets~=2.0',
         'flask-babel~=2.0',
