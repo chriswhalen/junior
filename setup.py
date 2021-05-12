@@ -53,7 +53,7 @@ setup(
         'gunicorn~=20.1',
         'hamlish-jinja~=0.3',
         'itsdangerous~=1.1',
-        'jinja2~=2.11',
+        'jinja2>=2.11,<4.0',
         'konch~=4.3',
         'mako~=1.1',
         'marshmallow~=3.11',
