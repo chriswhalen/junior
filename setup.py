@@ -40,7 +40,7 @@ setup(
         'billiard~=3.6',
         'celery~=5.0',
         'cffi~=1.14',
-        'click~=7.1',
+        'click>=7.1,<9.0',
         'flask~=1.1',
         'flask-alembic~=2.0',
         'flask-assets~=2.0',
