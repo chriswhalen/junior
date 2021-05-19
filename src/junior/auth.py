@@ -153,7 +153,7 @@ class TokenResource(Resource):
         for field in ('name', 'key'):
             if field not in data:
 
-                raise BadRequest("Missing '%s'" % (field,))
+                raise BadRequest(f'Missing "{field}"')
 
         user = User.authenticate(data.name, data.key)
 

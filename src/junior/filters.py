@@ -46,13 +46,13 @@ class Require(Filter):
         name = match.groups()[0]
 
         path = list(split(match.groups()[-1]))
-        path[-1] = '%s.js' % (path[-1],)
+        path[-1] = f'{path[-1]}.js'
 
         prefix_path = [p for p in path]
-        prefix_path[-1] = '_%s' % (prefix_path[-1],)
+        prefix_path[-1] = f'_{prefix_path[-1]}'
 
         node_path = join(self.ctx.app.root_path, 'node_modules', name)
-        vendor_path = '%s.js' % (name,)
+        vendor_path = f'{name}.js'
 
         try:
             vendor_path = vendor.scripts[name]
@@ -64,10 +64,10 @@ class Require(Filter):
             (self.path, *prefix_path),
             (self.path, *path),
             (node_path, vendor_path),
-            (node_path, '%s.js' % (name,)),
-            (node_path, '%s.min.js' % (name,)),
-            (node_path, 'dist', '%s.js' % (name,)),
-            (node_path, 'dist', '%s.min.js' % (name,)),
+            (node_path, f'{name}.js'),
+            (node_path, f'{name}.min.js'),
+            (node_path, 'dist', f'{name}.js'),
+            (node_path, 'dist', f'{name}.min.js'),
         )
 
         for path in order:
@@ -78,7 +78,7 @@ class Require(Filter):
             except FileNotFoundError:
                 pass
 
-            raise FileNotFoundError('require("%s")' % (name,))
+            raise FileNotFoundError(f'require("{name}")')
 
     def input(self, _in, _out, **params):
 
@@ -110,8 +110,8 @@ class ImportSSS(Filter):
 
         name = list(split(match.groups()[0]))[-1]
 
-        path = '%s.sss' % (name,)
-        prefix_path = '_%s' % (path,)
+        path = f'{name}.sss'
+        prefix_path = f'_{path}'
 
         order = (
             (self.path, prefix_path),
@@ -126,7 +126,7 @@ class ImportSSS(Filter):
             except FileNotFoundError:
                 pass
 
-        return "@import '%s'" % (name,)
+        return f"@import '{name}'"
 
     def input(self, _in, _out, **params):
 
@@ -158,13 +158,13 @@ class ImportCSS(Filter):
         name = match.groups()[0]
 
         path = list(split(match.groups()[-1]))
-        path[-1] = '%s.css' % (path[-1],)
+        path[-1] = f'{path[-1]}.css'
 
         prefix_path = [p for p in path]
-        prefix_path[-1] = '_%s' % (prefix_path[-1],)
+        prefix_path[-1] = f'_{prefix_path[-1]}'
 
         node_path = join(self.ctx.app.root_path, 'node_modules', name)
-        vendor_path = '%s.css' % (name,)
+        vendor_path = f'{name}.css'
 
         try:
             vendor_path = vendor.styles[name]
@@ -176,10 +176,10 @@ class ImportCSS(Filter):
             (self.path, *prefix_path),
             (self.path, *path),
             (node_path, vendor_path),
-            (node_path, '%s.css' % (name,)),
-            (node_path, '%s.min.css' % (name,)),
-            (node_path, 'dist', '%s.css' % (name,)),
-            (node_path, 'dist', '%s.min.css' % (name,)),
+            (node_path, f'{name}.css'),
+            (node_path, f'{name}.min.css'),
+            (node_path, 'dist', f'{name}.css'),
+            (node_path, 'dist', f'{name}.min.css'),
         )
 
         for path in order:
@@ -190,7 +190,7 @@ class ImportCSS(Filter):
             except FileNotFoundError:
                 pass
 
-            raise FileNotFoundError('require("%s")' % (name,))
+            raise FileNotFoundError(f'require("{name}")')
 
     def input(self, _in, _out, **params):
 
@@ -253,7 +253,7 @@ class WrapScript(Filter):
         script = _in.read()
 
         if len(script.strip()) > len('"use strict";'):
-            _out.write('<script async>\n%s\n</script>' % (script,))
+            _out.write(f'<script async>\n{script}\n</script>')
 
 
 @register
@@ -266,4 +266,4 @@ class WrapStyle(Filter):
         style = _in.read()
 
         if len(style.strip()):
-            _out.write('<style>\n%s\n</style>' % (style,))
+            _out.write(f'<style>\n{style}\n</style>')

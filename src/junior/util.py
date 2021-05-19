@@ -11,7 +11,7 @@ from . import dt
 
 
 Munch.__name__ = 'X'
-Munch.__repr__ = lambda self: 'X%s' % (pformat(self.__dict__),)
+Munch.__repr__ = lambda self: f'X{pformat(self.__dict__)}'
 
 Munch.toTOML = lambda self: dumps(self)
 Munch.fromTOML = lambda data: Munch.fromDict(loads(data))
@@ -55,7 +55,7 @@ def collapse(data, delimiter='_'):
         if isinstance(data[key], dict):
             inner_data = collapse(data[key], delimiter)
             for inner_key in inner_data:
-                full_key = "%s%s%s" % (key, delimiter, inner_key)
+                full_key = f'{key}{delimiter}{inner_key}'
                 values[full_key] = inner_data[inner_key]
         else:
             values[key] = data[key]

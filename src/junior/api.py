@@ -38,7 +38,7 @@ resources = []
 
 properties = X(
     endpoints={},
-    root='/api/v%i/' % (config.api.version,),
+    root=f'/api/v{config.api.version}/',
     version=config.api.version,
     updated_at=config.api.updated_at
 )
@@ -229,10 +229,10 @@ def resource(this):
 
             return {}
 
-    ModelResource.__name__ = '%sResource' % (this.__name__,)
+    ModelResource.__name__ = f'{this.__name__}Resource'
     this.resource = ModelResource
 
-    ModelSchema.__name__ = '%sSchema' % (this.__name__,)
+    ModelSchema.__name__ = f'{this.__name__}Schema'
     this.one = ModelSchema(many=False)
     this.many = ModelSchema(many=True)
     this.schema = ModelSchema
@@ -263,8 +263,8 @@ def register(this, name=None, endpoint=None, *params):
         except AttributeError:
             endpoint = '%ss' % (sub(r'([A-Z])', r'_\1', name)[1:].lower(),)
 
-    paths = ['/%s' % (endpoint,)]
-    properties.endpoints[name] = '%s%s/' % (properties.root, endpoint)
+    paths = [f'/{endpoint}']
+    properties.endpoints[name] = f'{properties.root}{endpoint}/'
 
     if len(params) == 0:
 
@@ -276,10 +276,10 @@ def register(this, name=None, endpoint=None, *params):
             pass
 
     for param in params:
-        paths.append('%s/<string:%s>' % (paths[-1], param))
+        paths.append(f'{paths[-1]}/<string:{param}>')
 
     if len(paths) > 1:
-        paths[0] = '%s/' % paths[0]
+        paths[0] = f'{paths[0]}/'
 
     else:
         properties.endpoints[name] = properties.endpoints[name][:-1]

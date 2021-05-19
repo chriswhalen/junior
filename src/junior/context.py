@@ -9,12 +9,12 @@ def asset(name):
         return to('static', filename=name)
 
     except (AttributeError, RuntimeError):
-        return '/static/%s' % (name,)
+        return f'/static/{name}'
 
 
 def title(text=None):
 
-    return ('%s | %s' % (text, config.name) if text else config.name)
+    return (f'{text} | {config.name}' if text else config.name)
 
 
 def process(key=None):

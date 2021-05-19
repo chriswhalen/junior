@@ -16,7 +16,7 @@ def redirect_to_api(path, api_path='api'):
 
     if path.split('/')[0] == api_path:
 
-        path = ''.join([path.replace('%s/' % (api_path,), properties.root)])
+        path = ''.join([path.replace(f'{api_path}/', properties.root)])
         return redirect(path)
 
 
@@ -25,7 +25,7 @@ def defaults():
     @web.route('/favicon<path>')
     def __favicon(path):
 
-        return redirect(context.asset('images/favicon%s' % (path,)))
+        return redirect(context.asset('images/favicon{path}'))
 
     @web.route('/')
     def __index():

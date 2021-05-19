@@ -30,17 +30,17 @@ def defaults():
     def __default(path):
 
         try:
-            return render('%s.html' % (path.replace('/', '_'),))
+            return render(f'{path.replace("/", "_")}.html')
 
         except TemplateNotFound:
-            return '<!-- not found: %s -->' % (path,), 404
+            return f'<!-- not found: {path} -->', 404
 
     @handle(_components.components.url_prefix)
     @_components.components.errorhandler(Exception)
     def __error(exception):
 
         message = error(exception)
-        return '<!-- error: %s -->' % (message.name.lower(),), message.code
+        return f'<!-- error: {message.name.lower()} -->', message.code
 
 
 def start(app):
@@ -102,8 +102,7 @@ def start(app):
                                 *bundles,
                                 filters='strip',
                                 output=join(env.components_path, '_',
-                                            '%s.html' % (
-                                                '_'.join(path.parts[1:],))))
+                                            '{"_".join(path.parts[1:]}.html'))
 
         except (BundleError, TypeError):
             pass

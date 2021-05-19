@@ -21,7 +21,7 @@ class Config(Munch, FlaskConfig):
 
     def __repr__(self):
 
-        return 'Config(\n%s\n)' % (pformat(self.__dict__, 2),)
+        return f'Config(\n{pformat(self.__dict__, 2)}\n)'
 
 
 env = X()
@@ -41,6 +41,7 @@ defaults = X(
     config_path='config',
     database_url=None,
     flask_debug=False,
+    flask_env='production',
     migrations_path='migrations',
     proxy_count=0,
     secret_key=None,
@@ -88,7 +89,7 @@ except (OSError, TypeError):
 try:
     with open(join(env.config_path, 'app.yaml')) as file:
 
-        config.update(collapse(load(file.read())))
+        config.update(X(load(file.read())))
 
 except (OSError, TypeError):
     pass
@@ -106,16 +107,7 @@ except (OSError, TypeError):
 try:
     with open(join(env.config_path, 'vendor.yaml')) as file:
 
-        vendor.update(load(file.read()))
-
-except (OSError, TypeError):
-    pass
-
-
-try:
-    with open(join(env.config_path, 'vendor.yaml')) as file:
-
-        vendor.update(load(file.read()))
+        vendor.update(X(load(file.read())))
 
 except (OSError, TypeError):
     pass
@@ -138,6 +130,14 @@ if 'cache_default_timeout' not in env:
 
 if 'cache_timeout' not in env:
     env.cache_timeout = env.cache_default_timeout
+
+
+if 'flask_debug' in env:
+    env.debug = env.flask_debug
+
+
+if 'flask_env' in env:
+    env.env = env.flask_env
 
 
 if 'sqlalchemy_database_uri' not in env:
@@ -220,7 +220,7 @@ celery_options = X(
         data_folder_out=join(env.cache_path, 'queue'),
         data_folder_processed=env.cache_path
     ),
-    result_backend='file://%s' % (env.cache_path,)
+    result_backend=f'file://{env.cache_path}'
 )
 
 
@@ -244,8 +244,6 @@ def start(app):
                                 x_proto=env.proxy_count)
 
     env.alembic.script_location = join(env.cache_path, 'migrations')
-
-    env.env = app.config['ENV']
 
     env.postcss_extra_args = ['--config', join(app.root_path,
                                                env.cache_path)]
@@ -273,14 +271,14 @@ def start(app):
 
     with open(join(env.cache_path, 'postcss.config.js'), 'w') as file:
 
-        file.write('module.exports = %s' % (postcss.toJSON(),))
+        file.write(f'module.exports = {postcss.toJSON()}')
 
     with open(join(env.cache_path, 'babel.cfg'), 'w') as file:
 
         for format in babel:
             for source in babel[format]:
 
-                file.write('[%s: %s]\n' % (format, source.format(**env)))
+                file.write(f'[{format}: {source.format(**env)}]\n')
 
                 for option in babel[format][source]:
 
@@ -288,9 +286,9 @@ def start(app):
                         babel[format][source][option] = (
                             ', '.join(babel[format][source][option]))
 
-                    file.write('%s = %s\n' %
-                               (option,
-                                babel[format][source][option].format(**env)))
+                    value = babel[format][source][option].format(**env)
+
+                    file.write(f'{option} = {value}\n')
 
                 file.write('\n')
 

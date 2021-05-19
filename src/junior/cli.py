@@ -106,15 +106,15 @@ def locale():
 @locale.command('extract')
 def extract_locale():
     '''Extract messages into a POT template.'''
-    system('pybabel extract -F %s/babel.cfg -k X -o messages.pot .'
-           % (env.cache_path,))
+    system(
+       f'pybabel extract -F {env.cache_path}/babel.cfg -k X -o messages.pot .')
 
 
 @locale.command('create')
 @click.argument('name')
 def create_locale(name):
     '''Create a new locale.'''
-    system('pybabel init -i messages.pot -d translations -l %s' % (name,))
+    system(f'pybabel init -i messages.pot -d translations -l {name}')
 
 
 @locale.command('update')
@@ -148,9 +148,9 @@ def run_queue(name):
     app = _app_ctx_stack.top.app
 
     if (name is None):
-        name = '%s.queue' % (app.import_name,)
+        name = f'{app.import_name}.queue'
 
-    system('celery worker -E -A %s' % (name,))
+    system(f'celery worker -E -A {name}')
 
 
 @click.command()
@@ -190,13 +190,13 @@ def run(name, bind, workers, reload, preload, key, cert, ca):
         options += '--preload '
 
     if (key):
-        options += '--keyfile %s ' % (key,)
+        options += f'--keyfile {key} '
 
     if (cert):
-        options += '--certfile %s ' % (cert,)
+        options += f'--certfile {cert} '
 
     if (ca):
-        options += '--ca-certs %s ' % (ca,)
+        options += f'--ca-certs {ca} '
 
     if app.env == 'development':
         options += '--reload'
@@ -204,15 +204,14 @@ def run(name, bind, workers, reload, preload, key, cert, ca):
     banner = app.name
 
     if config.name != app.name:
-        banner = '%s :: %s' % (config.name, app.name)
+        banner = f'{config.name} :: {app.name}'
 
     banner = click.style(banner, fg='bright_green', bold=True)
-    banner = '\n%s\n%s\n' % (banner, click.style(app.env, fg='bright_blue'))
+    banner = f'\n{banner}\n{click.style(app.env, fg="bright_blue")}\n'
 
     print(banner)
 
-    system('gunicorn -b %s -w %s -n %s %s %s' %
-           (bind, workers, name, options, name))
+    system(f'gunicorn -b {bind} -w {workers} -n {name} {options} {name}')
 
 
 @click.command()
@@ -226,7 +225,7 @@ def shell():
 
     def shell_echo(*args):
 
-        print('%s\n' % echo('', '', *args, _print=False))
+        print(f'{echo("", "", *args, _print=False)}\n')
 
     import junior
     import readline
@@ -254,10 +253,10 @@ def shell():
     banner = app.name
 
     if config.name != app.name:
-        banner = '%s :: %s' % (config.name, app.name)
+        banner = f'{config.name} :: {app.name}'
 
     banner = click.style(banner, fg='bright_green', bold=True)
-    banner = '%s\n%s\n' % (banner, click.style(app.env, fg='bright_blue'))
+    banner = f'{banner}\n{click.style(app.env, fg="bright_blue")}\n'
 
     readline.parse_and_bind('tab: complete')
     readline.read_history_file(join(env.cache_path, 'history'))
