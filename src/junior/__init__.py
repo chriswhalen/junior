@@ -2,10 +2,12 @@ from datetime import datetime as dt, timedelta as td                    # noqa
 from os.path import realpath, split
 from pathlib import Path                                                # noqa
 
+from apiflask import APIFlask as Flask, APIBlueprint as Blueprint       # noqa
+
 from flask import (                                                     # noqa
-    Flask, Blueprint, Request, Response, flash, g, jsonify,
-    make_response as response, redirect, render_template as render, request,
-    safe_join as join, session, url_for as to)
+    Request, Response, flash, g, jsonify, make_response as response, redirect,
+    render_template as render, request, safe_join as join,
+    session, url_for as to)
 
 from flask_alembic import Alembic
 

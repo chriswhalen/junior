@@ -1,0 +1,39 @@
+name: analyze
+
+on:
+
+  push:
+    branches: [ primary ]
+
+  pull_request:
+    branches: [ primary ]
+
+jobs:
+  analyze:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript', 'python' ]
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Set up CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Build
+      uses: github/codeql-action/autobuild@v1
+
+    - name: Analyze
+      uses: github/codeql-action/analyze@v1

@@ -1,4 +1,4 @@
-from junior.cache import cache, clear, delete, forget, get, memo, set, store
+from junior.cache import clear, delete, get, set
 
 
 class TestCache:
@@ -43,7 +43,7 @@ class TestCache:
         assert get('baby') is None
 
     # Does the cache clear?
-    def test_clear(self):
+    def test_clear(self, application):
 
         set('once upon', 'a time')
         set('i visited', 'the moon')
@@ -51,7 +51,7 @@ class TestCache:
         assert get('once upon') == 'a time'
         assert get('i visited') == 'the moon'
 
-        clear()
+        if clear():
 
-        assert get('once upon') is None
-        assert get('i visited') is None
+            assert get('once upon') is None
+            assert get('i visited') is None

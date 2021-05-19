@@ -36,7 +36,7 @@ defaults = X(
     auth_factor=10,
     cache_timeout=60,
     cache_path='.cache',
-    cache_type='filesystem',
+    cache_type='FileSystemCache',
     components_path='components',
     config_path='config',
     database_url=None,
@@ -54,6 +54,7 @@ defaults = X(
     templates_path='templates',
     tasks_serializer='json'
 )
+
 
 env.config_path = environ.get('config_path', defaults.config_path)
 
