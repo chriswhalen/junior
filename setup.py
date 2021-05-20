@@ -38,7 +38,7 @@ setup(
         'bcrypt==3.2.0',
         'celery==5.0.5',
         'cffi==1.14.5',
-        'click==7.1.2',
+        'click==8.0.1',
         'flask==2.0.0',
         'flask-alembic==2.0.1',
         'flask-assets==2.0',
