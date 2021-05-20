@@ -135,6 +135,8 @@ if 'cache_timeout' not in env:
 if 'flask_debug' in env:
     env.debug = env.flask_debug
 
+environ['FLASK_DEBUG'] = 'True' if env.debug else 'False'
+
 
 if 'flask_env' in env:
     env.env = env.flask_env
@@ -142,9 +144,19 @@ if 'flask_env' in env:
 
 if 'sqlalchemy_database_uri' not in env:
     env.sqlalchemy_database_uri = environ.get('sqlalchemy_database_uri',
-                                              env.database_url)
+                                              env.database_uri)
+
+    if env.sqlalchemy_database_uri is None:
+        env.sqlalchemy_database_uri = environ.get('database_uri',
+                                                  env.database_url)
+
 if 'database_url' not in env:
-    env.database_url = env.sqlalchemy_database_uri
+
+    if 'sqlalchemy_database_uri' not in env:
+        env.database_url = env.database_uri
+
+    else:
+        env.database_url = env.sqlalchemy_database_uri
 
 
 if 'static_folder' not in env:

@@ -44,6 +44,7 @@ setup(
         'flask-assets==2.0',
         'flask-babel==2.0.0',
         'flask-caching==1.10.1',
+        'flask-mailman==0.2.3',
         'flask-marshmallow==0.14.0',
         'flask-restful==0.3.9',
         'flask-socketio==5.0.3',

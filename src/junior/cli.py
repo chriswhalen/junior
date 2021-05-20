@@ -183,7 +183,7 @@ def run(name, bind, workers, reload, preload, key, cert, ca):
 
     options = ''
 
-    if (reload):
+    if (reload or app.env == 'development'):
         options += '--reload '
 
     if (preload):
@@ -197,9 +197,6 @@ def run(name, bind, workers, reload, preload, key, cert, ca):
 
     if (ca):
         options += f'--ca-certs {ca} '
-
-    if app.env == 'development':
-        options += '--reload'
 
     banner = app.name
 
@@ -236,12 +233,12 @@ def shell():
 
     shell_context = {'app': app}
 
-    imports = ('Application', 'Flask', 'Model', 'Path', 'Request', 'Resource',
-               'Response', 'User', 'X', '_', 'api', 'b', 'cache', 'collapse',
-               'components', 'config', 'context', 'db', 'dt', 'env', 'error',
-               'join', 'jsonify', 'model', 'queue', 'redirect', 'render',
-               'resource', 'response', 'schemas', 'split', 'store',
-               'timestamps', 'web')
+    imports = ('Application', 'Flask', 'Message', 'Model', 'Path', 'Request',
+               'Resource', 'Response', 'User', 'X', '_', 'api', 'b', 'cache',
+               'collapse', 'components', 'config', 'context', 'db', 'dt',
+               'env', 'error', 'join', 'jsonify', 'mail', 'model', 'queue',
+               'redirect', 'render', 'resource', 'response', 'schemas',
+               'split', 'store', 'timestamps', 'web')
 
     for name in imports:
         shell_context[name] = getattr(junior, name)

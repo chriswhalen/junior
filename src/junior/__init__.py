@@ -13,6 +13,8 @@ from flask_assets import Bundle, Environment as Assets                  # noqa
 
 from flask_babel import Babel
 
+from flask_mailman import EmailMessage as Message, Mail                 # noqa
+
 from .util import X, _, b, collapse, echo                               # noqa
 
 
@@ -30,6 +32,7 @@ from . import (                                                         # noqa
     db as _db,
     errors as _errors,
     filters as _filters,
+    mail as _mail,
     queues as _queues,
     sockets as _sockets,
     static as _static,
@@ -49,6 +52,7 @@ env = _config.env
 error = _errors.error
 filter = _db.filter
 forget = _cache.forget
+mail = _mail.mail
 memo = _cache.memo
 model = _db.model
 on = _db.on
@@ -99,6 +103,8 @@ class Application(Flask):
         self.json_encoder = _api.Encoder
 
         self.locale = Babel(self)
+
+        self.mail = Mail(self)
 
         self.migrations = Alembic(self, run_mkdir=False)
         self.migrations.rev_id = lambda: '%04d' % (env.database_revision + 1,)
