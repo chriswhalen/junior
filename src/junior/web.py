@@ -25,7 +25,7 @@ def defaults():
     @web.route('/favicon<path>')
     def __favicon(path):
 
-        return redirect(context.asset('images/favicon{path}'))
+        return redirect(context.asset(f'images/favicon{path}'))
 
     @web.route('/')
     def __index():

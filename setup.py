@@ -18,6 +18,11 @@ setup(
     description='A full stack web framework, powered by Flask.',
     long_description=readme,
     long_description_content_type='text/markdown',
+    project_urls={
+        'Documentation': 'https://itsjunior.readthedocs.io',
+        'Source': 'https://github.com/chriswhalen/junior',
+        'Issues': 'https://github.com/chriswhalen/junior/issues',
+    },
     packages=['junior'],
     package_data={'junior': ['config/*',
                              'migrations/*',
@@ -68,15 +73,16 @@ setup(
         'sqlalchemy==1.4.15',
         'sqlalchemy-migrate==0.13.0',
         'toml==0.10.2',
-        'webassets==2.0'
+        'webassets==2.0',
+        'whitenoise==5.2.0'
     ],
     classifiers=[
         'Environment :: Web Environment',
+        'Framework :: Flask',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],

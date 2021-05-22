@@ -2,7 +2,7 @@
     "name": "@dubb/junior",
     "version": "0.5.0",
     "description": "A full stack web framework, powered by Flask.",
-    "repository": "gitlab:chriswhalen/junior",
+    "repository": "github:chriswhalen/junior",
     "license": "MIT",
     "dependencies": {
         "autoprefixer": "^10.2.5",

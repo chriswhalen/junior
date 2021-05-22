@@ -135,7 +135,8 @@ if 'cache_timeout' not in env:
 if 'flask_debug' in env:
     env.debug = env.flask_debug
 
-environ['FLASK_DEBUG'] = 'True' if env.debug else 'False'
+if env.debug:
+    environ['FLASK_DEBUG'] = 'True'
 
 
 if 'flask_env' in env:

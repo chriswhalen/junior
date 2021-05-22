@@ -102,7 +102,8 @@ def start(app):
                                 *bundles,
                                 filters='strip',
                                 output=join(env.components_path, '_',
-                                            '{"_".join(path.parts[1:]}.html'))
+                                            f'{"_".join(path.parts[1:])}.html')
+                                )
 
         except (BundleError, TypeError):
             pass
