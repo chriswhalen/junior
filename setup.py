@@ -37,7 +37,7 @@ setup(
         ]
     },
     install_requires=[
-        'alembic==1.6.2',
+        'alembic==1.6.4',
         'amqp==5.0.6',
         'autopep8==1.5.7',
         'bcrypt==3.2.0',
