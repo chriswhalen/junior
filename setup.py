@@ -61,7 +61,7 @@ setup(
         'konch==4.3.0',
         'mako==1.1.4',
         'marshmallow==3.12.1',
-        'marshmallow-sqlalchemy==0.25.0',
+        'marshmallow-sqlalchemy==0.26.0',
         'munch==2.5.0',
         'mysqlclient==2.0.3',
         'psycopg2==2.8.6',
