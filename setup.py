@@ -57,7 +57,7 @@ setup(
         'gunicorn==20.1.0',
         'hamlish-jinja==0.3.3',
         'itsdangerous==2.0.1',
-        'jinja2==3.0.0',
+        'jinja2==3.0.1',
         'konch==4.3.0',
         'mako==1.1.4',
         'marshmallow==3.12.1',
