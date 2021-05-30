@@ -1,22 +1,34 @@
 #!/usr/bin/env python
 
+from json import loads
 
 from setuptools import setup
 
 
-with open('README.md', 'r') as file:
-    readme = file.read()
+package = {}
+
+with open('package.json', 'r') as file:
+    package = loads(file.read())
+
+try:
+    with open('README.md', 'r') as file:
+        package['long_description'] = file.read()
+
+except Exception:
+    package['long_description'] = package['description']
 
 
 setup(
-    name='junior',
-    version='0.5.0',
-    url='https://itsjunior.com',
-    license='MIT',
-    author='Chris Whalen',
-    author_email='chris@chriswhalen.ca',
-    description='A full stack web framework, powered by Flask.',
-    long_description=readme,
+    name=package['name'].split('/')[-1],
+    version=package['version'],
+    url=package['homepage'],
+    license=package['license'],
+    author=package['author']['name'],
+    author_email=package['author']['email'],
+    maintainer=package['author']['name'],
+    maintainer_email=package['author']['email'],
+    description=package['description'],
+    long_description=package['long_description'],
     long_description_content_type='text/markdown',
     project_urls={
         'Documentation': 'https://itsjunior.readthedocs.io',
@@ -63,8 +75,6 @@ setup(
         'marshmallow==3.12.1',
         'marshmallow-sqlalchemy==0.26.0',
         'munch==2.5.0',
-        'mysqlclient==2.0.3',
-        'psycopg2==2.8.6',
         'python-dateutil==2.8.1',
         'python-editor==1.0.4',
         'python-engineio==4.2.0',
@@ -76,6 +86,10 @@ setup(
         'webassets==2.0',
         'whitenoise==5.2.0'
     ],
+    extras_require={
+        'mysql':    ['mysqlclient==2.0.3'],
+        'postgres': ['psycopg2==2.8.6'],
+    },
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Flask',

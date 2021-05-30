@@ -47,6 +47,21 @@ debugging = False
 
 
 class handle:
+    '''
+    A wrapper to help us assign an error handler for requests to ``path``.
+
+    We can use :class:`handle` as a decorator, after
+    :meth:`~flask.Blueprint.errorhandler`::
+
+        from junior import handle, web
+
+        @handle('/')
+        @web.errorhandler(Exception)
+        def error(exception):
+            ...
+
+    :param path: the path we'll attach to our error handler.
+    '''
 
     def __init__(self, path):
         self.path = path
@@ -57,6 +72,7 @@ class handle:
 
 
 def debug():
+    '''Capture the current ``Exception`` debug information.'''
 
     debug = X()
     ex = exc_info()
@@ -77,6 +93,13 @@ def debug():
 
 
 def error(exception):
+    '''
+    Collect the data we'll use to construct a :class:`~flask.Response`
+    after an ``exception`` was raised.
+
+    :param exception: the ``Exception`` that triggered a
+                      :class:`~flask.Response`.
+    '''
 
     error = X()
 
@@ -112,14 +135,13 @@ def error(exception):
     return error
 
 
-def err(exception):
-
-    for path in sorted(handlers.keys(), key=len)[::-1]:
-        if request.path.startswith(path):
-            return handlers[path](exception)
-
-
 def start(app):
+    '''
+    Start our global error handler bound to ``app``.
+    :meth:`start` wants to be called by :meth:`~junior.Application.start`.
+
+    :param app: an :class:`~junior.Application` for us to attach.
+    '''
 
     from . import errors
 

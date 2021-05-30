@@ -6,6 +6,13 @@ from .errors import BundleError
 
 
 def start(app):
+    '''
+    Start the :class:`~flask_assets.Environment` we bound to ``app``.
+    :meth:`start` wants to be called by :meth:`~junior.Application.start`.
+
+    :param app: an :class:`~junior.Application` attached to an
+                :class:`~flask_assets.Environment`.
+    '''
 
     app.assets._named_bundles = {}
 

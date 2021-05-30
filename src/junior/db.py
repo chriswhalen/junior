@@ -9,6 +9,51 @@ from .util import X
 
 
 def model(this):
+    '''
+    Extend a new :class:`~flask_sqlalchemy.Model` ``this``
+    with additional framework methods and properties.
+
+    We can use :meth:`model` as a decorator on our new
+    :class:`~flask_sqlalchemy.Model` classes::
+
+        from junior import Model, model
+
+        @model
+        class User(Model):
+            ...
+
+    :param this: a :class:`~flask_sqlalchemy.Model` to extend.
+
+    .. admonition:: Adds
+
+       .. module:: this
+
+       .. property:: this.Meta
+
+          Stores meta information about ``this``.
+
+       .. property:: this.Meta.control
+
+          Describes the access controls for viewing, adding, updating,
+          and deleting ``this`` records.
+
+       .. method:: delete
+
+          Delete ``this`` from the database.
+
+       .. method:: fetch
+
+          Fill ``this`` with values fetched from the database,
+          using ``this.id`` as a key.
+
+       .. method:: fill(**params)
+
+          Fill ``this`` with ``params``.
+
+       .. method:: save
+
+          Commit ``this`` to the database.
+    '''
 
     class Meta:
 
@@ -84,6 +129,13 @@ def model(this):
 
 
 def on(_event, attribute, function):
+    '''
+    Trigger a ``function`` on an ``_event`` that targets ``attribute``.
+
+    :param _event: the :func:`sqlalchemy.event` we want to bind.
+    :param attribute: the attribute we want to watch.
+    :param function: the callback function we want to trigger.
+    '''
 
     def wrapper(this):
 
@@ -112,6 +164,14 @@ def on(_event, attribute, function):
 
 
 def filter(_event, attribute, function):
+    '''
+    Apply a filter ``function`` to our results in response to an
+    ``_event`` that targets ``attribute``.
+
+    :param _event: the :func:`sqlalchemy.event` we want to bind.
+    :param attribute: the attribute we want to watch.
+    :param function: the callback function we want to trigger.
+    '''
 
     def wrapper(this):
 
@@ -146,6 +206,22 @@ def filter(_event, attribute, function):
 
 
 def timestamps(model):
+    '''
+    Add auto-managed :attr:`created_at` and :attr:`updated_at`
+    fields to a ``model``.
+
+    We can use :meth:`timestamps` as a decorator on our new
+    :class:`~flask_sqlalchemy.Model` classes, before :meth:`model`::
+
+        from junior import Model, model, timestamps
+
+        @model
+        @timestamps
+        class User(Model):
+            ...
+
+    :param model: the :func:`sqlalchemy.event` we want to monitor.
+    '''
 
     model.created_at = db.Column(db.DateTime, default=dt.now)
     model.updated_at = db.Column(db.DateTime, default=dt.now, onupdate=dt.now)
@@ -153,9 +229,14 @@ def timestamps(model):
     return model
 
 
+#: A :class:`~flask_sqlalchemy.SQLAlchemy`
+#: to manage our application's primary database connection.
+#: Its connection details are populated from our application's configuration.
 db = SQLAlchemy()
 
 
+#: The ``alembic_version`` :class:`~sqlalchemy.schema.Table`
+#: to store our migrations.
 AlembicVersion = db.Table('alembic_version',
                           db.metadata,
                           db.Column('version_num',

@@ -233,12 +233,12 @@ def shell():
 
     shell_context = {'app': app}
 
-    imports = ('Application', 'Flask', 'Message', 'Model', 'Path', 'Request',
-               'Resource', 'Response', 'User', 'X', '_', 'api', 'b', 'cache',
-               'collapse', 'components', 'config', 'context', 'db', 'dt',
-               'env', 'error', 'join', 'jsonify', 'mail', 'model', 'queue',
-               'redirect', 'render', 'resource', 'response', 'schemas',
-               'split', 'store', 'timestamps', 'web')
+    imports = ('Application', 'Blueprint', 'Flask', 'Message', 'Model', 'Path',
+               'Request', 'Resource', 'Response', 'User', 'X', '_', 'api', 'b',
+               'cache', 'components', 'config', 'context', 'db', 'debug', 'dt',
+               'env', 'error', 'flatten', 'join', 'jsonify', 'mail', 'model',
+               'path', 'queue', 'redirect', 'render', 'resource', 'response',
+               'schemas', 'split', 'store', 'td', 'timestamps', 'web')
 
     for name in imports:
         shell_context[name] = getattr(junior, name)

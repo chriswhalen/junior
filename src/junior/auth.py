@@ -13,6 +13,8 @@ from .errors import BadRequest, Unauthorized
 from .util import X, b
 
 
+#: The currently authenticated :class:`User`.
+#: :attr:`me` is only valid within a single :class:`~flask.Request`.
 me = None
 
 
@@ -30,7 +32,15 @@ def hash_key(key, preserve=True):
     return make_hash(encode_key(key), make_salt(env.auth_factor)).decode()
 
 
-def authorize():
+def authenticate():
+    '''
+    Authenticate a :class:`User` for this request.
+    :func:`authenticate` uses the incoming ``Authorization``
+    HTTP header to assign :attr:`me` a :class:`User`
+    for the remainder of our :class:`~flask.Request` lifecycle.
+    :func:`authenticate` wants to be called by
+    :meth:`~flask.Flask.before_request`.
+    '''
 
     from junior import auth
 
@@ -43,6 +53,7 @@ def authorize():
 @timestamps
 @filter('set', 'key', hash_key)
 class User(db.Model):
+    '''A :class:`~flask_sqlalchemy.Model` to help authenticate our users.'''
 
     class Meta:
 
@@ -53,16 +64,41 @@ class User(db.Model):
 
         exclude = ('key', 'token')
 
+    #: The user's primary key.
     id = db.Column(db.BigInteger, primary_key=True)
 
+    #: The user's name.
     name = db.Column(db.Text, unique=True, nullable=False)
 
+    #: The user's password.
     key = db.Column(db.Text)
+
+    #: The user's persistent token value.
     token = db.Column(db.Text)
 
+    #: Can the user authenticate?
     is_active = db.Column(db.Boolean, default=True, nullable=False)
 
     def authenticate(self, key=None):
+        '''
+        Authenticate a :class:`User` from a ``key``.
+
+        We can call :meth:`authenticate` as either a static class method,
+        or a local instance method, as our situation demands.
+
+        Called on a :class:`User` instance, :meth:`authenticate`
+        accepts a plaintext ``key`` and compares it to our stored,
+        hashed :attr:`key`, returning ``True`` if they match
+        or ``False`` if they don't.
+
+        Called directly on the :class:`User` class, :meth:`authenticate`
+        accepts ``key`` as its first parameter and parses it as
+        :attr:`id` and :attr:`token`, returning the selected
+        :class:`User` if they match or ``None`` if they don't.
+
+        :param key: a :attr:`key` or :attr:`id`/:attr:`token` pair matching the
+                    :class:`User` we want to authenticate.
+        '''
 
         try:
             self = b_decode(self)
@@ -114,9 +150,11 @@ class User(db.Model):
                     return False
 
                 except Exception:
-                    pass
+
+                    return False
 
     def get_token(self):
+        '''Generate a new authentication token for this :class:`User`.'''
 
         id = b(0)
 
@@ -128,6 +166,7 @@ class User(db.Model):
         return b_encode(id + token).decode()
 
     def reset_token(self):
+        '''Clear all existing authentication tokens for this :class:`User`.'''
 
         self.token = b_encode(blake2b(b(dt.now()),
                                       digest_size=48).digest()).decode()
@@ -137,16 +176,27 @@ class User(db.Model):
 
 @register
 class TokenResource(Resource):
+    '''
+    A :class:`~flask_restful.Resource` governing :class:`User` authentication.
+    '''
 
     class Meta:
+        ''':class:`TokenResource` ``Meta``.'''
 
+        #: The endpoint for :class:`TokenResource`.
         endpoint = 'token'
 
     def get(self, **params):
+        '''Unused; returns ``[]``.'''
 
         return []
 
     def post(self, **params):
+        '''
+        Authenticate a :class:`User` by ``name`` and ``key``,
+        returning a ``token`` on success or raising
+        :class:`~werkzeug.exceptions.Unauthorized` on failure.
+        '''
 
         data = X(request.get_json(force=True))
 
@@ -164,6 +214,7 @@ class TokenResource(Resource):
         raise Unauthorized
 
     def delete(self, **params):
+        '''Clear all existing tokens for an authenticated :class:`User`.'''
 
         from junior.auth import me
 

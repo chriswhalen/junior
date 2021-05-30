@@ -1,0 +1,1775 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>API &#8212; junior 0.5.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="it’s junior!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-junior">
+<span id="api"></span><h1>API<a class="headerlink" href="#module-junior" title="Permalink to this headline">¶</a></h1>
+<p>The names in this reference are printed without their package name;
+some packages provide classes and methods that share a name,
+so please check any references to ensure we’re looking at the right one.</p>
+<section id="the-application">
+<h2>The Application<a class="headerlink" href="#the-application" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="junior.Application">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'app'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.Application" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">flask.app.Flask</span></code></a></p>
+<p>A wrapper around <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Flask</span></code></a>, serving as
+the single persistent instance of our WSGI application.
+It lasts for the application’s entire lifecycle,
+until terminated by the user or server software.</p>
+<p><a class="reference internal" href="#junior.Application" title="junior.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> accepts the same parameters as
+<a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Flask</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – the name of our application; passed to <code class="docutils literal notranslate"><span class="pre">import_name</span></code>
+and defaults to <code class="docutils literal notranslate"><span class="pre">'app'</span></code>.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.Application.assets">
+<span class="sig-name descname"><span class="pre">assets</span></span><a class="headerlink" href="#junior.Application.assets" title="Permalink to this definition">¶</a></dt>
+<dd><p>An <a class="reference external" href="https://flask-assets.readthedocs.io/en/latest/index.html#flask_assets.Environment" title="(in Flask-Assets v0.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a>
+to compile our application’s client-side source files.
+Its configuration is managed internally by junior.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.Application.db">
+<span class="sig-name descname"><span class="pre">db</span></span><a class="headerlink" href="#junior.Application.db" title="Permalink to this definition">¶</a></dt>
+<dd><p>An alias of <a class="reference internal" href="#junior.db.db" title="junior.db.db"><code class="xref py py-attr docutils literal notranslate"><span class="pre">junior.db.db</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.Application.is_started">
+<span class="sig-name descname"><span class="pre">is_started</span></span><a class="headerlink" href="#junior.Application.is_started" title="Permalink to this definition">¶</a></dt>
+<dd><p>Has the application been started?
+Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code> and becomes <code class="docutils literal notranslate"><span class="pre">True</span></code>
+after we call <a class="reference internal" href="#junior.Application.start" title="junior.Application.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.Application.locale">
+<span class="sig-name descname"><span class="pre">locale</span></span><a class="headerlink" href="#junior.Application.locale" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://flask-babel.tkte.ch/index.html#flask_babel.Babel" title="(in Flask-Babel)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Babel</span></code></a>
+to add internationalization and localization tools to our
+application.
+Its configuration is managed internally by junior.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.Application.mail">
+<span class="sig-name descname"><span class="pre">mail</span></span><a class="headerlink" href="#junior.Application.mail" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://pythonhosted.org/Flask-Mail/index.html#flask_mail.Mail" title="(in Flask-Mail v0.9.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mail</span></code></a>
+to allow our application to send mail using an SMTP server.
+Its connection details are populated from our application’s
+configuration.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.Application.migrations">
+<span class="sig-name descname"><span class="pre">migrations</span></span><a class="headerlink" href="#junior.Application.migrations" title="Permalink to this definition">¶</a></dt>
+<dd><p>An <a class="reference external" href="https://flask-alembic.readthedocs.io/en/latest/index.html#flask_alembic.Alembic" title="(in Flask-Alembic v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Alembic</span></code></a>
+to help us create migrations for our database structure.
+Its configuration is managed internally by junior.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.Application.schemas">
+<span class="sig-name descname"><span class="pre">schemas</span></span><a class="headerlink" href="#junior.Application.schemas" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://flask-marshmallow.readthedocs.io/en/latest/index.html#flask_marshmallow.Marshmallow" title="(in Flask-Marshmallow v0.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Marshmallow</span></code></a>
+to serialize data records to be served by our RESTful API.
+Its configuration is managed internally by junior.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="junior.Application.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.Application.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the application. <a class="reference internal" href="#junior.Application.start" title="junior.Application.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a> may only be called once per
+<a class="reference internal" href="#junior.Application" title="junior.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a>; subsequent calls will raise a <cite>ValueError</cite>.</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#junior.Application.start" title="junior.Application.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a>:</dt><dd><ul class="simple">
+<li><p>attaches our context processor, error handler,
+and authentication hook;</p></li>
+<li><p>initializes our extensions;</p></li>
+<li><p>registers <a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api</span></code></a>,
+<a class="reference internal" href="#junior.components.components" title="junior.components.components"><code class="xref py py-attr docutils literal notranslate"><span class="pre">components</span></code></a>, and
+<a class="reference internal" href="#junior.web.web" title="junior.web.web"><code class="xref py py-attr docutils literal notranslate"><span class="pre">web</span></code></a>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.Application.store">
+<span class="sig-name descname"><span class="pre">store</span></span><a class="headerlink" href="#junior.Application.store" title="Permalink to this definition">¶</a></dt>
+<dd><p>An alias of <a class="reference internal" href="#junior.cache.store" title="junior.cache.store"><code class="xref py py-attr docutils literal notranslate"><span class="pre">junior.cache.store</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.Application.templates">
+<span class="sig-name descname"><span class="pre">templates</span></span><a class="headerlink" href="#junior.Application.templates" title="Permalink to this definition">¶</a></dt>
+<dd><p>An alias of <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask.jinja_env" title="(in Flask v2.0.x)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">jinja_env</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-junior.config">
+<span id="the-configuration"></span><h2>The Configuration<a class="headerlink" href="#module-junior.config" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="junior.config.Config">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">junior.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.config.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">munch.Munch</span></code>, <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Config" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">flask.config.Config</span></code></a></p>
+<p>A <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Config" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a> wrapped in <a class="reference internal" href="#junior.util.X" title="junior.util.X"><code class="xref py py-class docutils literal notranslate"><span class="pre">X</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.config.babel">
+<span class="sig-prename descclassname"><span class="pre">junior.config.</span></span><span class="sig-name descname"><span class="pre">babel</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'javascript':</span> <span class="pre">{'{components_path}/**.js':</span> <span class="pre">{'extract_messages':</span> <span class="pre">['_',</span> <span class="pre">'__']},</span> <span class="pre">'{scripts_path}/**.js':</span> <span class="pre">{'extract_messages':</span> <span class="pre">['_',</span> <span class="pre">'__']}},</span> <span class="pre">'jinja2':</span> <span class="pre">{'{components_path}/**.haml':</span> <span class="pre">{'encoding':</span> <span class="pre">'utf-8',</span> <span class="pre">'extensions':</span> <span class="pre">['webassets.ext.jinja2.AssetsExtension',</span> <span class="pre">'hamlish_jinja.HamlishExtension'],</span> <span class="pre">'variable_end_string':</span> <span class="pre">'{templates_expressions_close}',</span> <span class="pre">'variable_start_string':</span> <span class="pre">'{templates_expressions_open}'},</span> <span class="pre">'{templates_path}/**.haml':</span> <span class="pre">{'encoding':</span> <span class="pre">'utf-8',</span> <span class="pre">'extensions':</span> <span class="pre">['webassets.ext.jinja2.AssetsExtension',</span> <span class="pre">'hamlish_jinja.HamlishExtension'],</span> <span class="pre">'variable_end_string':</span> <span class="pre">'{templates_expressions_close}',</span> <span class="pre">'variable_start_string':</span> <span class="pre">'{templates_expressions_open}'}}}</span></em><a class="headerlink" href="#junior.config.babel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Our <a class="reference external" href="https://babeljs.io/">BabelJS</a> options.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.config.celery">
+<span class="sig-prename descclassname"><span class="pre">junior.config.</span></span><span class="sig-name descname"><span class="pre">celery</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'broker_transport_options':</span> <span class="pre">{'data_folder_in':</span> <span class="pre">'.cache/queue',</span> <span class="pre">'data_folder_out':</span> <span class="pre">'.cache/queue',</span> <span class="pre">'data_folder_processed':</span> <span class="pre">'.cache'},</span> <span class="pre">'broker_url':</span> <span class="pre">'filesystem://',</span> <span class="pre">'result_backend':</span> <span class="pre">'file://.cache'}</span></em><a class="headerlink" href="#junior.config.celery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Our <a class="reference external" href="https://docs.celeryproject.org/en/stable/reference/celery.html#celery.Celery" title="(in Celery v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Celery</span></code></a> options.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.config.config">
+<span class="sig-prename descclassname"><span class="pre">junior.config.</span></span><span class="sig-name descname"><span class="pre">config</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'api':</span> <span class="pre">{'updated_at':</span> <span class="pre">datetime.datetime(2020,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0),</span> <span class="pre">'version':</span> <span class="pre">1}}</span></em><a class="headerlink" href="#junior.config.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Our configuration options.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.config.defaults">
+<span class="sig-prename descclassname"><span class="pre">junior.config.</span></span><span class="sig-name descname"><span class="pre">defaults</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'alembic':</span> <span class="pre">{},</span> <span class="pre">'auth_factor':</span> <span class="pre">10,</span> <span class="pre">'cache_path':</span> <span class="pre">'.cache',</span> <span class="pre">'cache_timeout':</span> <span class="pre">60,</span> <span class="pre">'cache_type':</span> <span class="pre">'FileSystemCache',</span> <span class="pre">'components_path':</span> <span class="pre">'components',</span> <span class="pre">'config_path':</span> <span class="pre">'config',</span> <span class="pre">'database_url':</span> <span class="pre">None,</span> <span class="pre">'flask_debug':</span> <span class="pre">False,</span> <span class="pre">'flask_env':</span> <span class="pre">'production',</span> <span class="pre">'migrations_path':</span> <span class="pre">'migrations',</span> <span class="pre">'proxy_count':</span> <span class="pre">0,</span> <span class="pre">'scripts_path':</span> <span class="pre">'scripts',</span> <span class="pre">'secret_key':</span> <span class="pre">None,</span> <span class="pre">'sqlalchemy_track_modifications':</span> <span class="pre">False,</span> <span class="pre">'static_path':</span> <span class="pre">'static',</span> <span class="pre">'static_timeout':</span> <span class="pre">2592000,</span> <span class="pre">'styles_path':</span> <span class="pre">'styles',</span> <span class="pre">'tasks_serializer':</span> <span class="pre">'json',</span> <span class="pre">'templates_expressions_close':</span> <span class="pre">'|}',</span> <span class="pre">'templates_expressions_open':</span> <span class="pre">'{|',</span> <span class="pre">'templates_path':</span> <span class="pre">'templates'}</span></em><a class="headerlink" href="#junior.config.defaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Our default <a class="reference internal" href="#junior.config.env" title="junior.config.env"><code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.config.env">
+<span class="sig-prename descclassname"><span class="pre">junior.config.</span></span><span class="sig-name descname"><span class="pre">env</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'alembic':</span> <span class="pre">{},</span> <span class="pre">'auth_factor':</span> <span class="pre">10,</span> <span class="pre">'cache_default_timeout':</span> <span class="pre">60,</span> <span class="pre">'cache_dir':</span> <span class="pre">'.cache',</span> <span class="pre">'cache_path':</span> <span class="pre">'.cache',</span> <span class="pre">'cache_timeout':</span> <span class="pre">60,</span> <span class="pre">'cache_type':</span> <span class="pre">'FileSystemCache',</span> <span class="pre">'components_path':</span> <span class="pre">'components',</span> <span class="pre">'config_path':</span> <span class="pre">'config',</span> <span class="pre">'database_revision':</span> <span class="pre">-1,</span> <span class="pre">'database_url':</span> <span class="pre">None,</span> <span class="pre">'flask_debug':</span> <span class="pre">False,</span> <span class="pre">'flask_env':</span> <span class="pre">'production',</span> <span class="pre">'migrations_path':</span> <span class="pre">'migrations',</span> <span class="pre">'proxy_count':</span> <span class="pre">0,</span> <span class="pre">'scripts_path':</span> <span class="pre">'scripts',</span> <span class="pre">'secret_key':</span> <span class="pre">None,</span> <span class="pre">'send_file_max_age_default':</span> <span class="pre">2592000,</span> <span class="pre">'sqlalchemy_database_uri':</span> <span class="pre">None,</span> <span class="pre">'sqlalchemy_track_modifications':</span> <span class="pre">False,</span> <span class="pre">'static_folder':</span> <span class="pre">'static',</span> <span class="pre">'static_path':</span> <span class="pre">'static',</span> <span class="pre">'static_timeout':</span> <span class="pre">2592000,</span> <span class="pre">'styles_path':</span> <span class="pre">'styles',</span> <span class="pre">'task_serializer':</span> <span class="pre">'json',</span> <span class="pre">'tasks_serializer':</span> <span class="pre">'json',</span> <span class="pre">'template_folder':</span> <span class="pre">'templates',</span> <span class="pre">'templates_expressions_close':</span> <span class="pre">'|}',</span> <span class="pre">'templates_expressions_open':</span> <span class="pre">'{|',</span> <span class="pre">'templates_path':</span> <span class="pre">'templates'}</span></em><a class="headerlink" href="#junior.config.env" title="Permalink to this definition">¶</a></dt>
+<dd><p>Our <code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code> environment variables.
+<a class="reference internal" href="#junior.config.env" title="junior.config.env"><code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code></a> is passed to <a class="reference internal" href="#junior.Application" title="junior.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> <code class="docutils literal notranslate"><span class="pre">.config</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.config.jinja">
+<span class="sig-prename descclassname"><span class="pre">junior.config.</span></span><span class="sig-name descname"><span class="pre">jinja</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'extensions':</span> <span class="pre">['hamlish_jinja.HamlishExtension'],</span> <span class="pre">'variable_end_string':</span> <span class="pre">'|}',</span> <span class="pre">'variable_start_string':</span> <span class="pre">'{|'}</span></em><a class="headerlink" href="#junior.config.jinja" title="Permalink to this definition">¶</a></dt>
+<dd><p>Our <a class="reference external" href="https://jinja.palletsprojects.com/en/3.0.x/api/#jinja2.Environment" title="(in Jinja v3.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a> options.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.config.postcss">
+<span class="sig-prename descclassname"><span class="pre">junior.config.</span></span><span class="sig-name descname"><span class="pre">postcss</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'parser':</span> <span class="pre">'sugarss',</span> <span class="pre">'plugins':</span> <span class="pre">{'autoprefixer':</span> <span class="pre">{},</span> <span class="pre">'postcss-current-selector':</span> <span class="pre">{},</span> <span class="pre">'postcss-discard-comments':</span> <span class="pre">{'removeAll':</span> <span class="pre">True},</span> <span class="pre">'postcss-extend-rule':</span> <span class="pre">{},</span> <span class="pre">'postcss-font-magician':</span> <span class="pre">{'hosted':</span> <span class="pre">['../fonts',</span> <span class="pre">'fonts']},</span> <span class="pre">'postcss-functions':</span> <span class="pre">{},</span> <span class="pre">'postcss-mixins':</span> <span class="pre">{},</span> <span class="pre">'postcss-nested':</span> <span class="pre">{},</span> <span class="pre">'postcss-nested-ancestors':</span> <span class="pre">{},</span> <span class="pre">'postcss-nested-props':</span> <span class="pre">{},</span> <span class="pre">'postcss-preset-env':</span> <span class="pre">{},</span> <span class="pre">'postcss-property-lookup':</span> <span class="pre">{},</span> <span class="pre">'postcss-short':</span> <span class="pre">{},</span> <span class="pre">'postcss-sorting':</span> <span class="pre">{},</span> <span class="pre">'postcss-utilities':</span> <span class="pre">{}}}</span></em><a class="headerlink" href="#junior.config.postcss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Our <a class="reference external" href="https://postcss.org/">PostCSS</a> options.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.config.start">
+<span class="sig-prename descclassname"><span class="pre">junior.config.</span></span><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.config.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start our configuration service bound to <code class="docutils literal notranslate"><span class="pre">app</span></code>.
+<a class="reference internal" href="#junior.config.start" title="junior.config.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a> wants to be called by <a class="reference internal" href="#junior.Application.start" title="junior.Application.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>app</strong> – an <a class="reference internal" href="#junior.Application" title="junior.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> for us to configure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.config.vendor">
+<span class="sig-prename descclassname"><span class="pre">junior.config.</span></span><span class="sig-name descname"><span class="pre">vendor</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#junior.config.vendor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Our vendor options.</p>
+</dd></dl>
+
+</section>
+<section id="module-junior.db">
+<span id="the-database"></span><h2>The Database<a class="headerlink" href="#module-junior.db" title="Permalink to this headline">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.db.AlembicVersion">
+<span class="sig-prename descclassname"><span class="pre">junior.db.</span></span><span class="sig-name descname"><span class="pre">AlembicVersion</span></span><em class="property"> <span class="pre">=</span> <span class="pre">Table('alembic_version',</span> <span class="pre">MetaData(),</span> <span class="pre">Column('version_num',</span> <span class="pre">String(length=32),</span> <span class="pre">table=&lt;alembic_version&gt;,</span> <span class="pre">nullable=False),</span> <span class="pre">schema=None)</span></em><a class="headerlink" href="#junior.db.AlembicVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">alembic_version</span></code> <a class="reference external" href="https://docs.sqlalchemy.org/en/14/core/metadata.html#sqlalchemy.schema.Table" title="(in SQLAlchemy v1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>
+to store our migrations.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.db.db">
+<span class="sig-prename descclassname"><span class="pre">junior.db.</span></span><span class="sig-name descname"><span class="pre">db</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;SQLAlchemy</span> <span class="pre">engine=None&gt;</span></em><a class="headerlink" href="#junior.db.db" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.SQLAlchemy" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SQLAlchemy</span></code></a>
+to manage our application’s primary database connection.
+Its connection details are populated from our application’s configuration.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.db.filter">
+<span class="sig-prename descclassname"><span class="pre">junior.db.</span></span><span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.db.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a filter <code class="docutils literal notranslate"><span class="pre">function</span></code> to our results in response to an
+<code class="docutils literal notranslate"><span class="pre">_event</span></code> that targets <code class="docutils literal notranslate"><span class="pre">attribute</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_event</strong> – the <code class="xref py py-func docutils literal notranslate"><span class="pre">sqlalchemy.event()</span></code> we want to bind.</p></li>
+<li><p><strong>attribute</strong> – the attribute we want to watch.</p></li>
+<li><p><strong>function</strong> – the callback function we want to trigger.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.db.model">
+<span class="sig-prename descclassname"><span class="pre">junior.db.</span></span><span class="sig-name descname"><span class="pre">model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">this</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.db.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extend a new <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> <code class="docutils literal notranslate"><span class="pre">this</span></code>
+with additional framework methods and properties.</p>
+<p>We can use <a class="reference internal" href="#junior.db.model" title="junior.db.model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">model()</span></code></a> as a decorator on our new
+<a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> classes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">junior</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">model</span>
+
+<span class="nd">@model</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>this</strong> – a <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> to extend.</p>
+</dd>
+</dl>
+<div class="admonition-adds admonition">
+<p class="admonition-title">Adds</p>
+<span class="target" id="module-this"></span><dl class="py property">
+<dt class="sig sig-object py" id="this.this.Meta">
+<em class="property"><span class="pre">property</span> </em><span class="sig-prename descclassname"><span class="pre">this.</span></span><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#this.this.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores meta information about <code class="docutils literal notranslate"><span class="pre">this</span></code>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="this.this.Meta.control">
+<em class="property"><span class="pre">property</span> </em><span class="sig-prename descclassname"><span class="pre">this.Meta.</span></span><span class="sig-name descname"><span class="pre">control</span></span><a class="headerlink" href="#this.this.Meta.control" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describes the access controls for viewing, adding, updating,
+and deleting <code class="docutils literal notranslate"><span class="pre">this</span></code> records.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="this.delete">
+<span class="sig-prename descclassname"><span class="pre">this.</span></span><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#this.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete <code class="docutils literal notranslate"><span class="pre">this</span></code> from the database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="this.fetch">
+<span class="sig-prename descclassname"><span class="pre">this.</span></span><span class="sig-name descname"><span class="pre">fetch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#this.fetch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fill <code class="docutils literal notranslate"><span class="pre">this</span></code> with values fetched from the database,
+using <code class="docutils literal notranslate"><span class="pre">this.id</span></code> as a key.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="this.fill">
+<span class="sig-prename descclassname"><span class="pre">this.</span></span><span class="sig-name descname"><span class="pre">fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#this.fill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fill <code class="docutils literal notranslate"><span class="pre">this</span></code> with <code class="docutils literal notranslate"><span class="pre">params</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="this.save">
+<span class="sig-prename descclassname"><span class="pre">this.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#this.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Commit <code class="docutils literal notranslate"><span class="pre">this</span></code> to the database.</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.db.on">
+<span class="sig-prename descclassname"><span class="pre">junior.db.</span></span><span class="sig-name descname"><span class="pre">on</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.db.on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trigger a <code class="docutils literal notranslate"><span class="pre">function</span></code> on an <code class="docutils literal notranslate"><span class="pre">_event</span></code> that targets <code class="docutils literal notranslate"><span class="pre">attribute</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_event</strong> – the <code class="xref py py-func docutils literal notranslate"><span class="pre">sqlalchemy.event()</span></code> we want to bind.</p></li>
+<li><p><strong>attribute</strong> – the attribute we want to watch.</p></li>
+<li><p><strong>function</strong> – the callback function we want to trigger.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.db.timestamps">
+<span class="sig-prename descclassname"><span class="pre">junior.db.</span></span><span class="sig-name descname"><span class="pre">timestamps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.db.timestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add auto-managed <code class="xref py py-attr docutils literal notranslate"><span class="pre">created_at</span></code> and <code class="xref py py-attr docutils literal notranslate"><span class="pre">updated_at</span></code>
+fields to a <code class="docutils literal notranslate"><span class="pre">model</span></code>.</p>
+<p>We can use <a class="reference internal" href="#junior.db.timestamps" title="junior.db.timestamps"><code class="xref py py-meth docutils literal notranslate"><span class="pre">timestamps()</span></code></a> as a decorator on our new
+<a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> classes, before <a class="reference internal" href="#junior.db.model" title="junior.db.model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">model()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">junior</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">timestamps</span>
+
+<span class="nd">@model</span>
+<span class="nd">@timestamps</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model</strong> – the <code class="xref py py-func docutils literal notranslate"><span class="pre">sqlalchemy.event()</span></code> we want to monitor.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-junior.controls">
+<span id="the-controls"></span><h2>The Controls<a class="headerlink" href="#module-junior.controls" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.controls.allow_all">
+<span class="sig-prename descclassname"><span class="pre">junior.controls.</span></span><span class="sig-name descname"><span class="pre">allow_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.controls.allow_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allow any <a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a> we bind to <code class="docutils literal notranslate"><span class="pre">model</span></code>
+to select, update, and delete every record.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model</strong> – a <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> we want to bind to a
+<a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.controls.allow_belongs_to_me">
+<span class="sig-prename descclassname"><span class="pre">junior.controls.</span></span><span class="sig-name descname"><span class="pre">allow_belongs_to_me</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.controls.allow_belongs_to_me" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allow any <a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a> we bind to <code class="docutils literal notranslate"><span class="pre">model</span></code>
+to select, update, and delete only records where <code class="docutils literal notranslate"><span class="pre">user_id</span></code>
+matches our current <code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code> <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model</strong> – a <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> we want to bind to a
+<a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.controls.allow_self_for_me">
+<span class="sig-prename descclassname"><span class="pre">junior.controls.</span></span><span class="sig-name descname"><span class="pre">allow_self_for_me</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.controls.allow_self_for_me" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allow any <a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a> we bind to <code class="docutils literal notranslate"><span class="pre">model</span></code>
+to select, update, and delete only records where <code class="docutils literal notranslate"><span class="pre">id</span></code>
+matches our current <code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code> <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model</strong> – a <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> we want to bind to a
+<a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.controls.deny_all">
+<span class="sig-prename descclassname"><span class="pre">junior.controls.</span></span><span class="sig-name descname"><span class="pre">deny_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.controls.deny_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deny any <a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a> we bind to <code class="docutils literal notranslate"><span class="pre">model</span></code>
+from selecting, updating, or deleting any records.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model</strong> – a <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> we want to bind to a
+<a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-junior.auth">
+<span id="the-user"></span><h2>The User<a class="headerlink" href="#module-junior.auth" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="junior.auth.TokenResource">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">junior.auth.</span></span><span class="sig-name descname"><span class="pre">TokenResource</span></span><a class="headerlink" href="#junior.auth.TokenResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></a></p>
+<p>A <a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a> governing <a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a> authentication.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="junior.auth.TokenResource.Meta">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#junior.auth.TokenResource.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p><a class="reference internal" href="#junior.auth.TokenResource" title="junior.auth.TokenResource"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenResource</span></code></a> <code class="docutils literal notranslate"><span class="pre">Meta</span></code>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.auth.TokenResource.Meta.endpoint">
+<span class="sig-name descname"><span class="pre">endpoint</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'token'</span></em><a class="headerlink" href="#junior.auth.TokenResource.Meta.endpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>The endpoint for <a class="reference internal" href="#junior.auth.TokenResource" title="junior.auth.TokenResource"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenResource</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="junior.auth.TokenResource.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.auth.TokenResource.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear all existing tokens for an authenticated <a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="junior.auth.TokenResource.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.auth.TokenResource.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unused; returns <code class="docutils literal notranslate"><span class="pre">[]</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="junior.auth.TokenResource.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.auth.TokenResource.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticate a <a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a> by <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">key</span></code>,
+returning a <code class="docutils literal notranslate"><span class="pre">token</span></code> on success or raising
+<a class="reference external" href="https://werkzeug.palletsprojects.com/en/2.0.x/exceptions/#werkzeug.exceptions.Unauthorized" title="(in Werkzeug v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Unauthorized</span></code></a> on failure.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="junior.auth.User">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">junior.auth.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.auth.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.orm.decl_api.Model</span></code></p>
+<p>A <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> to help authenticate our users.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="junior.auth.User.authenticate">
+<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.auth.User.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticate a <a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a> from a <code class="docutils literal notranslate"><span class="pre">key</span></code>.</p>
+<p>We can call <a class="reference internal" href="#junior.auth.authenticate" title="junior.auth.authenticate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">authenticate()</span></code></a> as either a static class method,
+or a local instance method, as our situation demands.</p>
+<p>Called on a <a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a> instance, <a class="reference internal" href="#junior.auth.authenticate" title="junior.auth.authenticate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">authenticate()</span></code></a>
+accepts a plaintext <code class="docutils literal notranslate"><span class="pre">key</span></code> and compares it to our stored,
+hashed <a class="reference internal" href="#junior.auth.User.key" title="junior.auth.User.key"><code class="xref py py-attr docutils literal notranslate"><span class="pre">key</span></code></a>, returning <code class="docutils literal notranslate"><span class="pre">True</span></code> if they match
+or <code class="docutils literal notranslate"><span class="pre">False</span></code> if they don’t.</p>
+<p>Called directly on the <a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a> class, <a class="reference internal" href="#junior.auth.authenticate" title="junior.auth.authenticate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">authenticate()</span></code></a>
+accepts <code class="docutils literal notranslate"><span class="pre">key</span></code> as its first parameter and parses it as
+<a class="reference internal" href="#junior.auth.User.id" title="junior.auth.User.id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id</span></code></a> and <a class="reference internal" href="#junior.auth.User.token" title="junior.auth.User.token"><code class="xref py py-attr docutils literal notranslate"><span class="pre">token</span></code></a>, returning the selected
+<a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a> if they match or <code class="docutils literal notranslate"><span class="pre">None</span></code> if they don’t.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> – a <a class="reference internal" href="#junior.auth.User.key" title="junior.auth.User.key"><code class="xref py py-attr docutils literal notranslate"><span class="pre">key</span></code></a> or <a class="reference internal" href="#junior.auth.User.id" title="junior.auth.User.id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id</span></code></a>/<a class="reference internal" href="#junior.auth.User.token" title="junior.auth.User.token"><code class="xref py py-attr docutils literal notranslate"><span class="pre">token</span></code></a> pair matching the
+<a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a> we want to authenticate.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="junior.auth.User.get_token">
+<span class="sig-name descname"><span class="pre">get_token</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.auth.User.get_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a new authentication token for this <a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.auth.User.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#junior.auth.User.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The user’s primary key.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.auth.User.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><a class="headerlink" href="#junior.auth.User.is_active" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can the user authenticate?</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.auth.User.key">
+<span class="sig-name descname"><span class="pre">key</span></span><a class="headerlink" href="#junior.auth.User.key" title="Permalink to this definition">¶</a></dt>
+<dd><p>The user’s password.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.auth.User.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#junior.auth.User.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The user’s name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="junior.auth.User.reset_token">
+<span class="sig-name descname"><span class="pre">reset_token</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.auth.User.reset_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear all existing authentication tokens for this <a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.auth.User.resource">
+<span class="sig-name descname"><span class="pre">resource</span></span><a class="headerlink" href="#junior.auth.User.resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">junior.api.resource.&lt;locals&gt;.ModelResource</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.auth.User.schema">
+<span class="sig-name descname"><span class="pre">schema</span></span><a class="headerlink" href="#junior.auth.User.schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">junior.api.resource.&lt;locals&gt;.ModelSchema</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="junior.auth.User.token">
+<span class="sig-name descname"><span class="pre">token</span></span><a class="headerlink" href="#junior.auth.User.token" title="Permalink to this definition">¶</a></dt>
+<dd><p>The user’s persistent token value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.auth.authenticate">
+<span class="sig-prename descclassname"><span class="pre">junior.auth.</span></span><span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.auth.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticate a <a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a> for this request.
+<a class="reference internal" href="#junior.auth.authenticate" title="junior.auth.authenticate"><code class="xref py py-func docutils literal notranslate"><span class="pre">authenticate()</span></code></a> uses the incoming <code class="docutils literal notranslate"><span class="pre">Authorization</span></code>
+HTTP header to assign <a class="reference internal" href="#junior.auth.me" title="junior.auth.me"><code class="xref py py-attr docutils literal notranslate"><span class="pre">me</span></code></a> a <a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a>
+for the remainder of our <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Request" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> lifecycle.
+<a class="reference internal" href="#junior.auth.authenticate" title="junior.auth.authenticate"><code class="xref py py-func docutils literal notranslate"><span class="pre">authenticate()</span></code></a> wants to be called by
+<a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask.before_request" title="(in Flask v2.0.x)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">before_request()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.auth.me">
+<span class="sig-prename descclassname"><span class="pre">junior.auth.</span></span><span class="sig-name descname"><span class="pre">me</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#junior.auth.me" title="Permalink to this definition">¶</a></dt>
+<dd><p>The currently authenticated <a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a>.
+<a class="reference internal" href="#junior.auth.me" title="junior.auth.me"><code class="xref py py-attr docutils literal notranslate"><span class="pre">me</span></code></a> is only valid within a single <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Request" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="module-junior.api">
+<span id="the-rest"></span><h2>The REST<a class="headerlink" href="#module-junior.api" title="Permalink to this headline">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.api.api">
+<span class="sig-prename descclassname"><span class="pre">junior.api.</span></span><span class="sig-name descname"><span class="pre">api</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;Blueprint</span> <span class="pre">'api'&gt;</span></em><a class="headerlink" href="#junior.api.api" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Blueprint" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Blueprint</span></code></a> governing the RESTful API.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.api.defaults">
+<span class="sig-prename descclassname"><span class="pre">junior.api.</span></span><span class="sig-name descname"><span class="pre">defaults</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.api.defaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a default set of routes to <a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api</span></code></a>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/</span></code> returns <a class="reference internal" href="#junior.api.properties" title="junior.api.properties"><code class="xref py py-attr docutils literal notranslate"><span class="pre">properties</span></code></a>;</p></li>
+<li><p>a missing path raises <a class="reference external" href="https://werkzeug.palletsprojects.com/en/2.0.x/exceptions/#werkzeug.exceptions.NotFound" title="(in Werkzeug v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotFound</span></code></a>;</p></li>
+<li><p>a raised <code class="docutils literal notranslate"><span class="pre">Exception</span></code> calls <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask.errorhandler" title="(in Flask v2.0.x)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">errorhandler()</span></code></a>
+to return a JSON response with an appropriate error message
+and HTTP status code.</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.api.properties">
+<span class="sig-prename descclassname"><span class="pre">junior.api.</span></span><span class="sig-name descname"><span class="pre">properties</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'endpoints':</span> <span class="pre">{'Token':</span> <span class="pre">'/api/v1/token',</span> <span class="pre">'User':</span> <span class="pre">'/api/v1/users/'},</span> <span class="pre">'root':</span> <span class="pre">'/api/v1/',</span> <span class="pre">'updated_at':</span> <span class="pre">datetime.datetime(2020,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0),</span> <span class="pre">'version':</span> <span class="pre">1}</span></em><a class="headerlink" href="#junior.api.properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>The API’s properties. These values can be managed under the <code class="docutils literal notranslate"><span class="pre">api</span></code> section
+of <code class="docutils literal notranslate"><span class="pre">config/app.yaml</span></code>. <code class="xref py py-attr docutils literal notranslate"><span class="pre">properties.root</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">'/api/v1/'</span></code>;
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">properties.version</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">1</span></code>;
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">properties.updated_at</span></code> defaults to the date and time
+we <code class="docutils literal notranslate"><span class="pre">import</span></code>-ed junior.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.api.register">
+<span class="sig-prename descclassname"><span class="pre">junior.api.</span></span><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">this</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.api.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attach a <a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a> <code class="docutils literal notranslate"><span class="pre">this</span></code> to <a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api</span></code></a>.
+We can use <a class="reference internal" href="#junior.api.register" title="junior.api.register"><code class="xref py py-attr docutils literal notranslate"><span class="pre">register</span></code></a> as a decorator on our new
+<a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> classes, after <a class="reference internal" href="#junior.api.register" title="junior.api.register"><code class="xref py py-attr docutils literal notranslate"><span class="pre">register</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">junior</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">resource</span>
+
+<span class="nd">@register</span>
+<span class="nd">@resource</span>
+<span class="nd">@model</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>this</strong> – the <code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code> we’ll attach to
+<a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api</span></code></a>.</p></li>
+<li><p><strong>name</strong> – the name of our <code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code>;
+defaults to the underlying <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>’s
+pluralized name.</p></li>
+<li><p><strong>endpoint</strong> – the root URL path we’ll assign to our
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code>; defaults to <code class="docutils literal notranslate"><span class="pre">name</span></code>
+transformed to <cite>snake_case</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.api.resource">
+<span class="sig-prename descclassname"><span class="pre">junior.api.</span></span><span class="sig-name descname"><span class="pre">resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">this</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.api.resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new <a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a> from a
+<a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> <code class="docutils literal notranslate"><span class="pre">this</span></code>.
+We can use <a class="reference internal" href="#junior.api.resource" title="junior.api.resource"><code class="xref py py-attr docutils literal notranslate"><span class="pre">resource</span></code></a> as a decorator on our new
+<a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> classes, after <a class="reference internal" href="#junior.db.model" title="junior.db.model"><code class="xref py py-attr docutils literal notranslate"><span class="pre">model</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">junior</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">resource</span>
+
+<span class="nd">@register</span>
+<span class="nd">@resource</span>
+<span class="nd">@model</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="#junior.api.resource" title="junior.api.resource"><code class="xref py py-attr docutils literal notranslate"><span class="pre">resource</span></code></a> provides two classes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSchema</span></code> is a
+<a class="reference external" href="https://marshmallow-sqlalchemy.readthedocs.io/en/latest/api_reference.html#marshmallow_sqlalchemy.SQLAlchemyAutoSchema" title="(in marshmallow-sqlalchemy v0.26.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SQLAlchemyAutoSchema</span></code></a>
+bound to a <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>.
+It helps us serialize a <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>
+instance or collection into a JSON response.</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelResource</span></code> is a
+<a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a>
+bound to a <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>.
+It provides us a set of RESTful routes that perform
+<a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> actions.
+The model’s <code class="xref py py-attr docutils literal notranslate"><span class="pre">Meta</span></code> attribute controls the routes’ behaviour.</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>this</strong> – the <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> we’ll use to build a new
+<a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.api.resources">
+<span class="sig-prename descclassname"><span class="pre">junior.api.</span></span><span class="sig-name descname"><span class="pre">resources</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[&lt;class</span> <span class="pre">'junior.api.resource.&lt;locals&gt;.ModelResource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'junior.auth.TokenResource'&gt;]</span></em><a class="headerlink" href="#junior.api.resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a> objects we’ve attached to <a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.api.rest">
+<span class="sig-prename descclassname"><span class="pre">junior.api.</span></span><span class="sig-name descname"><span class="pre">rest</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;junior.api.Api</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#junior.api.rest" title="Permalink to this definition">¶</a></dt>
+<dd><p>An <a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Api" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Api</span></code></a> bound to <a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api</span></code></a>.
+It allows us to attach <a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a> objects to
+<a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api</span></code></a>, assigning them each a URL based on their class name by default.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.api.schemas">
+<span class="sig-prename descclassname"><span class="pre">junior.api.</span></span><span class="sig-name descname"><span class="pre">schemas</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;flask_marshmallow.Marshmallow</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#junior.api.schemas" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://flask-marshmallow.readthedocs.io/en/latest/index.html#flask_marshmallow.Marshmallow" title="(in Flask-Marshmallow v0.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Marshmallow</span></code></a> to help us
+serialize database records into a plain text JSON response.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.api.start">
+<span class="sig-prename descclassname"><span class="pre">junior.api.</span></span><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.api.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start <a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api</span></code></a> and register it to <code class="docutils literal notranslate"><span class="pre">app</span></code>.
+<a class="reference internal" href="#junior.api.start" title="junior.api.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a> wants to be called by <a class="reference internal" href="#junior.Application.start" title="junior.Application.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>app</strong> – an <a class="reference internal" href="#junior.Application" title="junior.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> for us to register <a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-junior.assets">
+<span id="the-assets"></span><h2>The Assets<a class="headerlink" href="#module-junior.assets" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.assets.start">
+<span class="sig-prename descclassname"><span class="pre">junior.assets.</span></span><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.assets.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the <a class="reference external" href="https://flask-assets.readthedocs.io/en/latest/index.html#flask_assets.Environment" title="(in Flask-Assets v0.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a> we bound to <code class="docutils literal notranslate"><span class="pre">app</span></code>.
+<a class="reference internal" href="#junior.assets.start" title="junior.assets.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a> wants to be called by <a class="reference internal" href="#junior.Application.start" title="junior.Application.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>app</strong> – an <a class="reference internal" href="#junior.Application" title="junior.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> attached to an
+<a class="reference external" href="https://flask-assets.readthedocs.io/en/latest/index.html#flask_assets.Environment" title="(in Flask-Assets v0.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-junior.web">
+<span id="the-index"></span><h2>The Index<a class="headerlink" href="#module-junior.web" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.web.defaults">
+<span class="sig-prename descclassname"><span class="pre">junior.web.</span></span><span class="sig-name descname"><span class="pre">defaults</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.web.defaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a default set of routes to <a class="reference internal" href="#junior.web.web" title="junior.web.web"><code class="xref py py-attr docutils literal notranslate"><span class="pre">web</span></code></a>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/</span></code> renders <code class="docutils literal notranslate"><span class="pre">index.haml</span></code>;</p></li>
+<li><p>a “<cite>missing</cite>” path also renders <code class="docutils literal notranslate"><span class="pre">index.haml</span></code>
+and the user’s request path is sent to our client-side application;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/*</span></code> redirects to <a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api</span></code></a>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/favicon*</span></code> redirects to our favicon asset path;</p></li>
+<li><p>a raised <code class="docutils literal notranslate"><span class="pre">Exception</span></code> calls <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask.errorhandler" title="(in Flask v2.0.x)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">errorhandler()</span></code></a>
+to render <code class="docutils literal notranslate"><span class="pre">error.haml</span></code> with an appropriate error message
+and HTTP status code.</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.web.redirect_to_api">
+<span class="sig-prename descclassname"><span class="pre">junior.web.</span></span><span class="sig-name descname"><span class="pre">redirect_to_api</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'api'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.web.redirect_to_api" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redirect the user to <a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api</span></code></a>
+if <code class="docutils literal notranslate"><span class="pre">path</span></code> matches <code class="docutils literal notranslate"><span class="pre">api_path</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – the user’s requested URL path.</p></li>
+<li><p><strong>data</strong> – the root path prefix to <a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api</span></code></a>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.web.start">
+<span class="sig-prename descclassname"><span class="pre">junior.web.</span></span><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.web.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start <a class="reference internal" href="#junior.web.web" title="junior.web.web"><code class="xref py py-attr docutils literal notranslate"><span class="pre">web</span></code></a> and register it to <code class="docutils literal notranslate"><span class="pre">app</span></code>.
+<a class="reference internal" href="#junior.web.start" title="junior.web.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a> wants to be called by <a class="reference internal" href="#junior.Application.start" title="junior.Application.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>app</strong> – an <a class="reference internal" href="#junior.Application" title="junior.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> for us to register <a class="reference internal" href="#junior.web.web" title="junior.web.web"><code class="xref py py-attr docutils literal notranslate"><span class="pre">web</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.web.web">
+<span class="sig-prename descclassname"><span class="pre">junior.web.</span></span><span class="sig-name descname"><span class="pre">web</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;Blueprint</span> <span class="pre">'web'&gt;</span></em><a class="headerlink" href="#junior.web.web" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Blueprint" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Blueprint</span></code></a> to serve the index template
+and redirect users to <a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api</span></code></a> where needed.</p>
+</dd></dl>
+
+</section>
+<section id="module-junior.templates">
+<span id="the-templates"></span><h2>The Templates<a class="headerlink" href="#module-junior.templates" title="Permalink to this headline">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.templates.templates">
+<span class="sig-prename descclassname"><span class="pre">junior.templates.</span></span><span class="sig-name descname"><span class="pre">templates</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;jinja2.environment.Environment</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#junior.templates.templates" title="Permalink to this definition">¶</a></dt>
+<dd><p>An <a class="reference external" href="https://jinja.palletsprojects.com/en/3.0.x/api/#jinja2.Environment" title="(in Jinja v3.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a> to render our templates.</p>
+</dd></dl>
+
+</section>
+<section id="module-junior.components">
+<span id="the-components"></span><h2>The Components<a class="headerlink" href="#module-junior.components" title="Permalink to this headline">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.components.components">
+<span class="sig-prename descclassname"><span class="pre">junior.components.</span></span><span class="sig-name descname"><span class="pre">components</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;Blueprint</span> <span class="pre">'components'&gt;</span></em><a class="headerlink" href="#junior.components.components" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Blueprint" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Blueprint</span></code></a> serving our component templates.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.components.defaults">
+<span class="sig-prename descclassname"><span class="pre">junior.components.</span></span><span class="sig-name descname"><span class="pre">defaults</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.components.defaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a default set of routes to <a class="reference internal" href="#junior.components.components" title="junior.components.components"><code class="xref py py-attr docutils literal notranslate"><span class="pre">components</span></code></a>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>the incoming path name is mapped to a component name and rendered;</p></li>
+<li><p>a missing path raises returns a simple HTML comment response
+with HTTP status code 404;</p></li>
+<li><p>a raised <code class="docutils literal notranslate"><span class="pre">Exception</span></code> calls <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask.errorhandler" title="(in Flask v2.0.x)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">errorhandler()</span></code></a>
+to return an HTML comment response with an appropriate error message
+and HTTP status code.</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.components.start">
+<span class="sig-prename descclassname"><span class="pre">junior.components.</span></span><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.components.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start <a class="reference internal" href="#junior.components.components" title="junior.components.components"><code class="xref py py-attr docutils literal notranslate"><span class="pre">components</span></code></a> and register it to <code class="docutils literal notranslate"><span class="pre">app</span></code>.
+<a class="reference internal" href="#junior.components.start" title="junior.components.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a> wants to be called by <a class="reference internal" href="#junior.Application.start" title="junior.Application.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>app</strong> – an <a class="reference internal" href="#junior.Application" title="junior.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> for us to register
+<a class="reference internal" href="#junior.components.components" title="junior.components.components"><code class="xref py py-attr docutils literal notranslate"><span class="pre">components</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-junior.context">
+<span id="the-context"></span><h2>The Context<a class="headerlink" href="#module-junior.context" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.context.asset">
+<span class="sig-prename descclassname"><span class="pre">junior.context.</span></span><span class="sig-name descname"><span class="pre">asset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.context.asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the URL for an asset <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – our asset’s filename.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.context.context">
+<span class="sig-prename descclassname"><span class="pre">junior.context.</span></span><span class="sig-name descname"><span class="pre">context</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'X':</span> <span class="pre">&lt;function</span> <span class="pre">X&gt;,</span> <span class="pre">'_':</span> <span class="pre">&lt;function</span> <span class="pre">_&gt;,</span> <span class="pre">'asset':</span> <span class="pre">&lt;function</span> <span class="pre">asset&gt;,</span> <span class="pre">'config':</span> <span class="pre">{'api':</span> <span class="pre">{'updated_at':</span> <span class="pre">datetime.datetime(2020,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0),</span> <span class="pre">'version':</span> <span class="pre">1}},</span> <span class="pre">'dt':</span> <span class="pre">&lt;class</span> <span class="pre">'datetime.datetime'&gt;,</span> <span class="pre">'now':</span> <span class="pre">datetime.datetime(2021,</span> <span class="pre">5,</span> <span class="pre">30,</span> <span class="pre">19,</span> <span class="pre">6,</span> <span class="pre">21,</span> <span class="pre">643765),</span> <span class="pre">'title':</span> <span class="pre">&lt;function</span> <span class="pre">title&gt;}</span></em><a class="headerlink" href="#junior.context.context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Our <a class="reference internal" href="#junior.Application" title="junior.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> context, as exposed to our templates.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.context.process">
+<span class="sig-prename descclassname"><span class="pre">junior.context.</span></span><span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.context.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper around <a class="reference internal" href="#junior.context.context" title="junior.context.context"><code class="xref py py-attr docutils literal notranslate"><span class="pre">context</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> – the key to fetch from <a class="reference internal" href="#junior.context.context" title="junior.context.context"><code class="xref py py-attr docutils literal notranslate"><span class="pre">context</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.context.title">
+<span class="sig-prename descclassname"><span class="pre">junior.context.</span></span><span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.context.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append the site’s name to <code class="docutils literal notranslate"><span class="pre">text</span></code> to give us a page title.
+If <code class="docutils literal notranslate"><span class="pre">text</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, <a class="reference internal" href="#junior.context.title" title="junior.context.title"><code class="xref py py-func docutils literal notranslate"><span class="pre">title()</span></code></a> returns the site’s name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> – our page’s title text.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-junior.cache">
+<span id="the-cache"></span><h2>The Cache<a class="headerlink" href="#module-junior.cache" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.cache.add">
+<span class="sig-prename descclassname"><span class="pre">junior.cache.</span></span><span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.cache.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new item to <a class="reference internal" href="#junior.cache.store" title="junior.cache.store"><code class="xref py py-attr docutils literal notranslate"><span class="pre">store</span></code></a>.
+<a class="reference internal" href="#junior.cache.add" title="junior.cache.add"><code class="xref py py-attr docutils literal notranslate"><span class="pre">add</span></code></a> is an alias of
+<a class="reference external" href="https://flask-caching.readthedocs.io/en/latest/api.html#flask_caching.backends.FileSystemCache.add" title="(in Flask-Caching v1.0.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">add</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.cache.cache">
+<span class="sig-prename descclassname"><span class="pre">junior.cache.</span></span><span class="sig-name descname"><span class="pre">cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">timeout=None</span></em>, <em class="sig-param"><span class="pre">key_prefix='view/%s'</span></em>, <em class="sig-param"><span class="pre">unless=None</span></em>, <em class="sig-param"><span class="pre">forced_update=None</span></em>, <em class="sig-param"><span class="pre">response_filter=None</span></em>, <em class="sig-param"><span class="pre">query_string=False</span></em>, <em class="sig-param"><span class="pre">hash_method=&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_md5&gt;</span></em>, <em class="sig-param"><span class="pre">cache_none=False</span></em>, <em class="sig-param"><span class="pre">make_cache_key=None</span></em>, <em class="sig-param"><span class="pre">source_check=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.cache.cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a function to <a class="reference internal" href="#junior.cache.store" title="junior.cache.store"><code class="xref py py-attr docutils literal notranslate"><span class="pre">store</span></code></a>.
+We can use <a class="reference internal" href="#junior.cache.cache" title="junior.cache.cache"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cache</span></code></a> as a decorator.
+<a class="reference internal" href="#junior.cache.cache" title="junior.cache.cache"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cache</span></code></a> is an alias of <a class="reference external" href="https://flask-caching.readthedocs.io/en/latest/api.html#flask_caching.Cache.cached" title="(in Flask-Caching v1.0.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cached</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>key_prefix</strong> (<em>str</em>) – </p></li>
+<li><p><strong>unless</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – </p></li>
+<li><p><strong>forced_update</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – </p></li>
+<li><p><strong>response_filter</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – </p></li>
+<li><p><strong>query_string</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>hash_method</strong> (<em>Callable</em>) – </p></li>
+<li><p><strong>cache_none</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>make_cache_key</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – </p></li>
+<li><p><strong>source_check</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Callable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.cache.clear">
+<span class="sig-prename descclassname"><span class="pre">junior.cache.</span></span><span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.cache.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear all items from <a class="reference internal" href="#junior.cache.store" title="junior.cache.store"><code class="xref py py-attr docutils literal notranslate"><span class="pre">store</span></code></a>.
+<a class="reference internal" href="#junior.cache.clear" title="junior.cache.clear"><code class="xref py py-attr docutils literal notranslate"><span class="pre">clear</span></code></a> is an alias of
+<a class="reference external" href="https://flask-caching.readthedocs.io/en/latest/api.html#flask_caching.backends.FileSystemCache.clear" title="(in Flask-Caching v1.0.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">clear</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.cache.delete">
+<span class="sig-prename descclassname"><span class="pre">junior.cache.</span></span><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.cache.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete items from <a class="reference internal" href="#junior.cache.store" title="junior.cache.store"><code class="xref py py-attr docutils literal notranslate"><span class="pre">store</span></code></a>.
+<a class="reference internal" href="#junior.cache.delete" title="junior.cache.delete"><code class="xref py py-attr docutils literal notranslate"><span class="pre">delete</span></code></a> is an alias of
+<a class="reference external" href="https://flask-caching.readthedocs.io/en/latest/api.html#flask_caching.backends.FileSystemCache.delete" title="(in Flask-Caching v1.0.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">delete</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.cache.forget">
+<span class="sig-prename descclassname"><span class="pre">junior.cache.</span></span><span class="sig-name descname"><span class="pre">forget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.cache.forget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete or clear memoized functions from <a class="reference internal" href="#junior.cache.store" title="junior.cache.store"><code class="xref py py-attr docutils literal notranslate"><span class="pre">store</span></code></a>.
+<a class="reference internal" href="#junior.cache.forget" title="junior.cache.forget"><code class="xref py py-attr docutils literal notranslate"><span class="pre">forget</span></code></a> is an alias of <a class="reference external" href="https://flask-caching.readthedocs.io/en/latest/api.html#flask_caching.Cache.delete_memoized" title="(in Flask-Caching v1.0.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">delete_memoized</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.cache.get">
+<span class="sig-prename descclassname"><span class="pre">junior.cache.</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.cache.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an item from <a class="reference internal" href="#junior.cache.store" title="junior.cache.store"><code class="xref py py-attr docutils literal notranslate"><span class="pre">store</span></code></a>.
+<a class="reference internal" href="#junior.cache.get" title="junior.cache.get"><code class="xref py py-attr docutils literal notranslate"><span class="pre">get</span></code></a> is an alias of
+<a class="reference external" href="https://flask-caching.readthedocs.io/en/latest/api.html#flask_caching.backends.FileSystemCache.get" title="(in Flask-Caching v1.0.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">get</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Optional[Union[str, <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Markup" title="(in Flask v2.0.x)">markupsafe.Markup</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.cache.memo">
+<span class="sig-prename descclassname"><span class="pre">junior.cache.</span></span><span class="sig-name descname"><span class="pre">memo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">timeout=None</span></em>, <em class="sig-param"><span class="pre">make_name=None</span></em>, <em class="sig-param"><span class="pre">unless=None</span></em>, <em class="sig-param"><span class="pre">forced_update=None</span></em>, <em class="sig-param"><span class="pre">response_filter=None</span></em>, <em class="sig-param"><span class="pre">hash_method=&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_md5&gt;</span></em>, <em class="sig-param"><span class="pre">cache_none=False</span></em>, <em class="sig-param"><span class="pre">source_check=None</span></em>, <em class="sig-param"><span class="pre">args_to_ignore=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.cache.memo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a function call’s return value to <a class="reference internal" href="#junior.cache.store" title="junior.cache.store"><code class="xref py py-attr docutils literal notranslate"><span class="pre">store</span></code></a>
+using its arguments as a key.
+We can use <a class="reference internal" href="#junior.cache.memo" title="junior.cache.memo"><code class="xref py py-attr docutils literal notranslate"><span class="pre">memo</span></code></a> as a decorator.
+<a class="reference internal" href="#junior.cache.memo" title="junior.cache.memo"><code class="xref py py-attr docutils literal notranslate"><span class="pre">memo</span></code></a> is an alias of <a class="reference external" href="https://flask-caching.readthedocs.io/en/latest/api.html#flask_caching.Cache.memoize" title="(in Flask-Caching v1.0.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">memoize</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>make_name</strong> (<em>None</em>) – </p></li>
+<li><p><strong>unless</strong> (<em>None</em>) – </p></li>
+<li><p><strong>forced_update</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – </p></li>
+<li><p><strong>response_filter</strong> (<em>None</em>) – </p></li>
+<li><p><strong>hash_method</strong> (<em>Callable</em>) – </p></li>
+<li><p><strong>cache_none</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>source_check</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
+<li><p><strong>args_to_ignore</strong> (<em>Optional</em><em>[</em><em>Any</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Callable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.cache.set">
+<span class="sig-prename descclassname"><span class="pre">junior.cache.</span></span><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.cache.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an item to <a class="reference internal" href="#junior.cache.store" title="junior.cache.store"><code class="xref py py-attr docutils literal notranslate"><span class="pre">store</span></code></a>.
+<a class="reference internal" href="#junior.cache.set" title="junior.cache.set"><code class="xref py py-attr docutils literal notranslate"><span class="pre">set</span></code></a> is an alias of
+<a class="reference external" href="https://flask-caching.readthedocs.io/en/latest/api.html#flask_caching.backends.FileSystemCache.set" title="(in Flask-Caching v1.0.0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">set</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.cache.store">
+<span class="sig-prename descclassname"><span class="pre">junior.cache.</span></span><span class="sig-name descname"><span class="pre">store</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;flask_caching.Cache</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#junior.cache.store" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://flask-caching.readthedocs.io/en/latest/api.html#flask_caching.Cache" title="(in Flask-Caching v1.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cache</span></code></a>
+to store data to the file system for later retrieval.
+<a class="reference internal" href="#junior.cache.store" title="junior.cache.store"><code class="xref py py-attr docutils literal notranslate"><span class="pre">store</span></code></a> uses <a class="reference external" href="https://flask-caching.readthedocs.io/en/latest/api.html#flask_caching.backends.FileSystemCache" title="(in Flask-Caching v1.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">FileSystemCache</span></code></a>
+as its default cache provider.</p>
+</dd></dl>
+
+</section>
+<section id="module-junior.queue">
+<span id="the-queue"></span><h2>The Queue<a class="headerlink" href="#module-junior.queue" title="Permalink to this headline">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.queue.queue">
+<span class="sig-prename descclassname"><span class="pre">junior.queue.</span></span><span class="sig-name descname"><span class="pre">queue</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;Celery</span> <span class="pre">app&gt;</span></em><a class="headerlink" href="#junior.queue.queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://docs.celeryproject.org/en/stable/reference/celery.html#celery.Celery" title="(in Celery v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Celery</span></code></a> to process our queued tasks.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.queue.start">
+<span class="sig-prename descclassname"><span class="pre">junior.queue.</span></span><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.queue.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start <a class="reference internal" href="#junior.queue.queue" title="junior.queue.queue"><code class="xref py py-attr docutils literal notranslate"><span class="pre">queue</span></code></a> bound to <code class="docutils literal notranslate"><span class="pre">app</span></code>.
+<a class="reference internal" href="#junior.queue.start" title="junior.queue.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a> wants to be called by <a class="reference internal" href="#junior.Application.start" title="junior.Application.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>app</strong> – an <a class="reference internal" href="#junior.Application" title="junior.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> for us to attach.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-junior.mail">
+<span id="the-mail"></span><h2>The Mail<a class="headerlink" href="#module-junior.mail" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.mail.mail">
+<span class="sig-prename descclassname"><span class="pre">junior.mail.</span></span><span class="sig-name descname"><span class="pre">mail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">messages</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.mail.mail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a collection of email <code class="xref py py-class docutils literal notranslate"><span class="pre">Message</span></code> <code class="docutils literal notranslate"><span class="pre">messages</span></code>
+all at once.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>messages</strong> – the collection of <code class="xref py py-class docutils literal notranslate"><span class="pre">Message</span></code>
+objects we want to send.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-junior.socket">
+<span id="the-socket"></span><h2>The Socket<a class="headerlink" href="#module-junior.socket" title="Permalink to this headline">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="junior.socket.socket">
+<span class="sig-prename descclassname"><span class="pre">junior.socket.</span></span><span class="sig-name descname"><span class="pre">socket</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;flask_socketio.SocketIO</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#junior.socket.socket" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://flask-socketio.readthedocs.io/en/latest/api.html#flask_socketio.SocketIO" title="(in Flask-SocketIO)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SocketIO</span></code></a> allowing websocket clients
+to connect for a persistent, realtime channel.</p>
+</dd></dl>
+
+</section>
+<section id="module-junior.errors">
+<span id="the-errors"></span><h2>The Errors<a class="headerlink" href="#module-junior.errors" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.errors.debug">
+<span class="sig-prename descclassname"><span class="pre">junior.errors.</span></span><span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.errors.debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Capture the current <code class="docutils literal notranslate"><span class="pre">Exception</span></code> debug information.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.errors.error">
+<span class="sig-prename descclassname"><span class="pre">junior.errors.</span></span><span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exception</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.errors.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect the data we’ll use to construct a <a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>
+after an <code class="docutils literal notranslate"><span class="pre">exception</span></code> was raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>exception</strong> – the <code class="docutils literal notranslate"><span class="pre">Exception</span></code> that triggered a
+<a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="junior.errors.handle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">junior.errors.</span></span><span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.errors.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A wrapper to help us assign an error handler for requests to <code class="docutils literal notranslate"><span class="pre">path</span></code>.</p>
+<p>We can use <a class="reference internal" href="#junior.errors.handle" title="junior.errors.handle"><code class="xref py py-class docutils literal notranslate"><span class="pre">handle</span></code></a> as a decorator, after
+<a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Blueprint.errorhandler" title="(in Flask v2.0.x)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">errorhandler()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">junior</span> <span class="kn">import</span> <span class="n">handle</span><span class="p">,</span> <span class="n">web</span>
+
+<span class="nd">@handle</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="nd">@web</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="ne">Exception</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="n">exception</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – the path we’ll attach to our error handler.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.errors.start">
+<span class="sig-prename descclassname"><span class="pre">junior.errors.</span></span><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.errors.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start our global error handler bound to <code class="docutils literal notranslate"><span class="pre">app</span></code>.
+<a class="reference internal" href="#junior.errors.start" title="junior.errors.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a> wants to be called by <a class="reference internal" href="#junior.Application.start" title="junior.Application.start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>app</strong> – an <a class="reference internal" href="#junior.Application" title="junior.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> for us to attach.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-junior.util">
+<span id="the-helpers"></span><h2>The Helpers<a class="headerlink" href="#module-junior.util" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.util.X">
+<span class="sig-prename descclassname"><span class="pre">junior.util.</span></span><span class="sig-name descname"><span class="pre">X</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.X" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#junior.util.X" title="junior.util.X"><code class="xref py py-class docutils literal notranslate"><span class="pre">X</span></code></a> is a <a class="reference external" href="https://pypi.org/project/munch/">Munch</a>.
+<a class="reference internal" href="#junior.util.X" title="junior.util.X"><code class="xref py py-meth docutils literal notranslate"><span class="pre">X()</span></code></a> is also a function that returns a new <a class="reference internal" href="#junior.util.X" title="junior.util.X"><code class="xref py py-class docutils literal notranslate"><span class="pre">X</span></code></a>
+from a <code class="docutils literal notranslate"><span class="pre">dict</span></code> or a set of parameters.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Munch</span></code> is “<cite>a dictionary that supports attribute-style access</cite>”.
+<a class="reference internal" href="#junior.util.X" title="junior.util.X"><code class="xref py py-meth docutils literal notranslate"><span class="pre">X()</span></code></a> offers us a few options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">X</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;sheila&#39;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;s@mail.ca&#39;</span><span class="p">)</span>
+<span class="n">user</span>                            <span class="c1"># we can create a new X from parameters</span>
+    <span class="n">X</span><span class="p">{</span><span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="s1">&#39;s@mail.ca&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;sheila&#39;</span><span class="p">}</span>
+<span class="n">user</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>           <span class="c1"># we can index by the usual brace attribute syntax</span>
+    <span class="mi">1</span>
+<span class="n">user</span><span class="o">.</span><span class="n">name</span>                        <span class="c1"># or dot syntax if the key is a string</span>
+    <span class="s1">&#39;sheila&#39;</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">X</span><span class="p">({</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;thing explainer&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;randall monroe&#39;</span><span class="p">})</span>
+<span class="n">book</span>                  <span class="c1"># we can also create a new X by wrapping any dict</span>
+    <span class="n">X</span><span class="p">{</span><span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;randall monroe&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;thing explainer&#39;</span><span class="p">}</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">book</span><span class="p">)</span>            <span class="c1"># just like a dict, an X&#39;s length is its key count</span>
+    <span class="mi">2</span>
+<span class="n">book</span><span class="o">.</span><span class="n">pages</span>                              <span class="c1"># we didn&#39;t define this one yet</span>
+    <span class="kc">None</span>
+</pre></div>
+</div>
+<p>Missing keys return <code class="docutils literal notranslate"><span class="pre">None</span></code>; <a class="reference internal" href="#junior.util.X" title="junior.util.X"><code class="xref py py-class docutils literal notranslate"><span class="pre">X</span></code></a> prefers to fail silently.</p>
+<p><a class="reference internal" href="#junior.util.X" title="junior.util.X"><code class="xref py py-class docutils literal notranslate"><span class="pre">X</span></code></a> also gives us the <code class="xref py py-meth docutils literal notranslate"><span class="pre">toTOML()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">fromTOML()</span></code> methods
+to help serialize to and deserialize from the
+<a class="reference external" href="https://toml.io/">TOML</a> format.
+Their signatures and behaviour match the <code class="xref py py-meth docutils literal notranslate"><span class="pre">toJSON()</span></code>/<code class="xref py py-meth docutils literal notranslate"><span class="pre">fromJSON()</span></code>
+and <code class="xref py py-meth docutils literal notranslate"><span class="pre">toYAML()</span></code>/<code class="xref py py-meth docutils literal notranslate"><span class="pre">fromYAML()</span></code> methods inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">Munch</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>_dict</strong> – a <code class="docutils literal notranslate"><span class="pre">dict</span></code> to <a class="reference internal" href="#junior.util.X" title="junior.util.X"><code class="xref py py-class docutils literal notranslate"><span class="pre">X</span></code></a>-ify</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.util._">
+<span class="sig-prename descclassname"><span class="pre">junior.util.</span></span><span class="sig-name descname"><span class="pre">_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plural_string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.util._" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark a <code class="docutils literal notranslate"><span class="pre">string</span></code> for translation.
+<a class="reference internal" href="#junior.util._" title="junior.util._"><code class="xref py py-meth docutils literal notranslate"><span class="pre">_()</span></code></a> is wrapper for <a class="reference external" href="https://flask-babel.tkte.ch/index.html#flask_babel.lazy_gettext" title="(in Flask-Babel)"><code class="xref py py-func docutils literal notranslate"><span class="pre">lazy_gettext()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> – the string we want to translate.</p></li>
+<li><p><strong>plural_string</strong> – the plural form alternative of <code class="docutils literal notranslate"><span class="pre">string</span></code>.</p></li>
+<li><p><strong>count</strong> – the number of subjects, for deciding if we should pluralize.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.util.b">
+<span class="sig-prename descclassname"><span class="pre">junior.util.</span></span><span class="sig-name descname"><span class="pre">b</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'big'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.b" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cast an <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">str</span></code> <code class="docutils literal notranslate"><span class="pre">value</span></code> to a byte sequence:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">b</span><span class="p">(</span><span class="mi">46290</span><span class="p">)</span>
+    <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x00\x00\x00\x00\x00\xb4\xd2</span><span class="s1">&#39;</span>
+<span class="n">b</span><span class="p">(</span><span class="mi">46290</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;little&#39;</span><span class="p">)</span>
+    <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xd2\xb4\x00\x00\x00\x00\x00\x00</span><span class="s1">&#39;</span>
+<span class="n">b</span><span class="p">(</span><span class="mi">511</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x01\xff</span><span class="s1">&#39;</span>
+<span class="n">b</span><span class="p">(</span><span class="s1">&#39;nice&#39;</span><span class="p">)</span>
+    <span class="sa">b</span><span class="s1">&#39;nice&#39;</span>
+<span class="n">b</span><span class="p">(</span><span class="s1">&#39;你好欢迎&#39;</span><span class="p">)</span>
+    <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xe4\xbd\xa0\xe5\xa5\xbd\xe6\xac\xa2\xe8\xbf\x8e</span><span class="s1">&#39;</span>
+<span class="n">b</span><span class="p">(</span><span class="s1">&#39;你好欢迎&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+    <span class="c1"># UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters</span>
+    <span class="c1"># in position 0-3: ordinal not in range(128)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> – the data we want to cast.</p></li>
+<li><p><strong>length</strong> – the length we’ll use to cast <code class="docutils literal notranslate"><span class="pre">value</span></code> from <code class="docutils literal notranslate"><span class="pre">int</span></code>.</p></li>
+<li><p><strong>order</strong> – the endian-ness we’ll use to cast <code class="docutils literal notranslate"><span class="pre">value</span></code> from <code class="docutils literal notranslate"><span class="pre">int</span></code>.</p></li>
+<li><p><strong>encoding</strong> – the encoding we’ll use to cast <code class="docutils literal notranslate"><span class="pre">value</span></code> from <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.util.echo">
+<span class="sig-prename descclassname"><span class="pre">junior.util.</span></span><span class="sig-name descname"><span class="pre">echo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_print</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.echo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the internals of a set of <code class="docutils literal notranslate"><span class="pre">args</span></code>.
+We can use <a class="reference internal" href="#junior.util.echo" title="junior.util.echo"><code class="xref py py-meth docutils literal notranslate"><span class="pre">echo()</span></code></a> to render a debug <code class="docutils literal notranslate"><span class="pre">str</span></code> dump of any object(s),
+printing it to the console by default.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>_print</strong> – print our result to the console?</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="junior.util.flatten">
+<span class="sig-prename descclassname"><span class="pre">junior.util.</span></span><span class="sig-name descname"><span class="pre">flatten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flatten a nested <code class="docutils literal notranslate"><span class="pre">dict</span></code> or <a class="reference internal" href="#junior.util.X" title="junior.util.X"><code class="xref py py-class docutils literal notranslate"><span class="pre">X</span></code></a> <code class="docutils literal notranslate"><span class="pre">data</span></code>,
+joining its key names with <code class="docutils literal notranslate"><span class="pre">delimiter</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">flatten</span><span class="p">({</span><span class="s1">&#39;first&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+         <span class="s1">&#39;second&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}})</span>
+    <span class="p">{</span><span class="s1">&#39;first_one&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;first_two&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;second_one&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;second_two&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="n">flatten</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">X</span><span class="p">(</span><span class="n">first</span><span class="o">=</span><span class="s1">&#39;al&#39;</span><span class="p">,</span> <span class="n">middle</span><span class="o">=</span><span class="s1">&#39;bert&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="s1">&#39;catt&#39;</span><span class="p">)),</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">X</span><span class="p">{</span><span class="s1">&#39;first.name&#39;</span><span class="p">:</span> <span class="s1">&#39;al&#39;</span><span class="p">,</span> <span class="s1">&#39;last.name&#39;</span><span class="p">:</span> <span class="s1">&#39;catt&#39;</span><span class="p">,</span> <span class="s1">&#39;middle.name&#39;</span><span class="p">:</span> <span class="s1">&#39;bert&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – the <code class="docutils literal notranslate"><span class="pre">dict</span></code> or <a class="reference internal" href="#junior.util.X" title="junior.util.X"><code class="xref py py-class docutils literal notranslate"><span class="pre">X</span></code></a> we want to flatten.</p></li>
+<li><p><strong>delimiter</strong> – the <code class="docutils literal notranslate"><span class="pre">str</span></code> we’ll use to join our nested key names.</p></li>
+<li><p><strong>reverse</strong> – join our key names in reverse order?</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="the-shortcuts">
+<h2>The Shortcuts<a class="headerlink" href="#the-shortcuts" title="Permalink to this headline">¶</a></h2>
+<p>We can <code class="docutils literal notranslate"><span class="pre">import</span></code> a number of commonly used tools directly from the <code class="docutils literal notranslate"><span class="pre">junior</span></code>
+package to help us consolidate our <code class="docutils literal notranslate"><span class="pre">import</span></code> statements.</p>
+<p>Several names are provided by an alias.
+If the default <code class="docutils literal notranslate"><span class="pre">import</span></code> name is confusing or blocks one of our other names,
+we can <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">...</span> <span class="pre">as</span> <span class="pre">nice_name</span></code>.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.Blueprint">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">Blueprint</span></span><a class="headerlink" href="#junior.util.junior.Blueprint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Blueprint" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">flask.Blueprint</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.Flask">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">Flask</span></span><a class="headerlink" href="#junior.util.junior.Flask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">flask.Flask</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.Message">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">Message</span></span><a class="headerlink" href="#junior.util.junior.Message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">flask_mailman.EmailMessage</span></code></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.Model">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><a class="headerlink" href="#junior.util.junior.Model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">flask_sqlalchemy.Model</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.Path">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">Path</span></span><a class="headerlink" href="#junior.util.junior.Path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.juinor.Request">
+<span class="sig-prename descclassname"><span class="pre">juinor.</span></span><span class="sig-name descname"><span class="pre">Request</span></span><a class="headerlink" href="#junior.util.juinor.Request" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Request" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">flask.Request</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.juinor.Resource">
+<span class="sig-prename descclassname"><span class="pre">juinor.</span></span><span class="sig-name descname"><span class="pre">Resource</span></span><a class="headerlink" href="#junior.util.juinor.Resource" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.juinor.Response">
+<span class="sig-prename descclassname"><span class="pre">juinor.</span></span><span class="sig-name descname"><span class="pre">Response</span></span><a class="headerlink" href="#junior.util.juinor.Response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">flask.Response</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.User">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">User</span></span><a class="headerlink" href="#junior.util.junior.User" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">junior.auth.User</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.X">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">X</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.X" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.util.X" title="junior.util.X"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.util.X()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior._">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior._" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.util._" title="junior.util._"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.util._()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.api">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">api</span></span><a class="headerlink" href="#junior.util.junior.api" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.api.api" title="junior.api.api"><code class="xref py py-attr docutils literal notranslate"><span class="pre">junior.api.api</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.b">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">b</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.b" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.util.b" title="junior.util.b"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.util.b()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.cache">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.cache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.cache.cache" title="junior.cache.cache"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.cache.cache()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.components">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">components</span></span><a class="headerlink" href="#junior.util.junior.components" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.components.components" title="junior.components.components"><code class="xref py py-attr docutils literal notranslate"><span class="pre">junior.components.components</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.config">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">config</span></span><a class="headerlink" href="#junior.util.junior.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.config.config" title="junior.config.config"><code class="xref py py-attr docutils literal notranslate"><span class="pre">junior.config.config</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.context">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">context</span></span><a class="headerlink" href="#junior.util.junior.context" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.context.context" title="junior.context.context"><code class="xref py py-attr docutils literal notranslate"><span class="pre">junior.context.context</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.db">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">db</span></span><a class="headerlink" href="#junior.util.junior.db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.db.db" title="junior.db.db"><code class="xref py py-attr docutils literal notranslate"><span class="pre">junior.db.db</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.dt">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">dt</span></span><a class="headerlink" href="#junior.util.junior.dt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><code class="xref py py-data docutils literal notranslate"><span class="pre">datetime.datetime</span></code></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.emit">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">emit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.emit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask-socketio.readthedocs.io/en/latest/api.html#flask_socketio.emit" title="(in Flask-SocketIO)"><code class="xref py py-func docutils literal notranslate"><span class="pre">flask_socketio.emit()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.echo">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">echo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.echo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.util.echo" title="junior.util.echo"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.util.echo()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.env">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">env</span></span><a class="headerlink" href="#junior.util.junior.env" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.config.env" title="junior.config.env"><code class="xref py py-attr docutils literal notranslate"><span class="pre">junior.config.env</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.error">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.errors.error" title="junior.errors.error"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.errors.error()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.filter">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.db.filter" title="junior.db.filter"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.db.filter()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.flatten">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">flatten</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.flatten" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.util.flatten" title="junior.util.flatten"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.util.flatten()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.flash">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">flash</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.flash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.flash" title="(in Flask v2.0.x)"><code class="xref py py-func docutils literal notranslate"><span class="pre">flask.flash()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.forget">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">forget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.forget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.cache.forget" title="junior.cache.forget"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.cache.forget()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.g">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">g</span></span><a class="headerlink" href="#junior.util.junior.g" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.g" title="(in Flask v2.0.x)"><code class="xref py py-data docutils literal notranslate"><span class="pre">flask.g</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.get">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.cache.get" title="junior.cache.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.cache.get()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.join">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">join</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.join" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.safe_join" title="(in Flask v2.0.x)"><code class="xref py py-func docutils literal notranslate"><span class="pre">flask.safe_join()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.jsonify">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">jsonify</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.jsonify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.json.jsonify" title="(in Flask v2.0.x)"><code class="xref py py-func docutils literal notranslate"><span class="pre">flask.json.jsonify()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.mail">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">mail</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.mail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.mail.mail" title="junior.mail.mail"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.mail.mail()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.memo">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">memo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.memo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.cache.memo" title="junior.cache.memo"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.cache.memo()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.model">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.db.model" title="junior.db.model"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.db.model()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.on">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">on</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.on" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.db.on" title="junior.db.on"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.db.on()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.path">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><code class="xref py py-func docutils literal notranslate"><span class="pre">os.path.realpath()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.queue">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">queue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.queue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.queues.queue()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.redirect">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">redirect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.redirect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.redirect" title="(in Flask v2.0.x)"><code class="xref py py-func docutils literal notranslate"><span class="pre">flask.redirect()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.register">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.register" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.api.register" title="junior.api.register"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.api.register()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.render">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.render" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.render_template" title="(in Flask v2.0.x)"><code class="xref py py-func docutils literal notranslate"><span class="pre">flask.render_template()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.request">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">request</span></span><a class="headerlink" href="#junior.util.junior.request" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.request" title="(in Flask v2.0.x)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">flask.request</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.resource">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">resource</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.resource" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.api.resource" title="junior.api.resource"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.api.resource()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.response">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">response</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.make_response" title="(in Flask v2.0.x)"><code class="xref py py-func docutils literal notranslate"><span class="pre">flask.make_response()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.schemas">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">schemas</span></span><a class="headerlink" href="#junior.util.junior.schemas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.api.schemas" title="junior.api.schemas"><code class="xref py py-attr docutils literal notranslate"><span class="pre">junior.api.schemas</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.send">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.send" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask-socketio.readthedocs.io/en/latest/api.html#flask_socketio.send" title="(in Flask-SocketIO)"><code class="xref py py-func docutils literal notranslate"><span class="pre">flask_socketio.send()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.session">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">session</span></span><a class="headerlink" href="#junior.util.junior.session" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.session" title="(in Flask v2.0.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">flask.session</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.set">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.cache.set" title="junior.cache.set"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.cache.set()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.socket">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">socket</span></span><a class="headerlink" href="#junior.util.junior.socket" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">junior.sockets.socket</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.split">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">split</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.split" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><code class="xref py py-data docutils literal notranslate"><span class="pre">os.path.split</span></code></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.store">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">store</span></span><a class="headerlink" href="#junior.util.junior.store" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.cache.store" title="junior.cache.store"><code class="xref py py-attr docutils literal notranslate"><span class="pre">junior.cache.store</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.synonym">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">synonym</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.synonym" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://docs.sqlalchemy.org/en/14/orm/mapped_attributes.html#sqlalchemy.orm.synonym" title="(in SQLAlchemy v1.4)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sqlalchemy.orm.synonym()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.td">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">td</span></span><a class="headerlink" href="#junior.util.junior.td" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><code class="xref py py-data docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.to">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">to</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.to" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.url_for" title="(in Flask v2.0.x)"><code class="xref py py-func docutils literal notranslate"><span class="pre">flask.url_for()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.timestamps">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">timestamps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.timestamps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.db.timestamps" title="junior.db.timestamps"><code class="xref py py-func docutils literal notranslate"><span class="pre">junior.db.timestamps()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><dl class="py data">
+<dt class="sig sig-object py" id="junior.util.junior.web">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">web</span></span><a class="headerlink" href="#junior.util.junior.web" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference internal" href="#junior.web.web" title="junior.web.web"><code class="xref py py-attr docutils literal notranslate"><span class="pre">junior.web.web</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><dl class="py function">
+<dt class="sig sig-object py" id="junior.util.junior.validates">
+<span class="sig-prename descclassname"><span class="pre">junior.</span></span><span class="sig-name descname"><span class="pre">validates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#junior.util.junior.validates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</td>
+<td><p><a class="reference external" href="https://docs.sqlalchemy.org/en/14/orm/mapped_attributes.html#sqlalchemy.orm.validates" title="(in SQLAlchemy v1.4)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sqlalchemy.orm.validates()</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">junior</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-application">The Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.config">The Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.db">The Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.controls">The Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.auth">The User</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.api">The REST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.assets">The Assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.web">The Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.templates">The Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.components">The Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.context">The Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.cache">The Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.queue">The Queue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.mail">The Mail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.socket">The Socket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.errors">The Errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-junior.util">The Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-shortcuts">The Shortcuts</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">it’s junior!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy; 2020, 2021, <a href="https://chriswhalen.ca">Chris Whalen</a>.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

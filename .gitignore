@@ -10,4 +10,3 @@ env.yaml
 .tox
 .*cache
 *.egg-info
-package-lock.json

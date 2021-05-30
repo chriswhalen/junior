@@ -11,7 +11,8 @@ testing
 -------
 
 junior features a modest set of unit tests to check for basic functional errors.
-Run `pytest` in a shell at the project root folder to start these tests.
+To start these tests, run `pip install pytest` followed by `pytest`
+from a shell in the project root folder.
 
 Each commit pushed to GitHub is [automatically tested](
     https://github.com/chriswhalen/junior/actions/workflows/test.yml )
@@ -26,5 +27,4 @@ reporting
 If you've discovered an active or potential security issue,
 please report it to the project author by email.
 
-<chris@chriswhalen.ca>
-
+Chris Whalen <chris@chriswhalen.ca>

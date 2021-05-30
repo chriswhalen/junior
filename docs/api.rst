@@ -1,0 +1,327 @@
+API
+===
+.. module:: junior
+
+These names are printed without their package name;
+some packages provide classes and methods that share a name,
+so please check the full name of any references to avoid confusion.
+
+
+The Application
+---------------
+
+.. autoclass:: junior.Application
+   :members:
+   :show-inheritance:
+
+
+The Configuration
+-----------------
+
+.. automodule:: junior.config
+   :members:
+   :show-inheritance:
+
+
+The Database
+------------
+
+.. automodule:: junior.db
+   :members: AlembicVersion, db, filter, model, on, timestamps
+   :show-inheritance:
+
+
+The Controls
+------------
+
+.. automodule:: junior.controls
+   :members:
+   :show-inheritance:
+
+
+The User
+--------
+
+.. automodule:: junior.auth
+   :members:
+   :show-inheritance:
+
+
+The REST
+--------
+
+.. automodule:: junior.api
+   :members: api, defaults, properties, register, resource, resources, rest,
+             schemas, start
+   :show-inheritance:
+
+
+The Assets
+----------
+
+.. automodule:: junior.assets
+   :members:
+   :show-inheritance:
+
+
+The Index
+---------
+
+.. automodule:: junior.web
+   :members:
+   :show-inheritance:
+
+
+The Templates
+-------------
+
+.. automodule:: junior.templates
+   :members:
+   :show-inheritance:
+
+
+The Components
+--------------
+
+.. automodule:: junior.components
+   :members:
+   :show-inheritance:
+
+
+The Context
+-----------
+
+.. automodule:: junior.context
+   :members:
+   :show-inheritance:
+
+
+The Cache
+---------
+
+.. automodule:: junior.cache
+   :members:
+   :show-inheritance:
+
+
+The Queue
+---------
+
+.. automodule:: junior.queue
+   :members:
+   :show-inheritance:
+
+
+The Mail
+--------
+
+.. automodule:: junior.mail
+   :members:
+   :show-inheritance:
+
+
+The Socket
+----------
+
+.. automodule:: junior.socket
+   :members:
+   :show-inheritance:
+
+
+The Errors
+----------
+
+.. automodule:: junior.errors
+   :members:
+   :show-inheritance:
+
+
+The Helpers
+-----------
+
+.. automodule:: junior.util
+   :members:
+   :private-members:
+   :show-inheritance:
+
+
+The Shortcuts
+-------------
+
+We can ``import`` a number of commonly used tools directly from the ``junior``
+package to help us consolidate our ``import`` statements.
+
+Several names are provided by an alias.
+If the default ``import`` name is confusing or blocks one of our other names,
+we can ``import ... as nice_name``.
+
+.. list-table::
+
+   * - .. data:: junior.Blueprint
+     - :class:`flask.Blueprint`
+
+   * - .. data:: junior.Flask
+     - :class:`flask.Flask`
+
+   * - .. data:: junior.Message
+     - :class:`flask_mailman.EmailMessage`
+
+   * - .. data:: junior.Model
+     - :class:`flask_sqlalchemy.Model`
+
+   * - .. data:: junior.Path
+     - :class:`pathlib.Path`
+
+   * - .. data:: juinor.Request
+     - :class:`flask.Request`
+
+   * - .. data:: juinor.Resource
+     - :class:`flask_restful.Resource`
+
+   * - .. data:: juinor.Response
+     - :class:`flask.Response`
+
+   * - .. data:: junior.User
+     - :class:`junior.auth.User`
+
+   * - .. function:: junior.X
+     - :func:`junior.util.X`
+
+   * - .. function:: junior._
+     - :func:`junior.util._`
+
+   * - .. data:: junior.api
+     - :attr:`junior.api.api`
+
+   * - .. function:: junior.b
+     - :func:`junior.util.b`
+
+   * - .. function:: junior.cache
+     - :func:`junior.cache.cache`
+
+   * - .. data:: junior.components
+     - :attr:`junior.components.components`
+
+   * - .. data:: junior.config
+     - :attr:`junior.config.config`
+
+   * - .. data:: junior.context
+     - :attr:`junior.context.context`
+
+   * - .. data:: junior.db
+     - :attr:`junior.db.db`
+
+   * - .. data:: junior.dt
+     - :data:`datetime.datetime`
+
+   * - .. function:: junior.emit
+     - :func:`flask_socketio.emit`
+
+   * - .. function:: junior.echo
+     - :func:`junior.util.echo`
+
+   * - .. data:: junior.env
+     - :attr:`junior.config.env`
+
+   * - .. function:: junior.error
+     - :func:`junior.errors.error`
+
+   * - .. function:: junior.filter
+     - :func:`junior.db.filter`
+
+   * - .. function:: junior.flatten
+     - :func:`junior.util.flatten`
+
+   * - .. function:: junior.flash
+     - :func:`flask.flash`
+
+   * - .. function:: junior.forget
+     - :func:`junior.cache.forget`
+
+   * - .. data:: junior.g
+     - :data:`flask.g`
+
+   * - .. function:: junior.get
+     - :func:`junior.cache.get`
+
+   * - .. function:: junior.join
+     - :func:`flask.safe_join`
+
+   * - .. function:: junior.jsonify
+     - :func:`flask.json.jsonify`
+
+   * - .. function:: junior.mail
+     - :func:`junior.mail.mail`
+
+   * - .. function:: junior.memo
+     - :func:`junior.cache.memo`
+
+   * - .. function:: junior.model
+     - :func:`junior.db.model`
+
+   * - .. function:: junior.on
+     - :func:`junior.db.on`
+
+   * - .. function:: junior.path
+     - :func:`os.path.realpath`
+
+   * - .. function:: junior.queue
+     - :func:`junior.queues.queue`
+
+   * - .. function:: junior.redirect
+     - :func:`flask.redirect`
+
+   * - .. function:: junior.register
+     - :func:`junior.api.register`
+
+   * - .. function:: junior.render
+     - :func:`flask.render_template`
+
+   * - .. data:: junior.request
+     - :attr:`flask.request`
+
+   * - .. function:: junior.resource
+     - :func:`junior.api.resource`
+
+   * - .. function:: junior.response
+     - :func:`flask.make_response`
+
+   * - .. data:: junior.schemas
+     - :attr:`junior.api.schemas`
+
+   * - .. function:: junior.send
+     - :func:`flask_socketio.send`
+
+   * - .. data:: junior.session
+     - :class:`flask.session`
+
+   * - .. function:: junior.set
+     - :func:`junior.cache.set`
+
+   * - .. data:: junior.socket
+     - :attr:`junior.sockets.socket`
+
+   * - .. function:: junior.split
+     - :data:`os.path.split`
+
+   * - .. data:: junior.store
+     - :attr:`junior.cache.store`
+
+   * - .. function:: junior.synonym
+     - :func:`sqlalchemy.orm.synonym`
+
+   * - .. data:: junior.td
+     - :data:`datetime.timedelta`
+
+   * - .. function:: junior.to
+     - :func:`flask.url_for`
+
+   * - .. function:: junior.timestamps
+     - :func:`junior.db.timestamps`
+
+   * - .. data:: junior.web
+     - :attr:`junior.web.web`
+
+   * - .. function:: junior.validates
+     - :func:`sqlalchemy.orm.validates`
+

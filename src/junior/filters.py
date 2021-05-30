@@ -6,23 +6,32 @@ from jinja2 import Environment
 from webassets.filter import Filter, register_filter as register
 
 from . import join
-from .config import jinja_options, vendor
+from .config import jinja, vendor
 from .context import context
 
 
 @register
 class Hamlish(Filter):
+    '''
+    A :class:`~webassets.filter.Filter` to parse a
+    `HAML <https://haml.info/>`_ template into HTML markup.
+    '''
 
     name = 'hamlish'
 
     def input(self, _in, _out, **params):
 
-        _out.write(Environment(**jinja_options).hamlish_from_string(
+        _out.write(Environment(**jinja).hamlish_from_string(
             _in.read(), globals=context).render())
 
 
 @register
 class HandleEmpty(Filter):
+    '''
+    A :class:`~webassets.filter.Filter` adding an empty comment
+    to an empty source file, to avoid a later filter failing to
+    parse the empty document.
+    '''
 
     name = 'handle_empty'
 
@@ -38,6 +47,10 @@ class HandleEmpty(Filter):
 
 @register
 class Require(Filter):
+    '''
+    A :class:`~webassets.filter.Filter` adding a basic ``require`` keyword
+    clone to our JavaScript source files.
+    '''
 
     name = 'require'
 
@@ -103,6 +116,10 @@ class Require(Filter):
 
 @register
 class ImportSSS(Filter):
+    '''
+    A :class:`~webassets.filter.Filter` adding a basic ``import`` keyword
+    clone to our `SugarSS <https://github.com/postcss/sugarss>`_ source files.
+    '''
 
     name = 'import_sss'
 
@@ -150,6 +167,10 @@ class ImportSSS(Filter):
 
 @register
 class ImportCSS(Filter):
+    '''
+    A :class:`~webassets.filter.Filter` adding a basic ``import`` keyword
+    clone to our CSS source files.
+    '''
 
     name = 'import_css'
 
@@ -213,25 +234,8 @@ class ImportCSS(Filter):
 
 
 @register
-class FixBabelHelpers(Filter):
-
-    name = 'fix_babel_helpers'
-
-    def fix_babel_helpers(self, match):
-
-        return ''
-
-    def input(self, _in, _out, **params):
-
-        for line in _in.readlines():
-
-            _out.write(sub(r'babelHelpers\["(.*?)"\]',
-                           self.fix_babel_helpers,
-                           line))
-
-
-@register
 class Strip(Filter):
+    '''A :class:`~webassets.filter.Filter` to strip blank lines.'''
 
     name = 'strip'
 
@@ -245,6 +249,10 @@ class Strip(Filter):
 
 @register
 class WrapScript(Filter):
+    '''
+    A :class:`~webassets.filter.Filter` to wrap a JavaScript source document
+    in ``<script>`` tags for us to embed it into markup.
+    '''
 
     name = 'wrap_script'
 
@@ -258,6 +266,11 @@ class WrapScript(Filter):
 
 @register
 class WrapStyle(Filter):
+
+    '''
+    A :class:`~webassets.filter.Filter` to wrap a CSS stylesheet document
+    in ``<style>`` tags for us to embed it into markup.
+    '''
 
     name = 'wrap_style'
 

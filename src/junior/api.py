@@ -31,11 +31,26 @@ class Api(RestfulApi):
         return handler(e)
 
 
+#: A :class:`~flask.Blueprint` governing the RESTful API.
 api = Blueprint('api', __name__)
+
+#: An :class:`~flask_restful.Api` bound to :attr:`api`.
+#: It allows us to attach :class:`~flask_restful.Resource` objects to
+#: :attr:`api`, assigning them each a URL based on their class name by default.
 rest = Api(api)
+
+#: A :class:`~flask_marshmallow.Marshmallow` to help us
+#: serialize database records into a plain text JSON response.
 schemas = Marshmallow()
+
+#: The :class:`~flask_restful.Resource` objects we've attached to :attr:`api`.
 resources = []
 
+#: The API's properties. These values can be managed under the ``api`` section
+#: of ``config/app.yaml``. :attr:`properties.root` defaults to ``'/api/v1/'``;
+#: :attr:`properties.version` defaults to ``1``;
+#: :attr:`properties.updated_at` defaults to the date and time
+#: we ``import``-ed junior.
 properties = X(
     endpoints={},
     root=f'/api/v{config.api.version}/',
@@ -47,6 +62,38 @@ api.url_prefix = properties.root[:-1]
 
 
 def resource(this):
+    '''
+    Create a new :class:`~flask_restful.Resource` from a
+    :class:`~flask_sqlalchemy.Model` ``this``.
+    We can use :attr:`resource` as a decorator on our new
+    :class:`~flask_sqlalchemy.Model` classes, after :attr:`~junior.db.model`::
+
+        from junior import Model, model, register, resource
+
+        @register
+        @resource
+        @model
+        class User(Model):
+            ...
+
+    :attr:`resource` provides two classes:
+
+        *   :class:`ModelSchema` is a
+            :class:`~marshmallow_sqlalchemy.SQLAlchemyAutoSchema`
+            bound to a :class:`~flask_sqlalchemy.Model`.
+            It helps us serialize a :class:`~flask_sqlalchemy.Model`
+            instance or collection into a JSON response.
+
+        *   :class:`ModelResource` is a
+            :class:`~flask_restful.Resource`
+            bound to a :class:`~flask_sqlalchemy.Model`.
+            It provides us a set of RESTful routes that perform
+            :class:`~flask_sqlalchemy.Model` actions.
+            The model's :attr:`Meta` attribute controls the routes' behaviour.
+
+    :param this: the :class:`~flask_sqlalchemy.Model` we'll use to build a new
+                 :class:`~flask_restful.Resource`.
+    '''
 
     class ModelSchema(schemas.SQLAlchemyAutoSchema):
 
@@ -241,6 +288,28 @@ def resource(this):
 
 
 def register(this, name=None, endpoint=None, *params):
+    '''
+    Attach a :class:`~flask_restful.Resource` ``this`` to :attr:`api`.
+    We can use :attr:`register` as a decorator on our new
+    :class:`~flask_sqlalchemy.Model` classes, after :attr:`register`::
+
+        from junior import Model, model, register, resource
+
+        @register
+        @resource
+        @model
+        class User(Model):
+            ...
+
+    :param this: the :class:`~flask_sqlalchemy.Resource` we'll attach to
+                 :attr:`api`.
+    :param name: the name of our :class:`~flask_sqlalchemy.Resource`;
+                 defaults to the underlying :class:`~flask_sqlalchemy.Model`'s
+                 pluralized name.
+    :param endpoint: the root URL path we'll assign to our
+                     :class:`~flask_sqlalchemy.Resource`; defaults to ``name``
+                     transformed to `snake_case`.
+    '''
 
     try:
         resource = this.resource
@@ -291,6 +360,15 @@ def register(this, name=None, endpoint=None, *params):
 
 
 def defaults():
+    '''
+    Add a default set of routes to :attr:`api`:
+
+        * ``/`` returns :attr:`properties`;
+        * a missing path raises :class:`~werkzeug.exceptions.NotFound`;
+        * a raised ``Exception`` calls :meth:`~flask.Flask.errorhandler`
+          to return a JSON response with an appropriate error message
+          and HTTP status code.
+    '''
 
     @api.route('/')
     def __index():
@@ -302,7 +380,7 @@ def defaults():
 
         raise NotFound
 
-    @handle(api.url_prefix+'/')
+    @handle(api.url_prefix + '/')
     @api.errorhandler(Exception)
     def __error(exception):
 
@@ -311,6 +389,12 @@ def defaults():
 
 
 def start(app):
+    '''
+    Start :attr:`api` and register it to ``app``.
+    :meth:`start` wants to be called by :meth:`~junior.Application.start`.
+
+    :param app: an :class:`~junior.Application` for us to register :attr:`api`.
+    '''
 
     from . import _api
 

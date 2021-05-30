@@ -5,8 +5,10 @@ from .config import env
 from .errors import BundleError, TemplateNotFound, error, handle
 
 
+#: A :class:`~flask.Blueprint` serving our component templates.
 components = Blueprint('components', __name__)
 
+#: The URL prefix we want to use for :attr:`components`.
 components.url_prefix = '/_/'
 
 
@@ -23,6 +25,16 @@ def cache(response):
 
 
 def defaults():
+    '''
+    Add a default set of routes to :attr:`components`:
+
+       * the incoming path name is mapped to a component name and rendered;
+       * a missing path raises returns a simple HTML comment response
+         with HTTP status code 404;
+       * a raised ``Exception`` calls :meth:`~flask.Flask.errorhandler`
+         to return an HTML comment response with an appropriate error message
+         and HTTP status code.
+    '''
 
     from . import _components
 
@@ -44,6 +56,13 @@ def defaults():
 
 
 def start(app):
+    '''
+    Start :attr:`components` and register it to ``app``.
+    :meth:`start` wants to be called by :meth:`~junior.Application.start`.
+
+    :param app: an :class:`~junior.Application` for us to register
+                :attr:`components`.
+    '''
 
     from . import _components
 

@@ -1,4 +1,3 @@
-import distutils                                                        # noqa
 from distutils.dir_util import copy_tree
 from os import environ
 from pathlib import Path
@@ -14,23 +13,36 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from yaml import safe_load as load
 
 from . import __root_path, dt, join
-from .util import X, collapse
+from .util import X, flatten
 
 
 class Config(Munch, FlaskConfig):
+    '''
+    A :class:`~flask.Config` wrapped in :class:`~junior.util.X`.
+    '''
 
     def __repr__(self):
 
         return f'Config(\n{pformat(self.__dict__, 2)}\n)'
 
 
+#: Our :class:`Application` environment variables.
+#: :attr:`env` is passed to :class:`~junior.Application` ``.config``.
 env = X()
+
+#: Our configuration options.
 config = X()
+
+#: Our vendor options.
 vendor = X()
 
+#: Our `BabelJS <https://babeljs.io/>`_ options.
 babel = X()
+
+#: Our `PostCSS <https://postcss.org/>`_ options.
 postcss = X()
 
+#: Our default :attr:`env`.
 defaults = X(
     alembic={},
     auth_factor=10,
@@ -98,7 +110,7 @@ except (OSError, TypeError):
 try:
     with open(join(env.config_path, 'env.yaml')) as file:
 
-        env.update(collapse(load(file.read())))
+        env.update(flatten(load(file.read())))
 
 except (OSError, TypeError):
     pass
@@ -226,7 +238,8 @@ if 'updated_at' not in config.api:
     config.api.updated_at = dt.now()
 
 
-celery_options = X(
+#: Our :class:`~celery.Celery` options.
+celery = X(
     broker_url='filesystem://',
     broker_transport_options=X(
         data_folder_in=join(env.cache_path, 'queue'),
@@ -237,7 +250,8 @@ celery_options = X(
 )
 
 
-jinja_options = X(
+#: Our :class:`~jinja2.Environment` options.
+jinja = X(
     extensions=['hamlish_jinja.HamlishExtension'],
     variable_start_string=env.templates_expressions_open,
     variable_end_string=env.templates_expressions_close
@@ -245,6 +259,12 @@ jinja_options = X(
 
 
 def start(app):
+    '''
+    Start our configuration service bound to ``app``.
+    :meth:`start` wants to be called by :meth:`~junior.Application.start`.
+
+    :param app: an :class:`~junior.Application` for us to configure.
+    '''
 
     app.config = Config(app.config)
 
@@ -270,8 +290,7 @@ def start(app):
     rm_tree(env.cache_path, True)
 
     Path(env.cache_path).mkdir(exist_ok=True)
-    Path(celery_options.broker_transport_options.data_folder_in
-         ).mkdir(exist_ok=True)
+    Path(celery.broker_transport_options.data_folder_in).mkdir(exist_ok=True)
 
     Path(join(env.cache_path, 'empty')).touch()
     Path(join(env.cache_path, 'history')).touch()

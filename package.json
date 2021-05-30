@@ -2,8 +2,14 @@
     "name": "@dubb/junior",
     "version": "0.5.0",
     "description": "A full stack web framework, powered by Flask.",
+    "homepage": "https://itsjunior.com",
     "repository": "github:chriswhalen/junior",
     "license": "MIT",
+    "author": {
+        "name": "Chris Whalen",
+        "email": "chris@chriswhalen.ca",
+        "url": "https://chriswhalen.ca"
+    },
     "dependencies": {
         "autoprefixer": "^10.2.5",
         "clean-css-cli": "^5.3.0",
@@ -24,5 +30,8 @@
         "postcss-sorting": "^6.0.0",
         "postcss-utilities": "^0.8.4",
         "sugarss": "^3.0.3"
+    },
+    "scripts": {
+        "test": "pytest"
     }
 }
