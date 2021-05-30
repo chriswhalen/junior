@@ -66,9 +66,7 @@ dt:target, .highlight, dt:target, span.highlighted {
 }
 
 dl dl {
-    margin: 0;
-    padding-top: 0;
-    padding-left: 2em;
+    margin: 0 0 1em 2em;
 }
 
 dl dl.field-list {
