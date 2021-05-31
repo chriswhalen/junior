@@ -127,7 +127,6 @@ class Application(Flask):
 
         #: An :class:`~flask_assets.Environment`
         #: to compile our application's client-side source files.
-        #: Its configuration is managed internally by junior.
         self.assets = Assets(self)
         self.assets.auto_build = False
         self.assets.cache = env.cache_path
@@ -146,7 +145,6 @@ class Application(Flask):
         #: A :class:`~flask_babel.Babel`
         #: to add internationalization and localization tools to our
         #: application.
-        #: Its configuration is managed internally by junior.
         self.locale = Babel(self)
 
         #: A :class:`~flask_mail.Mail`
@@ -157,13 +155,11 @@ class Application(Flask):
 
         #: An :class:`~flask_alembic.Alembic`
         #: to help us create migrations for our database structure.
-        #: Its configuration is managed internally by junior.
         self.migrations = Alembic(self, run_mkdir=False)
         self.migrations.rev_id = lambda: '%04d' % (env.database_revision + 1,)
 
         #: A :class:`~flask_marshmallow.Marshmallow`
         #: to serialize data records to be served by our RESTful API.
-        #: Its configuration is managed internally by junior.
         self.schemas = schemas
 
         #: An alias of :attr:`junior.cache.store`.
