@@ -31,9 +31,9 @@ setup(
     long_description=package['long_description'],
     long_description_content_type='text/markdown',
     project_urls={
-        'Documentation': 'https://itsjunior.readthedocs.io',
-        'Source': 'https://github.com/chriswhalen/junior',
         'Issues': 'https://github.com/chriswhalen/junior/issues',
+        'Source': 'https://github.com/chriswhalen/junior',
+        'Documentation': 'https://itsjunior.readthedocs.io',
     },
     packages=['junior'],
     package_data={'junior': ['config/*',

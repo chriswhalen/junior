@@ -36,7 +36,7 @@ config = X()
 #: Our vendor options.
 vendor = X()
 
-#: Our `BabelJS <https://babeljs.io/>`_ options.
+#: Our :class:`~flask_babel.Babel` options.
 babel = X()
 
 #: Our `PostCSS <https://postcss.org/>`_ options.

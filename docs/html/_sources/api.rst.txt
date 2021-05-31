@@ -2,9 +2,9 @@ API
 ===
 .. module:: junior
 
-The names in this reference are printed without their package name;
+These names are printed without their package name;
 some packages provide classes and methods that share a name,
-so please check any references to ensure we're looking at the right one.
+so please check the full name of any references to avoid confusion.
 
 
 The Application

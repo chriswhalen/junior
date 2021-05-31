@@ -4,7 +4,7 @@ junior
 
 [![test](https://github.com/chriswhalen/junior/actions/workflows/test.yml/badge.svg)](https://github.com/chriswhalen/junior/actions/workflows/test.yml)
 [![analyze](https://github.com/chriswhalen/junior/actions/workflows/analyze.yml/badge.svg)](https://github.com/chriswhalen/junior/actions/workflows/analyze.yml)
-[![docs](https://readthedocs.org/projects/itsjunior/badge/?version=latest)](https://itsjunior.readthedocs.io/en/latest/?badge=latest)
+[![docs](https://readthedocs.org/projects/itsjunior/badge)](https://itsjunior.readthedocs.io/en/latest)
 
 A full stack web framework, powered by [Flask]( https://flask.palletsprojects.com ).
 
