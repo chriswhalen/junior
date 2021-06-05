@@ -85,8 +85,8 @@ dl dl.field-list {
     padding-top: 0;
 }
 
-dl.field-list > dt {
-    padding-left: 0;
+dl.field-list > dt, dl.field-list > dd {
+    margin-bottom: 1em;
 }
 
 :not(li) > ol > li:first-child > :first-child,
@@ -203,6 +203,10 @@ div.sphinxsidebar #searchbox input[type="text"]{
 div.sphinxsidebar ul ul, div.sphinxsidebar ul.want-points {
     margin-left: 12px;
     list-style: none;
+}
+
+.wy-table-responsive {
+    overflow-x: scroll;
 }
 
 #searchbox {
