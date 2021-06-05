@@ -39,20 +39,12 @@ div.body p, div.body dd, div.body li, div.body blockquote {
     hyphens: none;
 }
 
-dl {
-    margin: 2em 0;
-}
-
-ul, ol {
-    list-style: none;
+div, p {
+    font-family: sans-serif!important;
 }
 
 h1, h2, h3, h4, h5, h6 {
     color:  #222;
-    font-family: sans-serif!important;
-}
-
-div, p {
     font-family: sans-serif!important;
 }
 
@@ -67,10 +59,16 @@ h2, div.body h2 {
     padding: 0.5em 0 0.1em 0;
 }
 
-div.sphinxsidebar, div.documentwrapper, table.indextable tr.cap, ul.search li,
-div.admonition, div.admonition tt.xref, div.admonition code.xref,
-div.admonition a tt {
-    background: none!important;
+ul, ol {
+    list-style: none;
+}
+
+dl {
+    margin: 2em 0;
+}
+
+dt {
+    font-size: smaller;
 }
 
 dt:target, .highlight, dt:target, span.highlighted {
@@ -108,6 +106,12 @@ pre, code, tt, tt.xref, code.xref, a tt {
     border: none;
     font-size: 1.2em;
     letter-spacing: -0.5px;
+}
+
+div.sphinxsidebar, div.documentwrapper, table.indextable tr.cap, ul.search li,
+div.admonition, div.admonition tt.xref, div.admonition code.xref,
+div.admonition a tt {
+    background: none!important;
 }
 
 div.highlight pre, table.highlighttable pre {
@@ -322,6 +326,14 @@ table.docutils td {
         font-size: smaller;
         margin-left: -0.75em;
         width: 100%;
+    }
+
+    div.admonition p.admonition-title {
+        margin-left: -1.44em;
+    }
+
+    dl dl {
+       margin: 0 0 1em -2em;
     }
 }
 

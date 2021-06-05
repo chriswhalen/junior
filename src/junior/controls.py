@@ -10,7 +10,7 @@ def deny_all(model):
                   :class:`~flask_restful.Resource`.
     '''
 
-    return None
+    return all
 
 
 def allow_all(model):
