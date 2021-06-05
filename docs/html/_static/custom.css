@@ -6,7 +6,7 @@ body, div.body {
 }
 
 div.body {
-    padding-top: 10px;
+    padding: 0 10px;
 }
 
 div.document, div.footer {
