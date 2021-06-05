@@ -10,9 +10,27 @@ mandatory, as junior presents a unique interface that's described here in this
 document. All of our API components are also cross-referenced directly to their
 source project's documentation.
 
-.. _Flask: https://flask.palletsprojects.com
+
+Why a "full stack" framework?
+-----------------------------
+
+junior handles every aspect of the web application stack,
+from the SQL database layer straight up to the client-side Javascript layer.
+
+This integrated approach helps us offer a consistent interface for the entire
+application, where each aspect supports its partners; as a developer,
+this can help you reduce interface code and focus on all the features
+that make your software special!
+
+
+Index
+-----
 
 .. toctree::
    :maxdepth: 2
 
+   start
    api
+
+
+.. _Flask: https://flask.palletsprojects.com

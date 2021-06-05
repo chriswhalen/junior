@@ -3,6 +3,7 @@ body, div.body {
     font-family: sans-serif;
     max-width: none;
     min-width: 0;
+    overflow-x: hidden;
 }
 
 div.body {
@@ -22,9 +23,20 @@ a, div.sphinxsidebar a {
     transition: all 0.24s ease;
 }
 
-a:hover, div.sphinxsidebar a:hover {
+a:hover, div.sphinxsidebar a:hover, a:hover tt, a:hover code,
+div.admonition code.xref:hover, a:focus-visible,
+div.sphinxsidebar a:focus-visible, a:focus-visible tt,
+a:focus-visible code, div.admonition code.xref:focus-visible {
+    background: rgba(0,0,0,0.5)!important;
     color: #6ff;
+    padding: 4px 8px;
+    margin: -4px -8px;
+    outline: none;
     transform: scale(1.12);
+}
+
+div.body p, div.body dd, div.body li, div.body blockquote {
+    hyphens: none;
 }
 
 dl {
@@ -52,7 +64,7 @@ h1, div.body h1 {
 h2, div.body h2 {
     font-weight: 600;
     user-select: none;
-    padding-top: 1em;
+    padding: 0.5em 0 0.1em 0;
 }
 
 div.sphinxsidebar, div.documentwrapper, table.indextable tr.cap, ul.search li,
@@ -75,7 +87,16 @@ dl dl.field-list {
 
 dl.field-list > dt {
     padding-left: 0;
-    padding-top: 0.5px;
+}
+
+:not(li) > ol > li:first-child > :first-child,
+:not(li) > ul > li:first-child > :first-child {
+    margin-top: -8px;
+}
+
+:not(li) > ol > li:last-child > :last-child,
+:not(li) > ul > li:last-child > :last-child {
+    margin-bottom: -8px;
 }
 
 section > dl {
@@ -85,8 +106,12 @@ section > dl {
 pre, code, tt, tt.xref, code.xref, a tt {
     background: transparent;
     border: none;
-    font-size: 1em;
+    font-size: 1.2em;
     letter-spacing: -0.5px;
+}
+
+div.highlight pre, table.highlighttable pre {
+    padding: 1.5em;
 }
 
 div.sphinxsidebar h3, div.sphinxsidebar h4 {
@@ -108,12 +133,6 @@ input, div.sphinxsidebar input {
 div.sphinxsidebar input, div.genindex-jumpbox, div.modindex-jumpbox,
 div.admonition tt.xref, div.admonition code.xref, div.admonition a tt {
     border: none;
-}
-
-a:hover tt, a:hover code, div.admonition code.xref:hover {
-    background: rgba(0,0,0,0.5)!important;
-    padding: 4px 8px;
-    margin: -4px -8px;
 }
 
 form input[type=text] {
@@ -148,12 +167,11 @@ div.admonition > :last-child {
 }
 
 a.headerlink {
-    background: none!important;
     color: #66666f!important;
     font-family: Georgia, serif;
     margin-left: 0.16em;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: all 0.4s ease;
 }
 
 h1:hover > a.headerlink, h2:hover > a.headerlink, h3:hover > a.headerlink,
@@ -234,7 +252,6 @@ table.docutils td {
     border: none;
 }
 
-
 @media screen {
 
     ::-webkit-scrollbar {
@@ -281,15 +298,22 @@ table.docutils td {
     .highlight pre, .highlight ::-webkit-scrollbar,
     .highlight ::-webkit-scrollbar-thumb {
         background: #fffff6!important;
+        color:  #222;
         filter: invert(0.9);
     }
 }
 
 @media screen and (max-width: 875px) {
 
-    div.document, div.footer, div.body, table.docutils {
+    div.document, div.footer, div.body {
         width: 100%;
         margin-left: 0;
+    }
+
+    table.docutils {
+        font-size: smaller;
+        margin-left: -0.75em;
+        width: 100%;
     }
 }
 

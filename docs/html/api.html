@@ -15,7 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="it’s junior!" href="index.html" />
+    <link rel="prev" title="Get Started" href="start.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -59,8 +59,7 @@ and defaults to <code class="docutils literal notranslate"><span class="pre">'ap
 <dt class="sig sig-object py" id="junior.Application.assets">
 <span class="sig-name descname"><span class="pre">assets</span></span><a class="headerlink" href="#junior.Application.assets" title="Permalink to this definition">¶</a></dt>
 <dd><p>An <a class="reference external" href="https://flask-assets.readthedocs.io/en/latest/index.html#flask_assets.Environment" title="(in Flask-Assets v0.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a>
-to compile our application’s client-side source files.
-Its configuration is managed internally by junior.</p>
+to compile our application’s client-side source files.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -82,8 +81,7 @@ after we call <a class="reference internal" href="#junior.Application.start" tit
 <span class="sig-name descname"><span class="pre">locale</span></span><a class="headerlink" href="#junior.Application.locale" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://flask-babel.tkte.ch/index.html#flask_babel.Babel" title="(in Flask-Babel)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Babel</span></code></a>
 to add internationalization and localization tools to our
-application.
-Its configuration is managed internally by junior.</p>
+application.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -99,16 +97,14 @@ configuration.</p>
 <dt class="sig sig-object py" id="junior.Application.migrations">
 <span class="sig-name descname"><span class="pre">migrations</span></span><a class="headerlink" href="#junior.Application.migrations" title="Permalink to this definition">¶</a></dt>
 <dd><p>An <a class="reference external" href="https://flask-alembic.readthedocs.io/en/latest/index.html#flask_alembic.Alembic" title="(in Flask-Alembic v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Alembic</span></code></a>
-to help us create migrations for our database structure.
-Its configuration is managed internally by junior.</p>
+to help us create migrations for our database structure.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="junior.Application.schemas">
 <span class="sig-name descname"><span class="pre">schemas</span></span><a class="headerlink" href="#junior.Application.schemas" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <a class="reference external" href="https://flask-marshmallow.readthedocs.io/en/latest/index.html#flask_marshmallow.Marshmallow" title="(in Flask-Marshmallow v0.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Marshmallow</span></code></a>
-to serialize data records to be served by our RESTful API.
-Its configuration is managed internally by junior.</p>
+to serialize data records to be served by our RESTful API.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -240,7 +236,7 @@ Its connection details are populated from our application’s configuration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>_event</strong> – the <code class="xref py py-func docutils literal notranslate"><span class="pre">sqlalchemy.event()</span></code> we want to bind.</p></li>
+<li><p><strong>_event</strong> – the <a class="reference external" href="https://docs.sqlalchemy.org/en/14/core/events.html#sqlalchemy.event.base.Events" title="(in SQLAlchemy v1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> we want to bind.</p></li>
 <li><p><strong>attribute</strong> – the attribute we want to watch.</p></li>
 <li><p><strong>function</strong> – the callback function we want to trigger.</p></li>
 </ul>
@@ -317,7 +313,7 @@ using <code class="docutils literal notranslate"><span class="pre">this.id</span
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>_event</strong> – the <code class="xref py py-func docutils literal notranslate"><span class="pre">sqlalchemy.event()</span></code> we want to bind.</p></li>
+<li><p><strong>_event</strong> – the <a class="reference external" href="https://docs.sqlalchemy.org/en/14/core/events.html#sqlalchemy.event.base.Events" title="(in SQLAlchemy v1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Events</span></code></a> we want to bind.</p></li>
 <li><p><strong>attribute</strong> – the attribute we want to watch.</p></li>
 <li><p><strong>function</strong> – the callback function we want to trigger.</p></li>
 </ul>
@@ -368,7 +364,7 @@ to select, update, and delete every record.</p>
 <span class="sig-prename descclassname"><span class="pre">junior.controls.</span></span><span class="sig-name descname"><span class="pre">allow_belongs_to_me</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.controls.allow_belongs_to_me" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allow any <a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a> we bind to <code class="docutils literal notranslate"><span class="pre">model</span></code>
 to select, update, and delete only records where <code class="docutils literal notranslate"><span class="pre">user_id</span></code>
-matches our current <code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code> <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
+matches our current <a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a> <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>model</strong> – a <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> we want to bind to a
@@ -382,7 +378,7 @@ matches our current <code class="xref py py-class docutils literal notranslate">
 <span class="sig-prename descclassname"><span class="pre">junior.controls.</span></span><span class="sig-name descname"><span class="pre">allow_self_for_me</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#junior.controls.allow_self_for_me" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allow any <a class="reference external" href="https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource" title="(in Flask-RESTful v0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a> we bind to <code class="docutils literal notranslate"><span class="pre">model</span></code>
 to select, update, and delete only records where <code class="docutils literal notranslate"><span class="pre">id</span></code>
-matches our current <code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code> <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
+matches our current <a class="reference internal" href="#junior.auth.User" title="junior.auth.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a> <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>model</strong> – a <a class="reference external" href="https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Model" title="(in Flask-SQLAlchemy v2.x)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> we want to bind to a
@@ -820,7 +816,7 @@ and HTTP status code.</p></li>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="junior.context.context">
-<span class="sig-prename descclassname"><span class="pre">junior.context.</span></span><span class="sig-name descname"><span class="pre">context</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'X':</span> <span class="pre">&lt;function</span> <span class="pre">X&gt;,</span> <span class="pre">'_':</span> <span class="pre">&lt;function</span> <span class="pre">_&gt;,</span> <span class="pre">'asset':</span> <span class="pre">&lt;function</span> <span class="pre">asset&gt;,</span> <span class="pre">'config':</span> <span class="pre">{'api':</span> <span class="pre">{'updated_at':</span> <span class="pre">datetime.datetime(2020,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0),</span> <span class="pre">'version':</span> <span class="pre">1}},</span> <span class="pre">'dt':</span> <span class="pre">&lt;class</span> <span class="pre">'datetime.datetime'&gt;,</span> <span class="pre">'now':</span> <span class="pre">datetime.datetime(2021,</span> <span class="pre">5,</span> <span class="pre">30,</span> <span class="pre">21,</span> <span class="pre">22,</span> <span class="pre">24,</span> <span class="pre">292279),</span> <span class="pre">'title':</span> <span class="pre">&lt;function</span> <span class="pre">title&gt;}</span></em><a class="headerlink" href="#junior.context.context" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">junior.context.</span></span><span class="sig-name descname"><span class="pre">context</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'X':</span> <span class="pre">&lt;function</span> <span class="pre">X&gt;,</span> <span class="pre">'_':</span> <span class="pre">&lt;function</span> <span class="pre">_&gt;,</span> <span class="pre">'asset':</span> <span class="pre">&lt;function</span> <span class="pre">asset&gt;,</span> <span class="pre">'config':</span> <span class="pre">{'api':</span> <span class="pre">{'updated_at':</span> <span class="pre">datetime.datetime(2020,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0),</span> <span class="pre">'version':</span> <span class="pre">1}},</span> <span class="pre">'dt':</span> <span class="pre">&lt;class</span> <span class="pre">'datetime.datetime'&gt;,</span> <span class="pre">'now':</span> <span class="pre">datetime.datetime(2021,</span> <span class="pre">6,</span> <span class="pre">4,</span> <span class="pre">18,</span> <span class="pre">32,</span> <span class="pre">40,</span> <span class="pre">955194),</span> <span class="pre">'title':</span> <span class="pre">&lt;function</span> <span class="pre">title&gt;}</span></em><a class="headerlink" href="#junior.context.context" title="Permalink to this definition">¶</a></dt>
 <dd><p>Our <a class="reference internal" href="#junior.Application" title="junior.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> context, as exposed to our templates.</p>
 </dd></dl>
 
@@ -1703,6 +1699,7 @@ we can <code class="docutils literal notranslate"><span class="pre">import</span
 
 <h3>Navigation</h3>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="start.html">Get Started</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#the-application">The Application</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-junior.config">The Configuration</a></li>
@@ -1730,7 +1727,7 @@ we can <code class="docutils literal notranslate"><span class="pre">import</span
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">it’s junior!</a></li>
+      <li>Previous: <a href="start.html" title="previous chapter">Get Started</a></li>
   </ul></li>
 </ul>
 </div>

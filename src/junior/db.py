@@ -132,7 +132,7 @@ def on(_event, attribute, function):
     '''
     Trigger a ``function`` on an ``_event`` that targets ``attribute``.
 
-    :param _event: the :func:`sqlalchemy.event` we want to bind.
+    :param _event: the :class:`~sqlalchemy.event.base.Events` we want to bind.
     :param attribute: the attribute we want to watch.
     :param function: the callback function we want to trigger.
     '''
@@ -168,7 +168,7 @@ def filter(_event, attribute, function):
     Apply a filter ``function`` to our results in response to an
     ``_event`` that targets ``attribute``.
 
-    :param _event: the :func:`sqlalchemy.event` we want to bind.
+    :param _event: the :class:`~sqlalchemy.event.base.Events` we want to bind.
     :param attribute: the attribute we want to watch.
     :param function: the callback function we want to trigger.
     '''

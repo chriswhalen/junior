@@ -29,7 +29,7 @@ def allow_self_for_me(model):
     '''
     Allow any :class:`~flask_restful.Resource` we bind to ``model``
     to select, update, and delete only records where ``id``
-    matches our current :class:`~junior.User` ``id``.
+    matches our current :class:`~junior.auth.User` ``id``.
 
     :param model: a :class:`~flask_sqlalchemy.Model` we want to bind to a
                   :class:`~flask_restful.Resource`.
@@ -50,7 +50,7 @@ def allow_belongs_to_me(model):
     '''
     Allow any :class:`~flask_restful.Resource` we bind to ``model``
     to select, update, and delete only records where ``user_id``
-    matches our current :class:`~junior.User` ``id``.
+    matches our current :class:`~junior.auth.User` ``id``.
 
     :param model: a :class:`~flask_sqlalchemy.Model` we want to bind to a
                   :class:`~flask_restful.Resource`.
