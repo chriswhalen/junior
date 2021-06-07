@@ -64,7 +64,7 @@ setup(
         'flask-mailman==0.2.3',
         'flask-marshmallow==0.14.0',
         'flask-restful==0.3.9',
-        'flask-socketio==5.0.3',
+        'flask-socketio==5.1.0',
         'flask-sqlalchemy==2.5.1',
         'gunicorn==20.1.0',
         'hamlish-jinja==0.3.3',
