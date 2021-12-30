@@ -88,7 +88,7 @@ setup(
     ],
     extras_require={
         'mysql':    ['mysqlclient==2.0.3'],
-        'postgres': ['psycopg2==2.8.6'],
+        'postgres': ['psycopg2==2.9.3'],
     },
     classifiers=[
         'Environment :: Web Environment',
