@@ -53,7 +53,7 @@ setup(
         'amqp==5.0.6',
         'autopep8==1.5.7',
         'bcrypt==3.2.0',
-        'celery==5.1.0',
+        'celery==5.2.3',
         'cffi==1.14.5',
         'click==7.1.2',
         'flask==2.0.1',
