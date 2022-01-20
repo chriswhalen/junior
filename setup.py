@@ -80,7 +80,7 @@ setup(
         'python-engineio==4.2.0',
         'pyyaml==5.4.1',
         'readline==6.2.4.1',
-        'sqlalchemy==1.4.15',
+        'sqlalchemy==1.4.30',
         'sqlalchemy-migrate==0.13.0',
         'toml==0.10.2',
         'webassets==2.0',
