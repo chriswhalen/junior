@@ -317,6 +317,10 @@ table.docutils td {
 
 @media screen and (max-width: 875px) {
 
+    dl dl {
+       margin: 0 0 1em -2em;
+    }
+
     div.document, div.footer, div.body {
         width: 100%;
         margin-left: 0;
@@ -332,8 +336,8 @@ table.docutils td {
         margin-left: -1.44em;
     }
 
-    dl dl {
-       margin: 0 0 1em -2em;
+    div.sphinxsidebar {
+        margin-bottom: 5em;
     }
 }
 

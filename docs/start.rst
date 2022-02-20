@@ -29,3 +29,9 @@ Let's start by installing ``virtualenv``, along with its companion
 
 With ``virtualenv`` and ``virtualenvwrapper`` installed, we can create a new
 virtual environment to store the packages we install using ``pip``.
+
+
+Create a Project
+----------------
+
+!

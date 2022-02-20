@@ -22,12 +22,16 @@ to create a virtual environment for our junior applications.
 Let's start by installing ``virtualenv``, along with its companion
 ``virtualenvwrapper``::
 
-
     $ pip install virtualenv virtualenvwrapper
 
     # some users may want to try this instead:
     $ pip install --user virtualenv virtualenvwrapper
 
-
 With ``virtualenv`` and ``virtualenvwrapper`` installed, we can create a new
 virtual environment to store the packages we install using ``pip``.
+
+
+Create a Project
+----------------
+
+!

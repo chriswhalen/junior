@@ -15,7 +15,7 @@ Why a "full stack" framework?
 -----------------------------
 
 junior handles every aspect of the web application stack,
-from the SQL database layer straight up to the client-side Javascript layer.
+from the SQL database layer straight up to the client-side JavaScript layer.
 
 This integrated approach helps us offer a consistent interface for the entire
 application, where each aspect supports its partners; as a developer,
