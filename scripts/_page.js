@@ -52,8 +52,6 @@ class Page {
 
         if (name == null) throw new TypeError('name is required')
 
-        if (context == null) context = {}
-
         let source = document.createElement('source')
         source.id = `${name}-${now()}`
 

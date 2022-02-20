@@ -138,6 +138,7 @@ def resource(this):
             except TypeError:
                 controls = (controls,)
 
+            # apply each control in order
             for control in controls:
 
                 controlled_query = None
@@ -150,6 +151,7 @@ def resource(this):
 
                 permission = control.__name__.split('_')[0]
 
+                # "allow" controls union a query to the previous one
                 if permission == 'allow':
 
                     if (query is all) or (controlled_query is all):
@@ -161,17 +163,23 @@ def resource(this):
                     elif controlled_query is not None:
                         query = query.union(controlled_query)
 
+                # "deny" controls except a query from the previous one
                 if permission == 'deny':
 
-                    if (query is None) or (controlled_query is None):
+                    if (query is None) or (controlled_query is all):
                         query = None
 
                     elif query is all:
-                        query = controlled_query
+                        query = self.Meta.model.query
+                        query.except_(controlled_query)
 
                     elif controlled_query is not all:
-                        query = query.intersect(controlled_query)
+                        query = query.except_(controlled_query)
 
+            # for the "add" action, we want to check for permission to create
+            # records on this model and return "all" or "None" accordingly.
+            # otherwise, we translate "all" into an unfiltered query
+            # and "None" into a query with limit 0.
             if action != 'add':
 
                 if query is all:
@@ -183,6 +191,7 @@ def resource(this):
             return query
 
         def get(self, **params):
+            '''Fetch all records, or one record by ``id`` parameter.'''
 
             try:
                 query = self.query()
@@ -200,6 +209,7 @@ def resource(this):
                 raise BadRequest
 
         def post(self, **params):
+            '''Create a new record with attributes filled from ``params``.'''
 
             if self.query('add'):
 
@@ -215,27 +225,10 @@ def resource(this):
             return {}
 
         def put(self, **params):
-
-            try:
-                if 'id' in params:
-
-                    record = self.Meta.model.query.get(params['id'])
-
-                    if (record in self.query('update')):
-
-                        record.fill(**params)
-                        record.save()
-                        return self.Meta.model.one.jsonify(record)
-
-                else:
-                    raise BadRequest
-
-            except DataError:
-                raise BadRequest
-
-            return {}
-
-        def patch(self, **params):
+            '''
+            Update an existing record by ``id`` parameter
+            with attributes filled from ``params``.
+            '''
 
             try:
                 if 'id' in params:
@@ -257,6 +250,7 @@ def resource(this):
             return {}
 
         def delete(self, **params):
+            '''Delete an existing record by ``id`` parameter.'''
 
             try:
                 if 'id' in params:
@@ -276,12 +270,21 @@ def resource(this):
 
             return {}
 
+    # Assign our ModelResource and ModelSchema
+    # a unique class name based on our Model name
     ModelResource.__name__ = f'{this.__name__}Resource'
-    this.resource = ModelResource
-
     ModelSchema.__name__ = f'{this.__name__}Schema'
+
+    # Alias PUT to PATCH
+    ModelResource.patch = ModelResource.put
+
+    # A serializer for a single record
     this.one = ModelSchema(many=False)
+
+    # A serializer for a set of records
     this.many = ModelSchema(many=True)
+
+    this.resource = ModelResource
     this.schema = ModelSchema
 
     return this

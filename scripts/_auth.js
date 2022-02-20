@@ -25,5 +25,3 @@ class Auth {
         return new Promise((promise)=> promise(auth))
     }
 }
-
-

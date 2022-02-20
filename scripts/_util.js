@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 
 
-
 document.on = document.addEventListener
 window.on = window.addEventListener
 

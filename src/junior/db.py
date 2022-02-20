@@ -220,7 +220,7 @@ def timestamps(model):
         class User(Model):
             ...
 
-    :param model: the :func:`sqlalchemy.event` we want to monitor.
+    :param model: a :class:`~flask_sqlalchemy.Model` to extend.
     '''
 
     model.created_at = db.Column(db.DateTime, default=dt.now)
