@@ -50,7 +50,7 @@ setup(
     },
     install_requires=[
         'alembic==1.7.6',
-        'amqp==5.0.9',
+        'amqp==5.1.0',
         'autopep8==1.6.0',
         'bcrypt==3.2.0',
         'celery==5.2.3',
