@@ -68,7 +68,7 @@ setup(
         'flask-sqlalchemy==2.5.1',
         'gunicorn==20.1.0',
         'hamlish-jinja==0.3.3',
-        'itsdangerous==2.1.0',
+        'itsdangerous==2.1.1',
         'jinja2==3.0.3',
         'konch==4.4.0',
         'mako==1.1.6',
