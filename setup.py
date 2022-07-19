@@ -73,7 +73,7 @@ setup(
         'konch==4.4.0',
         'mako==1.1.6',
         'marshmallow==3.14.1',
-        'marshmallow-sqlalchemy==0.27.0',
+        'marshmallow-sqlalchemy==0.28.1',
         'munch==2.5.0',
         'python-dateutil==2.8.2',
         'python-editor==1.0.4',
