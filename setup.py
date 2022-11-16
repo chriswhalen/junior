@@ -71,7 +71,7 @@ setup(
         'itsdangerous==2.1.0',
         'jinja2==3.0.3',
         'konch==4.4.0',
-        'mako==1.1.6',
+        'mako==1.2.4',
         'marshmallow==3.14.1',
         'marshmallow-sqlalchemy==0.27.0',
         'munch==2.5.0',
